@@ -5,22 +5,22 @@
 \title{Extending The \TMS}
 
 \author{\IEEEauthorblockN{Olivia Appleton}
-\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
-\textit{name of organization (of Aff.)}\\
-Chicago, Illinois, United States \\
-0009-0004-2296-7033}
+\IEEEauthorblockA{\textit{TMW Center for Early Learning + Public Health}\\
+\textit{University of Chicago}\\
+Chicago, Illinois, United States\\
+ORCID: 0009-0004-2296-7033}
 \and
-\IEEEauthorblockN{Dan Rowe?}
-\IEEEauthorblockA{\textit{Department of Math and Computer Science} \\
-\textit{Northern Michigan University}\\
-Marquette, Michigan, United States \\
-darowe@nmu.edu}
+\IEEEauthorblockN{Dan Rowe}
+\IEEEauthorblockA{\textit{Department of Math and Computer Science}\\
+Northern Michigan University\\
+Marquette, Michigan, United States\\
+Email: darowe@nmu.edu}
 }
 
 \maketitle
 
 \begin{abstract}
-In this paper, we discuss various ways to extend the \TMS when used as a fair-share sequence. Included are N definitions of the original sequence, M extensions to $n$ players, and proofs of equality for all definitions. In the appendix are several complexity analyses for both space and time of each definition.
+In this paper, we discuss various ways to extend the \TMS \cite{OEIS-TMS} when used as a fair-share sequence. Included are N definitions of the original sequence, M extensions to $n$ players, and proofs of equality for all definitions. In the appendix are several complexity analyses for both space and time of each definition.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -31,11 +31,11 @@ component, formatting, style, styling, insert
 
 \section{The Original Sequence}
 
-\subsection{Definition 1 - Parity}
+\subsection{Definition 1 - Parity of Hamming Weight}
 
 This definition appears in \cite{Spiegelhofer_2020, Allouche-Shallit_1999}
 
-First, let us make sure we have a common definition of parity. For the purpose of this paper, this signifies whether there is an even or odd number of high bits in the binary representation of a number. It does not signify that the number as a whole is even or odd.
+The Hamming Weight, as typically defined, is the digit sum of a binary number. In other words, it is a count of the high bits in a given number. A common way to generate the \TMS is to take the parity of the Hamming Weight for each natural number. We can use that as follows:
 
 \begin{equation}
     \begin{aligned}
@@ -97,7 +97,23 @@ This definition appears in \cite{Kolář-Nori_1991}
     \end{aligned}
 \end{equation}
 
-\subsection{Definition 5 - }
+\subsection{Definition 5 - Highest Bit Difference}
+
+This definition appears in \cite{Arndt_2010}
+
+The text below is from Wiki and needs to be entirely rewritten. I was able to derive the formula on my own from translating their code.
+This method leads to a fast method for computing the Thue–Morse sequence: start with t0 = 0, and then, for each n, find the highest-order bit in the binary representation of n that is different from the same bit in the representation of n - 1. If this bit is at an even index, tn differs from tn - 1, and otherwise it is the same as tn - 1.
+
+\begin{equation}
+    \begin{aligned}
+        T_{2,5}(0) &= 0 \\
+        T_{2,5}(n) &= \begin{aligned}[c]
+            &\floor{\log_2(n \oplus (n - 1))} \\
+            &+ T_{2,5}(n - 1) + 1
+        \end{aligned} \pmod{2}
+    \end{aligned}
+\end{equation}
+
 
 \subsection{Summary}
 
@@ -127,9 +143,9 @@ Under this definition, you can construct the \TMS using the following, starting 
 In the original version of this definition, we inverted the elements. In base $2$, this is the same thing as adding $1$ (mod $2$). Given that, let $t(x, n)$ be the first $n^x$ elements of the \ETMS.
 
 \begin{equation}
-    \begin{aligned}
-        \text{inc}(\mathbf{x}, n) &= x_i + 1 \pmod{n} \\
-        &\text{for } \mathbf{x} = (x_0, x_1, \ldots, x_{n-1})
+    \text{inc}(\mathbf{x}, n) = \begin{aligned}[c]
+            &x_i + 1 \pmod{n} \\
+            &\text{for } \mathbf{x} = (x_0, x_1, \ldots, x_{n-1})
     \end{aligned}
 \end{equation}
 
@@ -156,9 +172,15 @@ Given the above, we can define a recurrence relation that will give us individua
 
 \subsubsection{Proof of Equivalence with Original Definition 3}
 
-\subsection{Definition 4 - }
+\subsection{Definition 4 - Recursion}
 
 \subsubsection{Proof of Equivalence with Original Definition 4}
+
+\subsection{Definition 5 - Highest Digit Difference}
+
+Note: This is speculative, and testing needs to be done
+
+\subsubsection{Proof of Equivalence with Original Definition 5}
 
 \subsection{Summary}
 

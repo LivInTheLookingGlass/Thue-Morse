@@ -23,6 +23,7 @@ Repository Structure
       ├── README.rst                 # Readme for associated code
       ├── __init__.py                # Empty file that allows this folder to be used as a module
       ├── args.py                    # A utility file that deals with command line argument parsing
+      ├── test_seq.py                # A test file that allows you to check sequence equality
       └── p{2,n}_[1-9]d.py           # The file for def. [1-9] of the Thue-Morse Seq. for {2,n} players
 
 Usage

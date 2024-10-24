@@ -10,7 +10,7 @@ def seq_pn_d2(n: int = 2) -> Iterator[int]:
     while True:
         yield from islice(seq, prev_len, None)
         prev_len = len(seq)
-        seq += tuple((x + 1) % n for x in seq)
+        seq += tuple((x + i) % n for i in range(1, n) for x in seq)
 
 
 if __name__ == '__main__':

@@ -1,19 +1,8 @@
 \documentclass[conference]{IEEEtran}
-\IEEEoverridecommandlockouts
-% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
-\usepackage{cite}
-\usepackage{amsmath,amssymb,amsfonts}
-\usepackage{algorithmic}
-\usepackage{graphicx}
-\usepackage{textcomp}
-\usepackage{xcolor}
-\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
-    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \input{macros}
-
 \begin{document}
 
-\title{Extending The Thue-Morse Sequence}
+\title{Extending The \TMS}
 
 \author{\IEEEauthorblockN{Olivia Appleton}
 \IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
@@ -31,7 +20,7 @@ darowe@nmu.edu}
 \maketitle
 
 \begin{abstract}
-In this paper, we discuss various ways to extend the Thue-Morse sequence when used as a fair-share sequence. Included are N definitions of the original sequence, M extensions to $n$ players, and proofs of equality for all definitions. In the appendix are several complexity analyses for both space and time of each definition.
+In this paper, we discuss various ways to extend the \TMS when used as a fair-share sequence. Included are N definitions of the original sequence, M extensions to $n$ players, and proofs of equality for all definitions. In the appendix are several complexity analyses for both space and time of each definition.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -44,6 +33,8 @@ component, formatting, style, styling, insert
 
 \subsection{Definition 1 - Parity}
 
+This definition appears in \cite{Spiegelhofer_2020, Allouche-Shallit_1999}
+
 First, let us make sure we have a common definition of parity. For the purpose of this paper, this signifies whether there is an even or odd number of high bits in the binary representation of a number. It does not signify that the number as a whole is even or odd.
 
 \begin{equation}
@@ -53,7 +44,7 @@ First, let us make sure we have a common definition of parity. For the purpose o
     \end{aligned}
 \end{equation}
 
-Under this definition, you can construct the Thue-Morse Sequence using the following, starting at $0$:
+Under this definition, you can construct the \TMS using the following, starting at $0$:
 
 \begin{equation}
     T_{2,1}(n) = p(n)
@@ -65,7 +56,7 @@ The subscript indicates that we are using $2$ players (writing in base $2$) and 
 
 This definition is more natural to think about as extending a tuple that contains the sequence. We will give a recurrence relation below, but to build an intuition we will work in this framework first.
 
-Let $t(n)$ be the first $2^n$ elements of the Thue-Morse Sequence. Given this, we can define:
+Let $t(n)$ be the first $2^n$ elements of the \TMS. Given this, we can define:
 
 \begin{equation}
     \text{inv}(\mathbf{x}) = \begin{cases}
@@ -85,14 +76,26 @@ Given the above, we can define a recurrence relation that will give us individua
 
 \begin{equation}
     \begin{aligned}
-        T_{2,3}(0) &= 0 \\
-        T_{2,3}(n) &= T_{2,3}\left(n - 2^{\floor{\log_2(n)}}\right) + 1 \pmod{2}
+        T_{2,2}(0) &= 0 \\
+        T_{2,2}(n) &= T_{2,2}\left(n - 2^{\floor{\log_2(n)}}\right) + 1 \pmod{2}
     \end{aligned}
 \end{equation}
 
 \subsection{Definition 3 - Substitute and Flatten}
 
-\subsection{Definition 4 - }
+This definition appears in \cite{Spiegelhofer_2020, Kolář-Nori_1991}
+
+\subsection{Definition 4 - Recursion}
+
+This definition appears in \cite{Kolář-Nori_1991}
+
+\begin{equation}
+    \begin{aligned}
+        T_{2,4}(0) &= 0 \\
+        T_{2,4}(2n) &= T_{2,4}(n) \\
+        T_{2,4}(2n+1) &= 1 - T_{2,4}(n) \pmod{2}
+    \end{aligned}
+\end{equation}
 
 \subsection{Definition 5 - }
 
@@ -111,17 +114,17 @@ To extend definition 1 from $2$ to $n$ players, we must first map our concept of
     \end{aligned}
 \end{equation}
 
-Under this definition, you can construct the Thue-Morse Sequence using the following, starting at 0:
+Under this definition, you can construct the \TMS using the following, starting at 0:
 
 \begin{equation}
     T_{n,1}(x, s) = p_s(x)
 \end{equation}
 
-\subsubsection{Proof of Equivalence with Orig. Def. 1}
+\subsubsection{Proof of Equivalence with Original Definition 1}
 
-\subsection{Definition 2}
+\subsection{Definition 2 - Increment and Extend}
 
-In the original version of this definition, we inverted the elements. In base $2$, this is the same thing as adding $1$ (mod $2$). Given that, let $t(x, n)$ be the first $n^x$ elements of the Extended Thue-Morse Sequence.
+In the original version of this definition, we inverted the elements. In base $2$, this is the same thing as adding $1$ (mod $2$). Given that, let $t(x, n)$ be the first $n^x$ elements of the \ETMS.
 
 \begin{equation}
     \begin{aligned}
@@ -142,85 +145,93 @@ Given the above, we can define a recurrence relation that will give us individua
 
 \begin{equation}
     \begin{aligned}
-        T_{n,3}(0, s) &= 0 \\
-        T_{n,3}(x, s) &= T_{2,3}\left(x - s^{\floor{\log_s(x)}}\right) + 1 \pmod{s}
+        T_{n,2}(0, s) &= 0 \\
+        T_{n,2}(x, s) &= T_{n,2}\left(x - s^{\floor{\log_s(x)}}\right) + 1 \pmod{s}
     \end{aligned}
 \end{equation}
 
-\subsubsection{Proof of Equivalence with Orig. Def. 2}
+\subsubsection{Proof of Equivalence with Original Definition 2}
 
-\subsection{Definition 3}
+\subsection{Definition 3 - Substitute and Flatten}
 
-\subsubsection{Proof of Equivalence with Orig. Def. 3}
+\subsubsection{Proof of Equivalence with Original Definition 3}
 
-\subsection{Definition 4}
+\subsection{Definition 4 - }
 
-\subsubsection{Proof of Equivalence with Orig. Def. 4}
+\subsubsection{Proof of Equivalence with Original Definition 4}
 
 \subsection{Summary}
 
 \section{Proving Equivalence Between Extensions}
 
-\subsection{Correlating Def. 1 and Def. 2}
+\subsection{Correlating Definition 1 and Definition 2}
 
-\subsection{Correlating Def. 1 and Def. 3}
+\subsection{Correlating Definition 1 and Definition 3}
 
-\subsection{Correlating Def. 1 and Def. 4}
+\subsection{Correlating Definition 1 and Definition 4}
 
 \subsection{Summary}
 
-\section*{Acknowledgment}
+\section{Proving Persistence of Original Properties}
+
+\section{Acknowledgment}
 
 The preferred spelling of the word ``acknowledgment'' in America is without 
 an ``e'' after the ``g''. Avoid the stilted expression ``one of us (R. B. 
 G.) thanks $\ldots$''. Instead, try ``R. B. G. thanks$\ldots$''. Put sponsor 
 acknowledgments in the unnumbered footnote on the first page.
 
-\section*{References}
-
-Please number citations consecutively within brackets \cite{b1}. The 
-sentence punctuation follows the bracket \cite{b2}. Refer simply to the reference 
-number, as in \cite{b3}---do not use ``Ref. \cite{b3}'' or ``reference \cite{b3}'' except at 
-the beginning of a sentence: ``Reference \cite{b3} was the first $\ldots$''
-
-Number footnotes separately in superscripts. Place the actual footnote at 
-the bottom of the column in which it was cited. Do not put footnotes in the 
-abstract or reference list. Use letters for table footnotes.
-
-Unless there are six authors or more give all authors' names; do not use 
-``et al.''. Papers that have not been published, even if they have been 
-submitted for publication, should be cited as ``unpublished'' \cite{b4}. Papers 
-that have been accepted for publication should be cited as ``in press'' \cite{b5}. 
-Capitalize only the first word in a paper title, except for proper nouns and 
-element symbols.
-
-For papers published in translation journals, please give the English 
-citation first, followed by the original foreign-language citation \cite{b6}.
-
 \section{Appendix}
 
-\subsection{Complexity of Extension 1}
+\subsection{Complexity of Original Definition 1}
 
 \subsubsection{Time Complexity}
 
 \subsubsection{Space Complexity}
 
-\subsection{Complexity of Extension 2}
+\subsection{Complexity of Original Definition 2}
 
 \subsubsection{Time Complexity}
 
 \subsubsection{Space Complexity}
-\begin{thebibliography}{00}
-\bibitem{b1} G. Eason, B. Noble, and I. N. Sneddon, ``On certain integrals of Lipschitz-Hankel type involving products of Bessel functions,'' Phil. Trans. Roy. Soc. London, vol. A247, pp. 529--551, April 1955.
-\bibitem{b2} J. Clerk Maxwell, A Treatise on Electricity and Magnetism, 3rd ed., vol. 2. Oxford: Clarendon, 1892, pp.68--73.
-\bibitem{b3} I. S. Jacobs and C. P. Bean, ``Fine particles, thin films and exchange anisotropy,'' in Magnetism, vol. III, G. T. Rado and H. Suhl, Eds. New York: Academic, 1963, pp. 271--350.
-\bibitem{b4} K. Elissa, ``Title of paper if known,'' unpublished.
-\bibitem{b5} R. Nicole, ``Title of paper with only first word capitalized,'' J. Name Stand. Abbrev., in press.
-\bibitem{b6} Y. Yorozu, M. Hirano, K. Oka, and Y. Tagawa, ``Electron spectroscopy studies on magneto-optical media and plastic substrate interface,'' IEEE Transl. J. Magn. Japan, vol. 2, pp. 740--741, August 1987 [Digests 9th Annual Conf. Magnetics Japan, p. 301, 1982].
-\bibitem{b7} M. Young, The Technical Writer's Handbook. Mill Valley, CA: University Science, 1989.
-\end{thebibliography}
-\vspace{12pt}
-\color{red}
-IEEE conference templates contain guidance text for composing and formatting conference papers. Please ensure that all template text is removed from your conference paper prior to submission to the conference. Failure to remove the template text from your paper may result in your paper not being published.
+
+\subsection{Complexity of Original Definition 3}
+
+\subsubsection{Time Complexity}
+
+\subsubsection{Space Complexity}
+
+\subsection{Complexity of Original Definition 4}
+
+\subsubsection{Time Complexity}
+
+\subsubsection{Space Complexity}
+
+\subsection{Complexity of Extension Definition 1}
+
+\subsubsection{Time Complexity}
+
+\subsubsection{Space Complexity}
+
+\subsection{Complexity of Extension Definition 2}
+
+\subsubsection{Time Complexity}
+
+\subsubsection{Space Complexity}
+
+\subsection{Complexity of Extension Definition 3}
+
+\subsubsection{Time Complexity}
+
+\subsubsection{Space Complexity}
+
+\subsection{Complexity of Extension Definition 4}
+
+\subsubsection{Time Complexity}
+
+\subsubsection{Space Complexity}
+
+\bibliographystyle{plainnat} % choose an appropriate style
+\bibliography{references}     % without the .bib extension
 
 \end{document}

@@ -9,6 +9,8 @@
 \usepackage{xcolor}
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\input{macros}
+
 \begin{document}
 
 \title{Extending The Thue-Morse Sequence}
@@ -29,7 +31,7 @@ darowe@nmu.edu}
 \maketitle
 
 \begin{abstract}
-In this paper, we discuss various ways to extend the Thue-Morse sequence when used as a fair-share sequence. Included are N definitions of the original sequence, M extensions to n players, and proofs of equality for all definitions. In the appendix are several complexity analyses for both space and time of each definition.
+In this paper, we discuss various ways to extend the Thue-Morse sequence when used as a fair-share sequence. Included are N definitions of the original sequence, M extensions to $n$ players, and proofs of equality for all definitions. In the appendix are several complexity analyses for both space and time of each definition.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -40,27 +42,120 @@ component, formatting, style, styling, insert
 
 \section{The Original Sequence}
 
-\subsection{Definition 1}
+\subsection{Definition 1 - Parity}
 
-\subsection{Definition 2}
+First, let us make sure we have a common definition of parity. For the purpose of this paper, this signifies whether there is an even or odd number of high bits in the binary representation of a number. It does not signify that the number as a whole is even or odd.
 
-\subsection{Definition 3}
+\begin{equation}
+    \begin{aligned}
+        p(0) &= 0 \\
+        p(n) &= n + p\left(\floor{\dfrac{n}{2}}\right) \pmod{2}
+    \end{aligned}
+\end{equation}
+
+Under this definition, you can construct the Thue-Morse Sequence using the following, starting at $0$:
+
+\begin{equation}
+    T_{2,1}(n) = p(n)
+\end{equation}
+
+The subscript indicates that we are using $2$ players (writing in base $2$) and that we are using the first definition laid out in this paper. Note that when we extend to n players, the $T$ function will get a second parameter for the number of players, so it will look like $T_{n,d}(x, s)$, where $s$ is the size of the player pool.
+
+\subsection{Definition 2 - Invert and Extend}
+
+This definition is more natural to think about as extending a tuple that contains the sequence. We will give a recurrence relation below, but to build an intuition we will work in this framework first.
+
+Let $t(n)$ be the first $2^n$ elements of the Thue-Morse Sequence. Given this, we can define:
+
+\begin{equation}
+    \text{inv}(\mathbf{x}) = \begin{cases}
+        0, & \text{if } x_i = 1 \\
+        1, & \text{if } x_i = 0
+    \end{cases} \quad \text{for } \mathbf{x} = (x_0, x_1, \ldots, x_{n-1})
+\end{equation}
+
+\begin{equation}
+    \begin{aligned}
+        t(0) &= \tuple{0} \\
+        t(n) &= t(n - 1) \cdot \text{inv}(t(n - 1))
+    \end{aligned}
+\end{equation}
+
+Given the above, we can define a recurrence relation that will give us individual elements. It will be less efficient to compute, but will allow proofs of equivalence to be easier.
+
+\begin{equation}
+    \begin{aligned}
+        T_{2,3}(0) &= 0 \\
+        T_{2,3}(n) &= T_{2,3}\left(n - 2^{\floor{\log_2(n)}}\right) + 1 \pmod{2}
+    \end{aligned}
+\end{equation}
+
+\subsection{Definition 3 - Substitute and Flatten}
+
+\subsection{Definition 4 - }
+
+\subsection{Definition 5 - }
 
 \subsection{Summary}
 
 \section{The Extensions}
 
-\subsection{Definition 1}
+\subsection{Definition 1 - Modular Digit Sums}
 
-\subsubsection{Proof of Equivalence with Orig. Def. X}
+To extend definition 1 from $2$ to $n$ players, we must first map our concept of parity to base n. We can do this by taking the parity equation defined above and replacing the $2$s with $n$, as follows:
+
+\begin{equation}
+    \begin{aligned}
+        p_n(0) &= 0 \\
+        p_n(x) &= x + p_n\left(\floor{\dfrac{x}{n}}\right) \pmod{n}
+    \end{aligned}
+\end{equation}
+
+Under this definition, you can construct the Thue-Morse Sequence using the following, starting at 0:
+
+\begin{equation}
+    T_{n,1}(x, s) = p_s(x)
+\end{equation}
+
+\subsubsection{Proof of Equivalence with Orig. Def. 1}
 
 \subsection{Definition 2}
 
-\subsubsection{Proof of Equivalence with Orig. Def. X}
+In the original version of this definition, we inverted the elements. In base $2$, this is the same thing as adding $1$ (mod $2$). Given that, let $t(x, n)$ be the first $n^x$ elements of the Extended Thue-Morse Sequence.
+
+\begin{equation}
+    \begin{aligned}
+        \text{inc}(\mathbf{x}, n) &= x_i + 1 \pmod{n} \\
+        &\text{for } \mathbf{x} = (x_0, x_1, \ldots, x_{n-1})
+    \end{aligned}
+\end{equation}
+
+\begin{equation}
+    \begin{aligned}
+        t(0, n) &= \tuple{0} \\
+        t(1, n) &= \tuple{0, 1, \ldots, n - 1} \\
+        t(x, n) &= t(x - 1, n) \cdot \text{inc}(t(x - 1, n), n)
+    \end{aligned}
+\end{equation}
+
+Given the above, we can define a recurrence relation that will give us individual elements. It will be less efficient to compute, but will allow proofs of equivalence to be easier.
+
+\begin{equation}
+    \begin{aligned}
+        T_{n,3}(0, s) &= 0 \\
+        T_{n,3}(x, s) &= T_{2,3}\left(x - s^{\floor{\log_s(x)}}\right) + 1 \pmod{s}
+    \end{aligned}
+\end{equation}
+
+\subsubsection{Proof of Equivalence with Orig. Def. 2}
 
 \subsection{Definition 3}
 
-\subsubsection{Proof of Equivalence with Orig. Def. X}
+\subsubsection{Proof of Equivalence with Orig. Def. 3}
+
+\subsection{Definition 4}
+
+\subsubsection{Proof of Equivalence with Orig. Def. 4}
 
 \subsection{Summary}
 

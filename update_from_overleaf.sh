@@ -13,12 +13,12 @@ RENDERED_PDF="rendered.pdf"
 
 if [ ! -f "$ZIP_FILE" ]; then
   echo "Error: ZIP file ($ZIP_FILE) not found."
-  exit 1
+  exit 2
 fi
 
 if [ ! -f "$PDF_FILE" ]; then
   echo "Error: PDF file ($PDF_FILE) not found."
-  exit 1
+  exit 3
 fi
 
 echo "Cleaning up old content..."

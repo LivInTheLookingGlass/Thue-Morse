@@ -14,4 +14,4 @@ def seq_pn_d2(n: int = 2) -> Iterator[int]:
 
 
 if __name__ == '__main__':
-    args = run(2, seq_pn_d2, "n")
+    args = run(2, seq_pn_d2, 'n')

@@ -24,7 +24,7 @@ In this paper, we discuss various ways to extend the \TMS \cite{OEIS-TMS} when u
 \end{abstract}
 
 \begin{IEEEkeywords}
-component, formatting, style, styling, insert
+TBA
 \end{IEEEkeywords}
 
 \section{Introduction}
@@ -33,14 +33,14 @@ component, formatting, style, styling, insert
 
 \subsection{Definition 1 - Parity of Hamming Weight}
 
-This definition appears in \cite{Spiegelhofer_2020, Allouche-Shallit_1999}
+\note{This definition appears in \cite{Spiegelhofer_2020, Allouche-Shallit_1999, OEIS-TMS}}
 
 The Hamming Weight, as typically defined, is the digit sum of a binary number. In other words, it is a count of the high bits in a given number. A common way to generate the \TMS is to take the parity of the Hamming Weight for each natural number. We can use that as follows:
 
 \begin{equation}
     \begin{aligned}
         p(0) &= 0 \\
-        p(n) &= n + p\left(\floor{\dfrac{n}{2}}\right) \pmod{2}
+        p(n) &= n \pm p\left(\floor{\dfrac{n}{2}}\right) \pmod{2}
     \end{aligned}
 \end{equation}
 
@@ -50,9 +50,11 @@ Under this definition, you can construct the \TMS using the following, starting 
     T_{2,1}(n) = p(n)
 \end{equation}
 
-The subscript indicates that we are using $2$ players (writing in base $2$) and that we are using the first definition laid out in this paper. Note that when we extend to n players, the $T$ function will get a second parameter for the number of players, so it will look like $T_{n,d}(x, s)$, where $s$ is the size of the player pool.
+The subscript indicates that we are using $2$ players (writing in base $2$) and that we are using the first definition laid out in this paper. Note that when we extend to n players, the $T$ function will get a second parameter for the number of players, so it will look like $T_{n,d}(x, s)$, where $s$ is the size of the player pool, and therefore the base we use to define the sequence.
 
 \subsection{Definition 2 - Invert and Extend}
+
+\note{Appears in \cite{OEIS-TMS}}
 
 This definition is more natural to think about as extending a tuple that contains the sequence. We will give a recurrence relation below, but to build an intuition we will work in this framework first.
 
@@ -68,7 +70,7 @@ Let $t(n)$ be the first $2^n$ elements of the \TMS. Given this, we can define:
 \begin{equation}
     \begin{aligned}
         t(0) &= \tuple{0} \\
-        t(n) &= t(n - 1) \cdot \text{inv}(t(n - 1))
+        t(n) &= t(n - 1) \concat \text{inv}(t(n - 1))
     \end{aligned}
 \end{equation}
 
@@ -83,11 +85,13 @@ Given the above, we can define a recurrence relation that will give us individua
 
 \subsection{Definition 3 - Substitute and Flatten}
 
-This definition appears in \cite{Spiegelhofer_2020, Kolář-Nori_1991}
+\note{This definition appears in \cite{Spiegelhofer_2020, Kolář-Nori_1991, OEIS-TMS}}
+
+\[\bigparallel_{i=0}^{n-1} x_i\]
 
 \subsection{Definition 4 - Recursion}
 
-This definition appears in \cite{Kolář-Nori_1991}
+\note{This definition appears in \cite{Kolář-Nori_1991, OEIS-TMS}}
 
 \begin{equation}
     \begin{aligned}
@@ -99,10 +103,9 @@ This definition appears in \cite{Kolář-Nori_1991}
 
 \subsection{Definition 5 - Highest Bit Difference}
 
-This definition appears in \cite{Arndt_2010}
+\note{This definition appears in \cite{Arndt_2010}}
 
-The text below is from Wiki and needs to be entirely rewritten. I was able to derive the formula on my own from translating their code.
-This method leads to a fast method for computing the Thue–Morse sequence: start with t0 = 0, and then, for each n, find the highest-order bit in the binary representation of n that is different from the same bit in the representation of n - 1. If this bit is at an even index, tn differs from tn - 1, and otherwise it is the same as tn - 1.
+\note{The text below is from Wiki and needs to be entirely rewritten. I was able to derive the formula on my own from translating their code. This method leads to a fast method for computing the Thue–Morse sequence: start with t0 = 0, and then, for each n, find the highest-order bit in the binary representation of n that is different from the same bit in the representation of n - 1. If this bit is at an even index, tn differs from tn - 1, and otherwise it is the same as tn - 1.}
 
 \begin{equation}
     \begin{aligned}
@@ -114,12 +117,30 @@ This method leads to a fast method for computing the Thue–Morse sequence: star
     \end{aligned}
 \end{equation}
 
+\subsection{Definition 6 - Odious Number Derivation}
+
+\note{Definition appears in \cite{OEIS-TMS}}
+
+Another way to generate the \TMS is to take the sequence of Odious Numbers \cite{OEIS-Odious} mod $2$. Odious numbers are those with an odd number of $1$s in their binary representation. Note that the player numbers in this derivation are swapped, so when generating this for testing and extension, we add 1 to the result. Some simple generating code for this is as follows:
+
+\begin{lstlisting}[style=pythonstyle]
+from itertools import count
+
+def seq_p2_d06():
+    for i in count():
+        if bin(i).count('1') % 2:
+            yield (i + 1) % 2
+\end{lstlisting}
+
+\note{A possible way to extend this would be to reinterpret this as where the digit sum is odd}
 
 \subsection{Summary}
 
 \section{The Extensions}
 
 \subsection{Definition 1 - Modular Digit Sums}
+
+\note{Definition appears in \cite{Astudillo_2003, Dekking_2023}}
 
 To extend definition 1 from $2$ to $n$ players, we must first map our concept of parity to base n. We can do this by taking the parity equation defined above and replacing the $2$s with $n$, as follows:
 
@@ -162,7 +183,7 @@ Given the above, we can define a recurrence relation that will give us individua
 \begin{equation}
     \begin{aligned}
         T_{n,2}(0, s) &= 0 \\
-        T_{n,2}(x, s) &= T_{n,2}\left(x - s^{\floor{\log_s(x)}}\right) + 1 \pmod{s}
+        T_{n,2}(x, s) &= T_{n,2}\left(x - s^{\floor{\log_s(x)}}, s\right) + 1 \pmod{s}
     \end{aligned}
 \end{equation}
 
@@ -229,6 +250,18 @@ acknowledgments in the unnumbered footnote on the first page.
 
 \subsubsection{Space Complexity}
 
+\subsection{Complexity of Original Definition 5}
+
+\subsubsection{Time Complexity}
+
+\subsubsection{Space Complexity}
+
+\subsection{Complexity of Original Definition 6}
+
+\subsubsection{Time Complexity}
+
+\subsubsection{Space Complexity}
+
 \subsection{Complexity of Extension Definition 1}
 
 \subsubsection{Time Complexity}
@@ -253,7 +286,7 @@ acknowledgments in the unnumbered footnote on the first page.
 
 \subsubsection{Space Complexity}
 
-\bibliographystyle{plainnat} % choose an appropriate style
+\bibliographystyle{unsrt}
 \bibliography{references}     % without the .bib extension
 
 \end{document}

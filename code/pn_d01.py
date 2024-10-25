@@ -5,7 +5,7 @@ from typing import Iterator
 from .args import run
 
 
-def seq_pn_d1(p: int = 2) -> Iterator[int]:
+def seq_pn_d01(p: int = 2) -> Iterator[int]:
     for x in count():
         digit_sum = 0
         while x:
@@ -15,4 +15,4 @@ def seq_pn_d1(p: int = 2) -> Iterator[int]:
 
 
 if __name__ == '__main__':
-    args = run(1, seq_pn_d1, 'N')
+    args = run(1, seq_pn_d01, 'N')

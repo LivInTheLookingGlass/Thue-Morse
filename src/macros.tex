@@ -7,6 +7,27 @@
 \usepackage{xcolor}
 \usepackage{xspace}
 \usepackage[numbers,sort&compress]{natbib}
+\usepackage{amsmath}
+\usepackage{stmaryrd}
+\usepackage{listings}
+\usepackage{xcolor}  % for setting colors
+
+% Define Python style for listings
+\lstdefinestyle{pythonstyle}{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{green},
+    stringstyle=\color{red},
+    frame=single,
+    breaklines=true
+}
+
+% Define the note command
+\newcommand{\note}[1]{\textcolor{purple}{#1}}
+
+% Define a concat command
+\newcommand*\concat{\mathbin{\|}}
 
 % Define a macro for the floor function
 \newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}

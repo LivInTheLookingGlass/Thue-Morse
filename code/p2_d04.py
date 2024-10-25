@@ -10,10 +10,10 @@ def T(n: int) -> int:
     return (n - T(n // 2)) % 2
 
 
-def seq_p2_d4(_: int = 2) -> Iterator[int]:
+def seq_p2_d04(_: int = 2) -> Iterator[int]:
     for i in count():
         yield T(i)
 
 
 if __name__ == '__main__':
-    args = run(4, seq_p2_d4, '2')
+    args = run(4, seq_p2_d04, '2')

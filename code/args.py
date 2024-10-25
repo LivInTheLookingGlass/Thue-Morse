@@ -12,6 +12,6 @@ def run(num: int, func: Callable[[], int], kind: str = '2') -> None:
     else:
         kind_str = f' ({args.p} selected)'
     print(
-        f'The Thue-Morse sequence for {kind} Players{kind_str}, Definition {num}, up to {args.n} is:',
+        f'The Thue-Morse sequence for {kind} Players{kind_str}, Definition {num:02}, up to {args.n} is:',
         *(x for x, y in zip(func(args.p), range(args.n)))
     )

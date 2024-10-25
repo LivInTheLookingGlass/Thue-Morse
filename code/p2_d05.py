@@ -4,7 +4,7 @@ from typing import Iterator
 from .args import run
 
 
-def seq_p2_d5(_: int = 2) -> Iterator[int]:
+def seq_p2_d05(_: int = 2) -> Iterator[int]:
     value = 1
     for n in count():
         # Note: assumes that (-1).bit_length() gives 1
@@ -15,4 +15,4 @@ def seq_p2_d5(_: int = 2) -> Iterator[int]:
 
 
 if __name__ == '__main__':
-    args = run(5, seq_p2_d5, '2')
+    args = run(5, seq_p2_d05, '2')

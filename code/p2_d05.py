@@ -15,4 +15,4 @@ def seq_p2_d05(_: int = 2) -> Iterator[int]:
 
 
 if __name__ == '__main__':
-    args = run(5, seq_p2_d05, '2')
+    run(5, seq_p2_d05, '2')

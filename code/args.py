@@ -1,8 +1,8 @@
 from argparse import ArgumentParser
-from typing import Callable
+from typing import Callable, Iterable
 
 
-def run(num: int, func: Callable[[], int], kind: str = '2') -> None:
+def run(num: int, func: Callable[[int], Iterable[int]], kind: str = '2') -> None:
     parser = ArgumentParser()
     parser.add_argument('n', type=int, help='The number of values to print')
     parser.add_argument('p', type=int, help='The number of players', default=2, nargs='?')

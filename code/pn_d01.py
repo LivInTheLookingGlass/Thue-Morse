@@ -1,4 +1,3 @@
-from functools import reduce
 from itertools import count
 from typing import Iterator
 
@@ -15,4 +14,4 @@ def seq_pn_d01(p: int = 2) -> Iterator[int]:
 
 
 if __name__ == '__main__':
-    args = run(1, seq_pn_d01, 'N')
+    run(1, seq_pn_d01, 'N')

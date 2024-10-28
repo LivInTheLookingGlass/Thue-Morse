@@ -1,13 +1,7 @@
 Definitions From OEIS
 G.f.: (1/(1 - x) - Product_{k >= 0} (1 - x^(2^k)))/2. - Benoit Cloitre, Apr 23 2003
-a(n) = -1 + (Sum_{k=0..n} binomial(n,k) mod 2) mod 3 = -1 + A001316(n) mod 3. - Benoit Cloitre, May 09 2004
-Let b(1) = 1 and b(n) = b(ceiling(n/2)) - b(floor(n/2)) then a(n-1) = (1/2)*(1 - b(2n-1)). - Benoit Cloitre, Apr 26 2005
-a(n) = 1 - A010059(n) = A001285(n) - 1. - Ralf Stephan, Jun 20 2003
-a(n) = A001969(n) - 2n. - Franklin T. Adams-Watters, Aug 28 2006
 For n >= 0, a(A004760(n+1)) = 1 - a(n). - Vladimir Shevelev, Apr 25 2009
 a(A160217(n)) = 1 - a(n). - Vladimir Shevelev, May 05 2009
-a(n) + A181155(n-1) = 2n for n >= 1. - Clark Kimberling, Oct 06 2014
-a(n) = A000035(A193231(n)). - Antti Karttunen, Dec 27 2013
 G.f. A(x) satisfies: A(x) = x / (1 - x^2) + (1 - x) * A(x^2). - Ilya Gutkovskiy, Jul 29 2021
 From Bernard Schott, Jan 21 2022: (Start)
 a(n) = a(n*2^k) for k >= 0.

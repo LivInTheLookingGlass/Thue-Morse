@@ -17,4 +17,4 @@ def seq_pn_d03(n: int = 2) -> Iterator[int]:
 
 
 if __name__ == '__main__':
-    args = run(3, seq_pn_d03, 'n')
+    run(3, seq_pn_d03, 'n')

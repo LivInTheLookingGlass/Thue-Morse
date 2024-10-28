@@ -1,11 +1,11 @@
 from itertools import chain, islice
-from typing import Iterator
+from typing import Iterator, Tuple
 
 from .args import run
 
 
 def seq_p2_d03(_: int = 2) -> Iterator[int]:
-    seq = (0, )
+    seq: Tuple[int, ...] = (0, )
     prev_len = 0
     while True:
         yield from islice(seq, prev_len, None)
@@ -17,4 +17,4 @@ def seq_p2_d03(_: int = 2) -> Iterator[int]:
 
 
 if __name__ == '__main__':
-    args = run(3, seq_p2_d03, '2')
+    run(3, seq_p2_d03, '2')

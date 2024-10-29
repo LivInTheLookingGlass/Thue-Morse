@@ -1,6 +1,5 @@
 from importlib import import_module
-from multiprocessing import Process, SimpleQueue
-from typing import Dict, Iterable, List
+from typing import Dict, Iterable
 
 from pytest import mark
 
@@ -22,31 +21,19 @@ def get_iters(p2: bool = True, pn: bool = False, s: int = 2) -> Dict[str, Iterab
     return iters
 
 
-def generate_contents(q: SimpleQueue, stop: int, name: str) -> None:
-    for _, n in zip(range(stop), get_iters(True, True)[name]):
-        q.put(n)
-
-
-@mark.order(-1)
-def test_2(n: int = test_len):
+@mark.parametrize("c", range(2, 11))
+def test_2(c: int, n: int = test_len):
     iters = get_iters(True, True)
-
-    queues: List[SimpleQueue] = [SimpleQueue() for _ in iters]
-    processes = [
-        Process(target=generate_contents, args=(q, n, name), daemon=True, name=name)
-        for q, name in zip(queues, iters.keys())
-    ]
-    for p in processes:
-        p.start()
-
-    try:
-        for i in range(n):
-            tup = tuple(q.get() for q in queues)
-            if len(set(tup)) != 1:
-                raise ValueError(f"Failed at idx {i}: {dict((f, x) for f, x in zip(iters.keys(), tup))}")
-    finally:
-        for p in processes:
-            p.kill()
+    cs = str(c).zfill(2)
+    iters = {
+        k: d for k, d in iters.items()
+        if cs in k or "01" in k
+    }
+    for idx, tup in enumerate(zip(*iters.values())):
+        if len(set(tup)) != 1:
+            raise ValueError(f"Failed at idx {idx}: {dict((f, x) for f, x in zip(iters.keys(), tup))}")
+        if idx >= n:
+            break
     print(f"All definitions agree for 2 players up to {n} iterations")
 
 

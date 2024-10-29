@@ -27,7 +27,7 @@ def generate_contents(q: SimpleQueue, stop: int, name: str) -> None:
         q.put(n)
 
 
-@mark.order("first")
+@mark.order(-1)
 def test_2(n: int = test_len):
     iters = get_iters(True, True)
 

@@ -1,3 +1,4 @@
+from functools import cache
 from itertools import count
 from math import ceil, floor
 from typing import Iterator
@@ -5,6 +6,7 @@ from typing import Iterator
 from .args import run
 
 
+@cache
 def b(n: int) -> int:
     if n <= 1:
         return n

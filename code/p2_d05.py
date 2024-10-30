@@ -4,14 +4,15 @@ from typing import Iterator
 from .args import run
 
 
+def T(n: int) -> int:
+    if n == 0:
+        return 0
+    return (n - T(n // 2)) % 2
+
+
 def seq_p2_d05(_: int = 2) -> Iterator[int]:
-    value = 1
-    for n in count():
-        # Note: assumes that (-1).bit_length() gives 1
-        x = (n ^ (n - 1)).bit_length() + 1
-        if x & 1 == 0:
-            value = 1 - value  # Bit index is even, so toggle value
-        yield value
+    for i in count():
+        yield T(i)
 
 
 if __name__ == '__main__':

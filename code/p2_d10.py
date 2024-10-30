@@ -3,8 +3,9 @@ from itertools import count
 from operator import xor
 from typing import Iterator
 
+from numpy.math import comb as binomial
+
 from .args import run
-from .p2_d09 import binomial
 
 
 def A001317(n: int) -> int:

@@ -6,7 +6,7 @@ from .args import run
 
 def seq_p2_d07(_: int = 2) -> Iterator[int]:
     for i in count():
-        if bin(i).count('1') % 2:
+        if i.bit_count() % 2:
             yield (i + 1) % 2
 
 

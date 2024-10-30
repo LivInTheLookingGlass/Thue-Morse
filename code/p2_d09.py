@@ -1,17 +1,9 @@
-from functools import reduce
 from itertools import count
-from operator import floordiv, mul
 from typing import Iterator
 
+from numpy.math import comb as binomial
+
 from .args import run
-
-
-def binomial(i: int, k: int) -> int:
-    return reduce(
-        floordiv,
-        range(2, i - k + 1),
-        reduce(mul, range(k + 1, i + 1), 1)
-    )
 
 
 def gould(i: int) -> int:

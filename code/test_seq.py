@@ -3,7 +3,7 @@ from typing import Dict, Iterable
 
 from pytest import mark
 
-test_len = 2**10
+test_len = 2**15
 
 
 def get_iters(p2: bool = True, pn: bool = False, s: int = 2) -> Dict[str, Iterable[int]]:

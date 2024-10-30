@@ -67,7 +67,7 @@ Let $t(n)$ be the first $2^n$ elements of the \TMS. Given this, we can define:
     \text{inv}(\mathbf{x}) = \begin{cases}
         0, & \text{if } x_i = 1 \\
         1, & \text{if } x_i = 0
-    \end{cases} \quad \text{for } \mathbf{x} = (x_0, x_1, \ldots, x_{n-1})
+    \end{cases} \quad \text{for } \mathbf{x} = \tuple{x_0, x_1, \ldots, x_{n-1}}
 \end{equation}
 
 \begin{equation}
@@ -117,6 +117,20 @@ T_{2,3}(3) &= t(\ceil{\log_2(3 + 1)})_3 \\
            &= 0
     \end{aligned}
 \end{equation*}
+
+\subsubsection{Definition 3b - Recursive Rotation}
+
+Another way to phrase this definition is as recursive rotation. If we decompose $s$, we can instead represent it as
+
+\begin{equation}
+    \begin{aligned}
+r(\mathbf{x}) &= \tuple{x_{i + 1 \mod{|\mathbf{x}|}}, \ldots} \quad \text{for } \mathbf{x} = \tuple{x_0, x_1, \ldots, x_{n-1}} \\
+         t(0) &= \tuple{0} \\
+         t(1) &= \tuple{0, 1} \\
+         t(n) &= \bigparallel_{i=0}^1 r(t(n-1), i) \\
+  T_{2,3b}(n) &= t(\ceil{\log_2(n + 1)})_n
+    \end{aligned}
+\end{equation}
 
 \subsection{Definition 4 - Recursion}
 
@@ -362,7 +376,7 @@ T_{n,3}(x, s) &= t(\ceil{\log_s(x + 1)}, s)_x
     \end{aligned}
 \end{equation}
 
-\note{This is tested up to $2^{14} \cdot n, n \in [2, 32]$}
+\note{This is tested up to $2^{20} \cdot n, n \in [2, 32]$}
 
 \subsubsection{Proof of Equivalence with Original Definition 5}
 
@@ -423,6 +437,30 @@ acknowledgments in the unnumbered footnote on the first page.
 
 \subsubsection{Space Complexity}
 
+\subsection{Complexity of Original Definition 7}
+
+\subsubsection{Time Complexity}
+
+\subsubsection{Space Complexity}
+
+\subsection{Complexity of Original Definition 8}
+
+\subsubsection{Time Complexity}
+
+\subsubsection{Space Complexity}
+
+\subsection{Complexity of Original Definition 9}
+
+\subsubsection{Time Complexity}
+
+\subsubsection{Space Complexity}
+
+\subsection{Complexity of Original Definition 10}
+
+\subsubsection{Time Complexity}
+
+\subsubsection{Space Complexity}
+
 \subsection{Complexity of Extension Definition 1}
 
 \subsubsection{Time Complexity}
@@ -453,13 +491,12 @@ acknowledgments in the unnumbered footnote on the first page.
 
 \subsubsection{Space Complexity}
 
-\subsection{Complexity of Extension Definition 6}
-
-\subsubsection{Time Complexity}
-
-\subsubsection{Space Complexity}
-
 \bibliographystyle{unsrt}
 \bibliography{references}     % without the .bib extension
+
+\onecolumn
+\clearpage
+\lstset{basicstyle=\ttfamily, breaklines=true}
+\lstinputlisting{notes/definitions_to_add.txt}
 
 \end{document}

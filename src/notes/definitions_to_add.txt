@@ -7,6 +7,46 @@ From Bernard Schott, Jan 21 2022: (Start)
 a(n) = a(n*2^k) for k >= 0.
 a((2^m-1)^2) = (1-(-1)^m)/2 (see Hassan Tarfaoui link, Concours Général 1990). (End)
 
+A004760: numbers not beginning with 10_2
+A160217: Minimal increasing sequence with a(1)=3 and the property that a(n) and n are both in or both not in A003159. 
+A003159: Numbers whose binary representation ends in an even number of zeros. 
+
+Definitions from OEIS (inverse: 10010110)
+G.f.: (1/2) * (1/(1-x) + Product_{k>=0} (1 - x^2^k)). - Ralf Stephan, Jun 20 2003
+a(n) = A143579(n) mod 2. - Gary W. Adamson, Aug 24 2008
+a(n) = A159481(n+1) - A159481(n). - Reinhard Zumkeller, Apr 16 2009
+a(n) = A059448(A054429(n)). - Antti Karttunen, May 30 2017
+If A(n)=(a(0),a(2),...,a(2^n-1)), then A(n+1)=(A(n),1-A(n)). - Arie Bos, Jul 27 2022
+a(n) = (1 + (-1)^A000120(n))/2. - Lorenzo Sauras Altuzarra, Mar 10 2024
+
+A143579: chain.from_iterable(zip(Odious, Evil))
+Odious: Odd number of 1s in binary
+Evil: Even number of 1s in binary
+A159481: Number of evil numbers < n
+A059448: Parity of Hamming Weight of n
+A054429: Simple self-inverse permutation of natural numbers: List each block of 2^n numbers (from 2^n to 2^(n+1) - 1) in reverse order.
+A000120: Hamming Weight of n
+
+Definitions from OEIS (add 1: 21121221)
+
+a(2n) = a(n), a(2n+1) = 3 - a(n), a(0) = 1. Also, a(k+2^m) = 3 - a(k) if 0 <= k < 2^m.
+G.f.: (3/(1 - x) - Product_{k>=0} (1 - x^(2^k)))/2. - Ilya Gutkovskiy, Apr 03 2019
+
+Definitions from OEIS (n -> 1 - 2 * Thue-Morse(n): PNNPNPPN)
+
+a(n) = (-1)^wt(n), where wt(n) is the binary weight of n, A000120(n).
+G.f. A(x) satisfies 0 = f(A(x), A(x^2), A(x^4)) where f(u, v, w) = v^3 - 2*u*v*w + u^2*w.
+G.f. A(x) satisfies 0 = f(A(x), A(x^2), A(x^3), A(x^6)) where f(u1, u2, u3, u6) = u6*u1^3 - 3*u6*u2*u1^2 + 3*u6*u2^2*u1 - u3*u2^3.
+G.f.: Product_{k>=0} (1 - x^(2^k)) = A(x) = (1-x) * A(x^2).
+a(n) = B_n(-A038712(1)*0!, ..., -A038712(n)*(n-1)!)/n!, where B_n(x_1, ..., x_n) is the n-th complete Bell polynomial. See the Wikipedia link for complete Bell polynomials , and A036040 for the coefficients of these partition polynomials. - Gevorg Hmayakyan, Jul 10 2016 (edited by - Wolfdieter Lang, Aug 31 2016)
+a(n) = A008836(A005940(1+n)). [Analogous to Liouville's lambda] - Antti Karttunen, May 30 2017
+a(n) = (-1)^A309303(n), see the closed form (5) in the MathWorld link. - Vladimir Reshetnikov, Jul 23 2019
+
+A038712: Let k be the exponent of highest power of 2 dividing n (A007814); a(n) = 2^(k+1)-1.
+A008836: Liouville's function lambda(n) = (-1)^k, where k is number of primes dividing n (counted with multiplicity).
+A005940: The Doudna sequence 
+A309303: Expansion of g.f. (sqrt(x+1) - sqrt(1-3*x))/(2*(x+1)^(3/2)).
+
 Dubious suggestions from chatGPT
 
 5. Relation to Cantor Set

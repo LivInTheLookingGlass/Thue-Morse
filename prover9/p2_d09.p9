@@ -1,0 +1,16 @@
+% Define the binomial coefficient modulo 2
+binom(0, 0) = 1.  % Base case: C(0, 0) = 1
+binom(n, k) = 0 :- n < k.  % C(n, k) = 0 if k > n
+binom(n, k) = binom(n - 1, k - 1) + binom(n - 1, k) :- 
+    nonneg_int(n), nonneg_int(k), n > 0, k > 0.
+
+% Define a function to compute binom(n, k) mod 2
+binom_mod2(n, k) :- 
+    binom(n, k) = r -> mod(r, 2).
+
+% Define the Gould number
+Gould(n) = sum(k, 0, n, binom_mod2(n, k)).
+
+% Define T_{2,9}(n)
+nonneg_int(n) -> 
+    T_2_9(n) = mod(Gould(n) - 1, 3).

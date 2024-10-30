@@ -1,0 +1,13 @@
+% Define the tuple macro s(n)
+s(0) = (0, 1).
+s(1) = (1, 0).
+
+% Define t(0) = (0)
+t(0) = (0).
+
+% Recursive definition of t(n) using the parallel operation
+% This is a simplification assuming indexed access works as intended
+nonneg_int(i) & i < 2^n -> t(n)[i] = s(t(n - 1)[i]).
+
+% Definition of T_{2,3}(n)
+T_2_3(n) = t(ceil(log2(n + 1)))[n].

@@ -1,0 +1,15 @@
+% Define the binomial coefficient modulo 2
+binom(0, 0) = 1.  % Base case: C(0, 0) = 1
+binom(n, k) = 0 :- n < k.  % C(n, k) = 0 if k > n
+binom(n, k) = binom(n - 1, k - 1) + binom(n - 1, k) :- 
+    nonneg_int(n), nonneg_int(k), n > 0, k > 0.
+
+% Define A001317(n)
+A001317(n) = sum(k, 0, n, (binom(n, k) mod 2) * (2^k)).
+
+% Define A193231(n)
+A193231(n) = xor(i, 0, ceil(log_2(n)), A001317(i * floor(mod(n, 2) / (2^i)))).
+
+% Define T_{2,10}(n)
+nonneg_int(n) -> 
+    T_2_10(n) = mod(A193231(n), 2).

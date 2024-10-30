@@ -71,6 +71,8 @@ A008836: Liouville's function lambda(n) = (-1)^k, where k is number of primes di
 A005940: The Doudna sequence 
 A309303: Expansion of g.f. (sqrt(x+1) - sqrt(1-3*x))/(2*(x+1)^(3/2)).
 
+
+
 Dubious suggestions from chatGPT
 
 5. Relation to Cantor Set

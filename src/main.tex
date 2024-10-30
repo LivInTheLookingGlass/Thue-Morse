@@ -210,7 +210,7 @@ T_{2,7}(n) = \text{Odious}(n) + 1 \pmod{2}
 \end{equation*}
 }
 
-\subsection{Definition 8 - Evil Numbers Derivation}
+\subsection{Definition 8 - Evil Numbers Derivation 1}
 
 \note{Appears in \cite{OEIS-TMS}}
 
@@ -220,7 +220,20 @@ The Evil Numbers \cite{OEIS-Evil} are those who have an even number of $1$s in t
 T_{2,8}(n) = \text{Evil}(n) - 2n \pmod{2}
 \end{equation}
 
-\subsection{Definition 9 - Gould's Sequence Derivation}
+\subsection{Definition 9 - Evil Numbers Derivation 2}
+
+\note{Appears in \cite{OEIS-TMS}}
+
+A second, more-efficient derivation from the Evil Numbers is as follows, where $ce()$ is the count of Evil Numbers less than $n$ \cite{OEIS-A159481}, and $p()$ is the function defined in Equation \ref{eq:p2d01}.
+
+\begin{equation}
+    \begin{aligned}
+     ce(n) &= \floor{\dfrac{n + 1}{2}} + p(n + 1) \cdot (n + 1 \mod{2}) \\
+T_{2,9}(n) &= 1 - ce(n + 1) + ce(n)
+    \end{aligned}
+\end{equation}
+
+\subsection{Definition 10 - Gould's Sequence Derivation}
 
 \note{Appears in \cite{OEIS-TMS}}
 
@@ -230,12 +243,12 @@ Gould's Sequence \cite{OEIS-Gould} are the number of odd entries in a given row 
 
 \begin{equation}
     \begin{aligned}
-T_{2,9}(n) &= \text{Gould}(n) - 1 \mod{3} \\
-           &= \left(\sum_{k=0}^n \left(\binom{n}{k} \mod{2} \right)\right) - 1 \mod{3}
+T_{2,10}(n) &= \text{Gould}(n) - 1 \mod{3} \\
+            &= \left(\sum_{k=0}^n \left(\binom{n}{k} \mod{2} \right)\right) - 1 \mod{3}
     \end{aligned}
 \end{equation}
 
-\subsection{Definition 10 - Derivation from Blue Code}
+\subsection{Definition 11 - Derivation from Blue Code}
 
 \note{Appears in \cite{OEIS-TMS}}
 
@@ -245,7 +258,7 @@ In the OEIS, this sequence \cite{OEIS-A193231} is defined as the "binary coding 
     \begin{aligned}
 \text{A001317}(n) &= \sum_{k=0}^n \left(\binom{n}{k} \mod{2} \right) \cdot 2^k \\
 \text{A193231}(n) &= \bigoplus_{i=0}^{\ceil{\log_2(n)}} \hspace{-5pt} \text{A001317}\left(i \cdot \floor{\dfrac{n \mod{2}}{2^i}}\right) \\
-      T_{2,10}(n) &= \text{A193231}(n) \pmod{2}
+      T_{2,11}(n) &= \text{A193231}(n) \pmod{2}
     \end{aligned}
 \end{equation}
 

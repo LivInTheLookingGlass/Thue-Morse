@@ -1,9 +1,15 @@
 from importlib import import_module
+from pathlib import Path
 from typing import Dict, Iterable
 
 from pytest import mark
 
 test_len = 2**15
+bases_tested = range(2, 33)
+base_2_tests = [int(p.name[4:-3]) for p in Path(__file__).parent.glob('p2_d*.py')]
+base_n_tests = [int(p.name[4:-3]) for p in Path(__file__).parent.glob('pn_d*.py')]
+base_2_tests.remove(1)
+base_n_tests.remove(1)
 
 
 def get_iters(p2: bool = True, pn: bool = False, s: int = 2) -> Dict[str, Iterable[int]]:
@@ -21,13 +27,13 @@ def get_iters(p2: bool = True, pn: bool = False, s: int = 2) -> Dict[str, Iterab
     return iters
 
 
-@mark.parametrize("c", range(2, 11))
-def test_2(c: int, n: int = test_len):
+@mark.parametrize("c", [f'2_{n:02}' for n in base_2_tests] + ['n_01'] + [f'n_{n:02}' for n in base_n_tests])
+def test_compare_2_1_to_(c: str, n: int = test_len):
     iters = get_iters(True, True)
-    cs = str(c).zfill(2)
+    cs = 'p{}_d{}'.format(*c.split('_'))
     iters = {
         k: d for k, d in iters.items()
-        if cs in k or "01" in k
+        if k in (cs, "p2_d01")
     }
     for idx, tup in enumerate(zip(*iters.values())):
         if len(set(tup)) != 1:
@@ -37,9 +43,15 @@ def test_2(c: int, n: int = test_len):
     print(f"All definitions agree for 2 players up to {n} iterations")
 
 
-@mark.parametrize("s", range(3, 33))
-def test_n(s: int, n: int = test_len):
+@mark.parametrize("s", bases_tested, ids=(f'base {s:02}' for s in bases_tested))
+@mark.parametrize("c", base_n_tests)
+def test_compare_n_1_to_n(c: int, s: int, n: int = test_len):
     iters = get_iters(False, True, s)
+    cs = str(c).zfill(2)
+    iters = {
+        k: d for k, d in iters.items()
+        if cs in k or "01" in k
+    }
     sn = s * n
     for idx, tup in enumerate(zip(*iters.values())):
         if len(set(tup)) != 1:

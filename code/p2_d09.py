@@ -3,6 +3,7 @@ from typing import Iterator
 
 from .args import run
 
+
 def A159481(n):
     n1 = n + 1
     return n1 // 2 + ((n1.bit_count() % 2) * (n1 % 2))

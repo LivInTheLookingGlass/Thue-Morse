@@ -11,7 +11,21 @@ concurrency:
 
 jobs:
   python:
-    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        selection:
+        - lint
+        - base_2
+        - base_n_3_8
+        - base_n_9_16
+        - base_n_17_24
+        - base_n_25_32
+        - base_n_33_40
+        - base_n_41_48
+        - base_n_49_56
+        - base_n_57_64
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
@@ -24,10 +38,35 @@ jobs:
         cache-dependency-path: requirements.txt
 
     - name: Extend test range
-      run: sed -i '' 's/^test_len = .*/test_len = 2**21/' code/test_seq.py
+      run: sed -i 's/^test_len = .*/test_len = 2**21/' code/test_seq.py
 
     - name: Fetch test dependencies
       run: python -m pip install -r requirements.txt
 
-    - name: Run tests (in parallel)
-      run: python -m pytest
+    - name: Run tests (in parallel, ${{matrix.selection}})
+      run: |
+        case ${{matrix.selection}} in
+          lint)
+            python -m pytest --isort --flake8 --mypy --mypy-ignore-missing-imports -k "not test_compare"
+            ;;
+          base_2)
+            python -m pytest -k "test_compare_2_1"
+            ;;
+          *)
+            IFS='_' read -r prefix1 prefix2 start stop <<< "${{matrix.selection}}"
+            bases=()
+            for (( i=start; i<=stop; i++ )); do
+                bases+=("$i")
+            done
+            base_regex=""
+            for (( i=start; i<=stop; i++ )); do
+                # Format base as base_XX (ensure it's two digits)
+                formatted_base=$(printf "%02d" "$i")
+                base_regex+="base_${formatted_base} or "
+            done
+            base_regex="${base_regex% or }"
+            pytest_regex="test_compare_n_1_to_n and ($base_regex)"
+            echo $pytest_regex
+            python -m pytest -k "$pytest_regex"
+            ;;
+        esac

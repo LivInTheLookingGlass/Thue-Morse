@@ -5,7 +5,7 @@ from typing import Dict, Iterable
 from pytest import mark
 
 test_len = 2**15
-bases_tested = range(2, 33)
+bases_tested = range(2, 65)
 base_2_tests = [int(p.name[4:-3]) for p in Path(__file__).parent.glob('p2_d*.py')]
 base_n_tests = [int(p.name[4:-3]) for p in Path(__file__).parent.glob('pn_d*.py')]
 base_2_tests.remove(1)
@@ -43,7 +43,7 @@ def test_compare_2_1_to_(c: str, n: int = test_len):
     print(f"All definitions agree for 2 players up to {n} iterations")
 
 
-@mark.parametrize("s", bases_tested, ids=(f'base {s:02}' for s in bases_tested))
+@mark.parametrize("s", bases_tested, ids=(f'base_{s:02}' for s in bases_tested))
 @mark.parametrize("c", base_n_tests)
 def test_compare_n_1_to_n(c: int, s: int, n: int = test_len):
     iters = get_iters(False, True, s)
@@ -52,10 +52,9 @@ def test_compare_n_1_to_n(c: int, s: int, n: int = test_len):
         k: d for k, d in iters.items()
         if cs in k or "01" in k
     }
-    sn = s * n
     for idx, tup in enumerate(zip(*iters.values())):
         if len(set(tup)) != 1:
             raise ValueError(f"Failed at idx {idx}: {dict((f, x) for f, x in zip(iters.keys(), tup))}")
-        if idx >= sn:
+        if idx >= n:
             break
     print(f"All definitions agree for {s} players up to {n} iterations")

@@ -1,11 +1,11 @@
-from itertools import chain, islice
+from itertools import islice
 from typing import Iterator, Tuple
 
 from .args import run
 
 
 def rotate(t: Tuple[int, ...], n: int) -> Tuple[int, ...]:
-    return (*t[n:], *t[:n])
+    return n and (*t[n:], *t[:n]) or t
 
 
 def seq_p2_d04(_: int = 2) -> Iterator[int]:

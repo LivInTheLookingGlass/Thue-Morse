@@ -1,23 +1,23 @@
-from functools import reduce
 from itertools import count
-from math import comb as binomial
-from operator import xor
 from typing import Iterator
 
 from .args import run
 
 
-def A001317(n: int) -> int:
-    return sum((binomial(n, k) % 2) * 2**k for k in range(n + 1))
+def gould(n: int) -> int:
+    binomial_coeff = 1
+    partial_sum = 0
+    for k in range(n + 1):
+        # Add the current term to the total sum
+        partial_sum += binomial_coeff % 2
+        # C(n, k) = C(n, k-1) * (n - (k - 1)) / k
+        binomial_coeff = binomial_coeff * (n - k) // (k + 1)
+    return partial_sum
 
 
 def seq_p2_d12(_: int = 2) -> Iterator[int]:
     for i in count():
-        yield reduce(
-            xor,
-            (A001317(idx) for idx, value in enumerate(bin(i)[2:]) if value == '1'),
-            0
-        ) % 2
+        yield (gould(i) - 1) % 3
 
 
 if __name__ == '__main__':

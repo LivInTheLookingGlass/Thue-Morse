@@ -125,11 +125,14 @@ Another way to phrase the above definition is as recursive rotation. If we decom
 \begin{equation}
     \label{eq:p2d04}
     \begin{aligned}
-r(\mathbf{x}) &= \tuple{x_{i + 1 \mod{|\mathbf{x}|}}, \ldots} \quad \text{for } \mathbf{x} = \tuple{x_0, x_1, \ldots, x_{n-1}} \\
-         t(0) &= \tuple{0} \\
-         t(1) &= \tuple{0, 1} \\
-         t(n) &= \bigparallel_{i=0}^1 r\left(t(n-1), i \cdot 2^{n-2}\right) \\
-  T_{2,4}(n) &= t(\ceil{\log_2(n + 1)})_n
+r(\mathbf{x}, i) &= \begin{aligned}[c]
+                   &\tuple{x_{0 + i \mod{|\mathbf{x}|}}, x_{1 + i \mod{|\mathbf{x}|}}, \ldots} \\
+                   &\text{for } \mathbf{x} = \tuple{x_0, x_1, \ldots, x_{n-1}}
+        \end{aligned} \\
+            t(0) &= \tuple{0} \\
+            t(1) &= \tuple{0, 1} \\
+            t(n) &= \bigparallel_{i=0}^1 r\left(t(n-1), i \cdot 2^{n-2}\right) \\
+      T_{2,4}(n) &= t(\ceil{\log_2(n + 1)})_n
     \end{aligned}
 \end{equation}
 
@@ -226,7 +229,7 @@ T_{2,9}(n) = \text{Evil}(n) - 2n \pmod{2}
 
 \subsection{Definition 10 - Evil Numbers Derivation 2}
 
-\note{Appears in \cite{OEIS-TMS}}
+\note{Appears in \cite{OEIS-TMS-inv}}
 
 A second, more-efficient derivation from the Evil Numbers is as follows, where $ce()$ is the count of Evil Numbers less than $n$ \cite{OEIS-A159481}, and $p()$ is the function defined in Equation \ref{eq:p2d01}.
 
@@ -238,7 +241,24 @@ T_{2,10}(n) &= 1 - ce(n + 1) + ce(n)
     \end{aligned}
 \end{equation}
 
-\subsection{Definition 11 - Gould's Sequence Derivation}
+\subsection{Definition 11 - Odious \& Evil Numbers Derivation}
+
+\note{Appears in \cite{OEIS-TMS-inv}}
+
+A second, more-efficient derivation from the Evil Numbers is as follows, where $ce()$ is the count of Evil Numbers less than $n$ \cite{OEIS-A159481}, and $p()$ is the function defined in Equation \ref{eq:p2d01}.
+
+\begin{equation}
+    \label{eq:p2d11}
+    \begin{aligned}
+     oe(n) &= \begin{cases}
+         &\text{Odious}\left(\floor{\dfrac{n}{2}}\right) \quad \text{if } n \mod{2} = 0 \\
+         &\text{Evil}\left(\floor{\dfrac{n}{2}}\right) \quad\quad\; \text{if } n \mod{2} = 1
+     \end{cases} \\
+T_{2,11}(n) &= 1 - oe(n) \pmod{2}
+    \end{aligned}
+\end{equation}
+
+\subsection{Definition 12 - Gould's Sequence Derivation}
 
 \note{Appears in \cite{OEIS-TMS}}
 
@@ -247,35 +267,31 @@ Gould's Sequence \cite{OEIS-Gould} are the number of odd entries in a given row 
 \note{Why mod 3? Everything else is mod 2. This definition is unlikely to be extendable, unless you interpret this as the hamming weight of a given row, and extend the idea of hamming weight to those other bases. If so, I predict that the final mod is mod $(n + 1)$}
 
 \begin{equation}
-    \label{eq:p2d11}
+    \label{eq:p2d12}
     \begin{aligned}
-T_{2,11}(n) &= \text{Gould}(n) - 1 \mod{3} \\
+T_{2,12}(n) &= \text{Gould}(n) - 1 \mod{3} \\
             &= \left(\sum_{k=0}^n \left(\binom{n}{k} \mod{2} \right)\right) - 1 \mod{3}
     \end{aligned}
 \end{equation}
 
-\subsection{Definition 12 - Derivation from Blue Code}
+\subsection{Definition 13 - Derivation from Blue Code}
 
 \note{Appears in \cite{OEIS-TMS}}
 
 In the OEIS, this sequence \cite{OEIS-A193231} is defined as the "binary coding of a polynomial over GF(2), substitute x+1 for x". There are a number of ways to generate it. One of the more computationally-accessible ones is:
 
 \begin{equation}
-    \label{eq:p2d12}
+    \label{eq:p2d13}
     \begin{aligned}
 \text{A001317}(n) &= \sum_{k=0}^n \left(\binom{n}{k} \mod{2} \right) \cdot 2^k \\
 \text{A193231}(n) &= \bigoplus_{i=0}^{\ceil{\log_2(n)}} \hspace{-5pt} \text{A001317}\left(i \cdot \floor{\dfrac{n \mod{2}}{2^i}}\right) \\
-      T_{2,12}(n) &= \text{A193231}(n) \pmod{2}
+      T_{2,13}(n) &= \text{A193231}(n) \pmod{2}
     \end{aligned}
 \end{equation}
 
 Translated into words, this function computes the value of Sierpiński's triangle for the index of each high bit, then takes the bitwise exclusive or of all such resulting values. Note that since $\text{A001317}(n) = 0$, each low bit can be simplified out when calculating.
 
 \note{It seems to me that this might be extendable by using GF(n) instead of GF(2), though I don't know of a way to efficient compute or prove such a result}
-
-\subsection{Additional definitions from OEIS}
-
-\note{Make sure to search A010059 (complement of Thue-Morse) \& A001285 (Thue-Morse + 1) for additional definitions and derivations}
 
 \subsection{Summary}
 
@@ -368,12 +384,15 @@ T_{n,2}(x, s) &= T_{n,2}\left(x - s^{\floor{\log_s(x)}}, s\right) + 1 \pmod{s}
 \begin{equation}
     \label{eq:pnd03}
     \begin{aligned}
-      b(s) &= \tuple{0, 1, \cdots, s - 2, s - 1} \\
-   r(a, x) &= \bigparallel_{i=0}^{|a| - 1} \tuple{a_{i + x \text{ mod }|a|}} \\
-   s(x, s) &= r(b(s), x) \\
-      t(0) &= \tuple{0} \\
-      t(x, s) &= \bigparallel_{i=0}^{2^{x-1}-1} s(t(x-1)_i, s)  \\
-T_{n,3}(x, s) &= t(\ceil{\log_s(x + 1)}, s)_x
+            b(s) &= \tuple{0, 1, \cdots, s - 2, s - 1} \\
+r(\mathbf{x}, i) &= \begin{aligned}[c]
+                   &\tuple{x_{0 + i \mod{|\mathbf{x}|}}, x_{1 + i \mod{|\mathbf{x}|}}, \ldots} \\
+                   &\text{for } \mathbf{x} = \tuple{x_0, x_1, \ldots, x_{n-1}}
+        \end{aligned} \\
+         s(x, s) &= r(b(s), x) \\
+            t(0) &= \tuple{0} \\
+         t(x, s) &= \bigparallel_{i=0}^{2^{x-1}-1} s(t(x-1)_i, s)  \\
+   T_{n,3}(x, s) &= t(\ceil{\log_s(x + 1)}, s)_x
     \end{aligned}
 \end{equation}
 
@@ -384,11 +403,14 @@ T_{n,3}(x, s) &= t(\ceil{\log_s(x + 1)}, s)_x
 \begin{equation}
     \label{eq:pnd04}
     \begin{aligned}
-r(\mathbf{x}) &= \tuple{x_{i + 1 \mod{|\mathbf{x}|}}, \ldots} \quad \text{for } \mathbf{x} = \tuple{x_0, x_1, \ldots, x_{n-1}} \\
+r(\mathbf{x}, i) &= \begin{aligned}[c]
+                   &\tuple{x_{0 + i \mod{|\mathbf{x}|}}, x_{1 + i \mod{|\mathbf{x}|}}, \ldots} \\
+                   &\text{for } \mathbf{x} = \tuple{x_0, x_1, \ldots, x_{n-1}}
+        \end{aligned} \\
          t(0, s) &= \tuple{0} \\
          t(1, s) &= \tuple{0, 1, \ldots, s - 1} \\
          t(x, s) &= \bigparallel_{i=0}^{s-1} r\left(t(x-1, s), i \cdot s^{x-2}\right) \\
-  T_{n,4}(x, s) &= t(\ceil{\log_s(x + 1)}, s)_x
+   T_{n,4}(x, s) &= t(\ceil{\log_s(x + 1)}, s)_x
     \end{aligned}
 \end{equation}
 
@@ -414,8 +436,6 @@ r(\mathbf{x}) &= \tuple{x_{i + 1 \mod{|\mathbf{x}|}}, \ldots} \quad \text{for } 
 \end{equation}
 
 \note{This is tested up to $2^{22} \cdot n, n \in [2, 32]$}
-
-\subsubsection{Proof of Equivalence with Original Definition 5}
 
 \note{Substitute n for 2, then simplify, plus a bit}
 
@@ -498,6 +518,24 @@ acknowledgments in the unnumbered footnote on the first page.
 
 \subsubsection{Space Complexity}
 
+\subsection{Complexity of Original Definition 11}
+
+\subsubsection{Time Complexity}
+
+\subsubsection{Space Complexity}
+
+\subsection{Complexity of Original Definition 12}
+
+\subsubsection{Time Complexity}
+
+\subsubsection{Space Complexity}
+
+\subsection{Complexity of Original Definition 13}
+
+\subsubsection{Time Complexity}
+
+\subsubsection{Space Complexity}
+
 \subsection{Complexity of Extension Definition 1}
 
 \subsubsection{Time Complexity}
@@ -523,6 +561,12 @@ acknowledgments in the unnumbered footnote on the first page.
 \subsubsection{Space Complexity}
 
 \subsection{Complexity of Extension Definition 5}
+
+\subsubsection{Time Complexity}
+
+\subsubsection{Space Complexity}
+
+\subsection{Complexity of Extension Definition 6}
 
 \subsubsection{Time Complexity}
 

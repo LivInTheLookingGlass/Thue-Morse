@@ -10,10 +10,10 @@ def seq_pn_d03(n: int = 2) -> Iterator[int]:
     while True:
         yield from islice(seq, prev_len, None)
         prev_len = len(seq)
-        seq = tuple(chain.from_iterable(
+        seq = (*chain.from_iterable(
             (*range(x, n), *range(0, x))
             for x in seq
-        ))
+        ), )
 
 
 if __name__ == '__main__':

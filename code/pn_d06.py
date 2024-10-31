@@ -10,8 +10,12 @@ def xor_in_n(a, b, n):
         return max(a, b)
     res = 0
     ni = 1
-    for _ in range(ceil(log(max(a, b), n)) + 1):
-        res += (((a // ni) - (b // ni)) % n) * ni
+    while a > 0 or b > 0:
+        a_digit = a % n
+        b_digit = b % n
+        res += ((a_digit - b_digit) % n) * ni
+        a //= n
+        b //= n
         ni *= n
     return res
 

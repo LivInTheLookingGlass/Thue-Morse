@@ -6,8 +6,8 @@ from pytest import mark
 
 test_len = 2**15
 bases_tested = range(2, 65)
-base_2_tests = [int(p.name[4:-3]) for p in Path(__file__).parent.glob('p2_d*.py')]
-base_n_tests = [int(p.name[4:-3]) for p in Path(__file__).parent.glob('pn_d*.py')]
+base_2_tests = [int(p.name[1:-3]) for p in Path(__file__).parent.glob('p2/d*.py')]
+base_n_tests = [int(p.name[1:-3]) for p in Path(__file__).parent.glob('pn/d*.py')]
 base_2_tests.remove(1)
 base_n_tests.remove(1)
 
@@ -17,9 +17,9 @@ def get_iters(p2: bool = True, pn: bool = False, s: int = 2) -> Dict[str, Iterab
     iters = {}
     for kind in "2" * p2 + "n" * pn:
         for d in range(1, 100):
-            name = f'p{kind}_d{d:02}'
+            name = f'p{kind}.d{d:02}'
             try:
-                iters[name] = getattr(import_module(f'{parent_name}.{name}'), f'seq_{name}')(s)
+                iters[name] = getattr(import_module(f'{parent_name}.{name}'), f'{name.replace(".", "_")}')(s)
             except ImportError:
                 continue
             except Exception as e:

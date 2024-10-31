@@ -1,7 +1,7 @@
 from itertools import count
 from typing import Iterator
 
-from .args import run
+from ..args import run
 
 
 def seq_pn_d01(p: int = 2) -> Iterator[int]:

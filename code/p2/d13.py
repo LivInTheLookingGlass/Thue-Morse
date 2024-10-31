@@ -3,7 +3,7 @@ from itertools import count
 from operator import xor
 from typing import Iterator
 
-from .args import run
+from ..args import run
 
 
 def A001317(n: int) -> int:
@@ -19,7 +19,7 @@ def A001317(n: int) -> int:
     return partial_sum
 
 
-def seq_p2_d13(_: int = 2) -> Iterator[int]:
+def p2_d13(_: int = 2) -> Iterator[int]:
     for i in count():
         yield reduce(
             xor,
@@ -29,4 +29,4 @@ def seq_p2_d13(_: int = 2) -> Iterator[int]:
 
 
 if __name__ == '__main__':
-    run(13, seq_p2_d13, '2')
+    run(13, p2_d13, '2')

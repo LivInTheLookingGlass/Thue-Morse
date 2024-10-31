@@ -1,7 +1,7 @@
 from itertools import count
 from typing import Iterator
 
-from .args import run
+from ..args import run
 
 
 def T(x: int, n: int) -> int:

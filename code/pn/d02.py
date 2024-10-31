@@ -1,7 +1,7 @@
 from itertools import islice
 from typing import Iterator
 
-from .args import run
+from ..args import run
 
 
 def seq_pn_d02(n: int = 2) -> Iterator[int]:

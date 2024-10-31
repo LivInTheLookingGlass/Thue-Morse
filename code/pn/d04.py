@@ -1,8 +1,8 @@
 from itertools import chain, islice
 from typing import Iterator, Tuple
 
-from .args import run
-from .p2_d04 import rotate
+from ..args import run
+from ..p2.d04 import rotate
 
 
 def seq_pn_d04(n: int = 2) -> Iterator[int]:

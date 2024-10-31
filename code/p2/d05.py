@@ -1,7 +1,7 @@
 from itertools import count
 from typing import Iterator
 
-from .args import run
+from ..args import run
 
 
 def T(n: int) -> int:
@@ -10,10 +10,10 @@ def T(n: int) -> int:
     return (n - T(n // 2)) % 2
 
 
-def seq_p2_d05(_: int = 2) -> Iterator[int]:
+def p2_d05(_: int = 2) -> Iterator[int]:
     for i in count():
         yield T(i)
 
 
 if __name__ == '__main__':
-    run(5, seq_p2_d05, '2')
+    run(5, p2_d05, '2')

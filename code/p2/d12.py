@@ -1,7 +1,7 @@
 from itertools import count
 from typing import Iterator
 
-from .args import run
+from ..args import run
 
 
 def gould(n: int) -> int:
@@ -15,10 +15,10 @@ def gould(n: int) -> int:
     return partial_sum
 
 
-def seq_p2_d12(_: int = 2) -> Iterator[int]:
+def p2_d12(_: int = 2) -> Iterator[int]:
     for i in count():
         yield (gould(i) - 1) % 3
 
 
 if __name__ == '__main__':
-    run(12, seq_p2_d12, '2')
+    run(12, p2_d12, '2')

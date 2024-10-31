@@ -2,7 +2,7 @@ from itertools import count
 from math import log
 from typing import Iterator
 
-from .args import run
+from ..args import run
 
 
 def xor_in_n(a, b, n):

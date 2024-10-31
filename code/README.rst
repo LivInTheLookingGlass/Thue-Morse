@@ -6,7 +6,7 @@ run any given definition, call:
 
 .. code-block::
 
-  python -m code.p{2,n}_d[0-9][0-9] <items to generate> [<number of players, if n players>]
+  python -m code.p{2,n}.d[0-9][0-9] <items to generate> [<number of players, if n players>]
 
 2-Player Definitions
 ~~~~~~~~~~~~~~~~~~~~

@@ -192,7 +192,7 @@ Another way to generate the \TMS is to take the sequence of Odious Numbers \cite
 \begin{lstlisting}[style=pythonstyle]
 from itertools import count
 
-def seq_p2_d08():
+def p2_d08():
     for i in count():
         if i.bit_count() % 2:
             yield (i + 1) % 2

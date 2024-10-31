@@ -1,5 +1,5 @@
 from itertools import count
-from math import ceil, log
+from math import log
 from typing import Iterator
 
 from .args import run

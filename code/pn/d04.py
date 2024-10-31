@@ -5,7 +5,7 @@ from ..args import run
 from ..p2.d04 import rotate
 
 
-def seq_pn_d04(n: int = 2) -> Iterator[int]:
+def pn_d04(n: int = 2) -> Iterator[int]:
     seq: Tuple[int, ...] = tuple(range(n))
     prev_len = 0
     while True:
@@ -15,4 +15,4 @@ def seq_pn_d04(n: int = 2) -> Iterator[int]:
 
 
 if __name__ == '__main__':
-    run(4, seq_pn_d04, 'N')
+    run(4, pn_d04, 'N')

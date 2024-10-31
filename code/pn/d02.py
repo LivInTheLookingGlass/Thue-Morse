@@ -4,7 +4,7 @@ from typing import Iterator
 from ..args import run
 
 
-def seq_pn_d02(n: int = 2) -> Iterator[int]:
+def pn_d02(n: int = 2) -> Iterator[int]:
     seq = tuple(range(n))
     prev_len = 0
     while True:
@@ -14,4 +14,4 @@ def seq_pn_d02(n: int = 2) -> Iterator[int]:
 
 
 if __name__ == '__main__':
-    run(2, seq_pn_d02, 'n')
+    run(2, pn_d02, 'n')

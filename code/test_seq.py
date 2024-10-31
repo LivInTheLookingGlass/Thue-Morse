@@ -30,11 +30,12 @@ def get_iters(p2: bool = True, pn: bool = False, s: int = 2) -> Dict[str, Iterab
 @mark.parametrize("c", [f'2_{n:02}' for n in base_2_tests] + ['n_01'] + [f'n_{n:02}' for n in base_n_tests])
 def test_compare_2_1_to_(c: str, n: int = test_len):
     iters = get_iters(True, True)
-    cs = 'p{}_d{}'.format(*c.split('_'))
+    cs = 'p{}.d{}'.format(*c.split('_'))
     iters = {
         k: d for k, d in iters.items()
-        if k in (cs, "p2_d01")
+        if k in (cs, "p2.d01")
     }
+    assert len(iters) == 2
     for idx, tup in enumerate(zip(*iters.values())):
         if len(set(tup)) != 1:
             raise ValueError(f"Failed at idx {idx}: {dict((f, x) for f, x in zip(iters.keys(), tup))}")
@@ -52,6 +53,7 @@ def test_compare_n_1_to_n(c: int, s: int, n: int = test_len):
         k: d for k, d in iters.items()
         if cs in k or "01" in k
     }
+    assert len(iters) == 2
     for idx, tup in enumerate(zip(*iters.values())):
         if len(set(tup)) != 1:
             raise ValueError(f"Failed at idx {idx}: {dict((f, x) for f, x in zip(iters.keys(), tup))}")

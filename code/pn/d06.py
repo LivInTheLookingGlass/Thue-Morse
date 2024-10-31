@@ -20,7 +20,7 @@ def xor_in_n(a, b, n):
     return res
 
 
-def seq_pn_d06(n: int = 2) -> Iterator[int]:
+def pn_d06(n: int = 2) -> Iterator[int]:
     yield from (0, 1)
     value = 1
     for x in count(2):
@@ -29,4 +29,4 @@ def seq_pn_d06(n: int = 2) -> Iterator[int]:
 
 
 if __name__ == '__main__':
-    run(6, seq_pn_d06, 'N')
+    run(6, pn_d06, 'N')

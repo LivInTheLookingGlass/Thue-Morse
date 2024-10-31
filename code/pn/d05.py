@@ -10,10 +10,10 @@ def T(x: int, n: int) -> int:
     return (x + T(x // n, n)) % n
 
 
-def seq_pn_d05(n: int = 2) -> Iterator[int]:
+def pn_d05(n: int = 2) -> Iterator[int]:
     for i in count():
         yield T(i, n)
 
 
 if __name__ == '__main__':
-    run(5, seq_pn_d05, 'n')
+    run(5, pn_d05, 'n')

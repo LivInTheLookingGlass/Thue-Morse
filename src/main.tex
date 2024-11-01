@@ -31,6 +31,16 @@ TBA
 
 \note{Make sure to add that while this paper does not deal with negative or fractional bases, many of the definitions are trivially extendable to that domain, and at least one of them already has been in another paper.}
 
+\note{All definitions are tested, though due to resource limitations, to different extents. \begin{itemize}
+    \item In base 2, $T_{2,12}()$ is tested up to $2^{17} = 131,072$ entries
+    \item In base 2, all other defs. up to $2^{27} = 134,217,728$ entries
+    \item In bases $2 < x \le 8$, up to $2^{27}$ entries
+    \item In bases $8 < x \le 16$, up to $2^{26} = 67,108,864$ entries
+    \item In bases $16 < x \le 40$, up to $2^{25} = 33,554,432$ entries
+    \item In bases $40 < x \le 56$, up to $2^{26}$ entries
+    \item In bases $56 < x \le 96$, up to $2^{25}$ entries
+\end{itemize}}
+
 \section{The Original Sequence}
 
 \subsection{Definition 1 - Parity of Hamming Weight}
@@ -64,16 +74,13 @@ This definition is more natural to think about as extending a tuple that contain
 Let $t(n)$ be the first $2^n$ elements of the \TMS. Given this, we can define:
 
 \begin{equation}
-    \text{inv}(\mathbf{x}) = \begin{cases}
+\begin{aligned}
+\text{inv}(\mathbf{x}) &= \begin{cases}
         0, & \text{if } x_i = 1 \\
         1, & \text{if } x_i = 0
-    \end{cases} \quad \text{for } \mathbf{x} = \tuple{x_0, x_1, \ldots, x_{n-1}}
-\end{equation}
-
-\begin{equation}
-    \begin{aligned}
-t(0) &= \tuple{0} \\
-t(n) &= t(n - 1) \concat \text{inv}(t(n - 1))
+    \end{cases} \quad \text{for } \mathbf{x} = \tuple{x_0, x_1, \ldots, x_{n-1}} \\
+                  t(0) &= \tuple{0} \\
+                  t(n) &= t(n - 1) \concat \text{inv}(t(n - 1))
     \end{aligned}
 \end{equation}
 
@@ -106,7 +113,7 @@ T_{2,3}(n) &= t(\ceil{\log_2(n + 1)})_n
 
 So for example, calculating $T_{2,3}(3)$ would look like:
 
-\begin{equation*}
+\begin{equation}
     \begin{aligned}
       t(0) &= \tuple{0} \\
       t(1) &= \bigparallel_{i=0}^{0} s(t(0)_i) = \tuple{0, 1} \\
@@ -116,7 +123,7 @@ T_{2,3}(3) &= t(\ceil{\log_2(3 + 1)})_3 \\
            &= \tuple{0, 1, 1, 0}_3 \\
            &= 0
     \end{aligned}
-\end{equation*}
+\end{equation}
 
 \subsection{Definition 4 - Recursive Rotation}
 
@@ -192,7 +199,7 @@ Another way to generate the \TMS is to take the sequence of Odious Numbers \cite
 \begin{lstlisting}[style=pythonstyle]
 from itertools import count
 
-def p2_d08():
+def seq_p2_d08():
     for i in count():
         if i.bit_count() % 2:
             yield (i + 1) % 2
@@ -262,7 +269,7 @@ T_{2,11}(n) &= 1 - oe(n) \pmod{2}
 
 \note{Appears in \cite{OEIS-TMS}}
 
-Gould's Sequence \cite{OEIS-Gould} are the number of odd entries in a given row of Pascal's Triangle.
+Gould's Sequence \cite{OEIS-Gould} are the number of odd entries in a given row of Pascal's Triangle. Note that this is by far the least computationally efficient definition in this paper (see Tables \ref{tab:time_p2_d12} \& \ref{tab:space_p2_d12}).
 
 \note{Why mod 3? Everything else is mod 2. This definition is unlikely to be extendable, unless you interpret this as the hamming weight of a given row, and extend the idea of hamming weight to those other bases. If so, I predict that the final mod is mod $(n + 1)$}
 
@@ -435,8 +442,6 @@ r(\mathbf{x}, i) &= \begin{aligned}[c]
     \end{aligned}
 \end{equation}
 
-\note{This is tested up to $2^{22} \cdot n, n \in [2, 32]$}
-
 \note{Substitute n for 2, then simplify, plus a bit}
 
 \subsubsection{Proof of Equivalence with Original Definition 6}
@@ -459,118 +464,778 @@ acknowledgments in the unnumbered footnote on the first page.
 \section{Appendix}
 
 \subsection{Complexity of Original Definition 1}
+\label{ca:p2_d01}
 
 \subsubsection{Time Complexity}
 
+In an idealized case, this definition will simplify to:
+
+\begin{equation}
+T_{2,1}(n) = \left(\sum_{i=0}^{\ceil{\log_2(n + 1)}} \hspace{-8pt} \floor{\dfrac{n}{2^i} \mod{2}} \right) \mod{2}
+\end{equation}
+
+This is pretty explicitly $O(\log(n))$ operations. This means that generating the first $n$ entries will take $O(n\log(n))$ operations.
+
+In languages with dynamically sized integers, this can be slightly more complicated. In the above, we perform $\log(n)$ bit shifts, multiplications, moduli, and additions. Since a bit shift is constant time, calculation will be dominated by multiplication, division, and moduli. Each of these take $O(\log(n) \cdot \log(\log(n)))$, where $n$ is the largest number involved. This means that in such languages, we can expect it to take $O(\log(n)^2 \cdot \log(\log(n)))$ operations per element, for $O(n \cdot \log(n)^2 \cdot \log(\log(n)))$ in total.
+
+\renewcommand{\arraystretch}{1.25}
+\begin{table}[H]
+    \centering
+    \caption{Time Complexity Summary of Standard Definition 1}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} & $O(\log(n))$ & $O(\log(n)^2 \cdot \log(\log(n)))$ \\
+        \hline
+        \textbf{In Total} & $O(n \cdot \log(n))$ & $O(n \cdot \log(n)^2 \cdot \log(\log(n)))$ \\
+        \hline
+    \end{tabular}
+    \label{tab:time_p2_d01}
+\end{table}
+\renewcommand{\arraystretch}{1}
+
 \subsubsection{Space Complexity}
+
+This is one of the more space-efficient implementations. Each element takes at most the same size as the passed integer. In languages that use Fixed Size integers, that means it will take $O(1)$ space. In languages like Python that use Arbitrary Size integers, it would take $O(\log(n))$ space, where $n$ is the largest element you intend to calculate. If you intend to store all $n$ elements, it will therefore take $O(n)$ or $O(n \cdot \log(n))$ space.
+
+\begin{table}[H]
+    \centering
+    \caption{Space Complexity Summary of Standard Definition 1}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} & $O(1)$ & $O(\log(n))$ \\
+        \hline
+        \textbf{In Total} & $O(n)$ & $O(n \cdot \log(n))$ \\
+        \hline
+    \end{tabular}
+    \label{tab:space_p2_d01}
+\end{table}
 
 \subsection{Complexity of Original Definition 2}
+\label{ca:p2_d02}
 
 \subsubsection{Time Complexity}
 
+\begin{table}[H]
+    \centering
+    \caption{Time Complexity Summary of Standard Definition 2}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} &  &  \\
+        \hline
+        \textbf{In Total} &  &  \\
+        \hline
+    \end{tabular}
+    \label{tab:time_p2_d02}
+\end{table}
+
 \subsubsection{Space Complexity}
+
+\begin{table}[H]
+    \centering
+    \caption{Space Complexity Summary of Standard Definition 2}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} &  &  \\
+        \hline
+        \textbf{In Total} &  &  \\
+        \hline
+    \end{tabular}
+    \label{tab:space_p2_d02}
+\end{table}
 
 \subsection{Complexity of Original Definition 3}
+\label{ca:p2_d03}
 
 \subsubsection{Time Complexity}
 
+\begin{table}[H]
+    \centering
+    \caption{Time Complexity Summary of Standard Definition 3}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} &  &  \\
+        \hline
+        \textbf{In Total} &  &  \\
+        \hline
+    \end{tabular}
+    \label{tab:time_p2_d03}
+\end{table}
+
 \subsubsection{Space Complexity}
+
+\begin{table}[H]
+    \centering
+    \caption{Space Complexity Summary of Standard Definition 3}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} &  &  \\
+        \hline
+        \textbf{In Total} &  &  \\
+        \hline
+    \end{tabular}
+    \label{tab:space_p2_d03}
+\end{table}
 
 \subsection{Complexity of Original Definition 4}
+\label{ca:p2_d04}
 
 \subsubsection{Time Complexity}
 
+\begin{table}[H]
+    \centering
+    \caption{Time Complexity Summary of Standard Definition 4}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} &  &  \\
+        \hline
+        \textbf{In Total} &  &  \\
+        \hline
+    \end{tabular}
+    \label{tab:time_p2_d04}
+\end{table}
+
 \subsubsection{Space Complexity}
+
+\begin{table}[H]
+    \centering
+    \caption{Space Complexity Summary of Standard Definition 4}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} &  &  \\
+        \hline
+        \textbf{In Total} &  &  \\
+        \hline
+    \end{tabular}
+    \label{tab:space_p2_d04}
+\end{table}
 
 \subsection{Complexity of Original Definition 5}
+\label{ca:p2_d05}
 
 \subsubsection{Time Complexity}
 
+At each step in calculation, the value of $n$ passed to the next recursion is halved. This means that it will take $O(\log_2(n))$ recursive steps. Each recursion involves at maximum 2 subtractions and a bit shift. In most languages with Fixed Size integers, this will take constant time. However, in languages with Arbitrary Size integers these subtractions will typically take $O(\log(n))$, where $n$ is the largest integer in the operation. This means we can expect it to take $O(\log(n)^2$ operations.
+
+\renewcommand{\arraystretch}{1.25}
+\begin{table}[H]
+    \centering
+    \caption{Time Complexity Summary of Standard Definition 5}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} & $O(\log(n))$ & $O(\log(n)^2)$ \\
+        \hline
+        \textbf{In Total} & $O(n \cdot \log(n))$ & $O(n \cdot \log(n)^2)$ \\
+        \hline
+    \end{tabular}
+    \label{tab:time_p2_d05}
+\end{table}
+\renewcommand{\arraystretch}{1}
+
 \subsubsection{Space Complexity}
+
+This is one of the more space-efficient implementations. Each element takes at most the same size as the passed integer. In languages that use Fixed Size integers, that means it will take $O(1)$ space. In languages like Python that use Arbitrary Size integers, it would take $O(\log(n))$ space, where $n$ is the largest element you intend to calculate. If you intend to store all $n$ elements, it will therefore take $O(n)$ or $O(n \cdot \log(n))$ space.
+
+\begin{table}[H]
+    \centering
+    \caption{Space Complexity Summary of Standard Definition 1}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} & $O(1)$ & $O(\log(n))$ \\
+        \hline
+        \textbf{In Total} & $O(n)$ & $O(n \cdot \log(n))$ \\
+        \hline
+    \end{tabular}
+    \label{tab:space_p2_d05}
+\end{table}
 
 \subsection{Complexity of Original Definition 6}
+\label{ca:p2_d06}
 
 \subsubsection{Time Complexity}
 
+\note{Since this algorithm works sequentially, and cannot perform computation of an arbitrary element without recursing to the base case, the time is equal on a per-element and in-total basis}
+
+\renewcommand{\arraystretch}{1.25}
+\begin{table}[H]
+    \centering
+    \caption{Time Complexity Summary of Standard Definition 6}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} & $O(n \cdot \log(n))$ & $O\left(n \cdot \log(n)^2\right)$ \\
+        \hline
+        \textbf{In Total} & $O(n \cdot \log(n))$ & $O\left(n \cdot \log(n)^2\right)$ \\
+        \hline
+    \end{tabular}
+    \label{tab:time_p2_d06}
+\end{table}
+\renewcommand{\arraystretch}{1}
+
 \subsubsection{Space Complexity}
+
+\begin{table}[H]
+    \centering
+    \caption{Space Complexity Summary of Standard Definition 6}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} & $O(1)$ & $O(\log(n))$ \\
+        \hline
+        \textbf{In Total} & $O(1)$ & $O(\log(n))$ \\
+        \hline
+    \end{tabular}
+    \label{tab:space_p2_d06}
+\end{table}
 
 \subsection{Complexity of Original Definition 7}
+\label{ca:p2_d07}
 
 \subsubsection{Time Complexity}
 
+\note{memoization doesn't seem to help in the worst case of $1\ldots1_2$, so you should still end up calculating the value of $b()$ for every positive number less than $n$}
+
+\renewcommand{\arraystretch}{1.25}
+\begin{table}[H]
+    \centering
+    \caption{Time Complexity Summary of Standard Definition 7}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} & $O(n)$ & $O(n \cdot \log(n) \cdot \log(\log(n)))$ \\
+        \hline
+        \textbf{In Total} & $O\left(n^2\right)$ & $O\left(n^2 \cdot \log(n) \cdot \log(\log(n))\right)$ \\
+        \hline
+    \end{tabular}
+    \label{tab:time_p2_d07}
+\end{table}
+
 \subsubsection{Space Complexity}
+
+There are two ways to implement this algorithm in terms of space complexity. They both have equal worst-case time complexity. The first is to take the recursive approach, and the second is to use dynamic programming.
+
+In a recursive approach, you will end up descending $O(\log(n))$ stack frames, each of which will contain at minimum 1 integer. In the dynamic approach, you will keep a table of all the values of $b()$ from $0$ through $n$. The biggest difference between these approaches is that in the recursive approach you may need to repeat calculations.
+
+\begin{table}[H]
+    \centering
+    \caption{Space Complexity Summary of Standard Definition 7}
+    \begin{tabular}{|cc|c|c|}
+        \hline
+        & & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \multirow{2}{*}{\textbf{Recursive}} \hspace{-5pt} & \textbf{Per Element} & $O(\log(n))$ & $O(n \cdot \log(n))$ \\
+        \cline{2-4}
+        & \textbf{In Total} & $O(n \cdot \log(n))$ & $O\left(n^2 \cdot \log(n)\right)$ \\
+        \hline
+        \multirow{2}{*}{\textbf{Dynamic}} \hspace{-5pt} & \textbf{Per Element} & $O(n)$ & $O(n \cdot \log(n))$ \\
+        \cline{2-4}
+        & \textbf{In Total} & $O\left(n^2\right)$ & $O\left(n^2 \cdot \log(n)\right)$ \\
+        \hline
+    \end{tabular}
+    \label{tab:space_p2_d07}
+\end{table}
+\renewcommand{\arraystretch}{1}
 
 \subsection{Complexity of Original Definition 8}
+\label{ca:p2_d08}
 
 \subsubsection{Time Complexity}
 
+\begin{table}[H]
+    \centering
+    \caption{Time Complexity Summary of Standard Definition 8}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} &  &  \\
+        \hline
+        \textbf{In Total} &  &  \\
+        \hline
+    \end{tabular}
+    \label{tab:time_p2_d08}
+\end{table}
+
 \subsubsection{Space Complexity}
+
+\begin{table}[H]
+    \centering
+    \caption{Space Complexity Summary of Standard Definition 8}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} &  &  \\
+        \hline
+        \textbf{In Total} &  &  \\
+        \hline
+    \end{tabular}
+    \label{tab:space_p2_d08}
+\end{table}
 
 \subsection{Complexity of Original Definition 9}
+\label{ca:p2_d09}
 
 \subsubsection{Time Complexity}
 
+\begin{table}[H]
+    \centering
+    \caption{Time Complexity Summary of Standard Definition 9}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} &  &  \\
+        \hline
+        \textbf{In Total} &  &  \\
+        \hline
+    \end{tabular}
+    \label{tab:time_p2_d09}
+\end{table}
+
 \subsubsection{Space Complexity}
+
+\begin{table}[H]
+    \centering
+    \caption{Space Complexity Summary of Standard Definition 9}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} &  &  \\
+        \hline
+        \textbf{In Total} &  &  \\
+        \hline
+    \end{tabular}
+    \label{tab:space_p2_d09}
+\end{table}
 
 \subsection{Complexity of Original Definition 10}
+\label{ca:p2_d10}
 
 \subsubsection{Time Complexity}
 
+\begin{table}[H]
+    \centering
+    \caption{Time Complexity Summary of Standard Definition 10}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} &  &  \\
+        \hline
+        \textbf{In Total} &  &  \\
+        \hline
+    \end{tabular}
+    \label{tab:time_p2_d10}
+\end{table}
+
 \subsubsection{Space Complexity}
+
+\begin{table}[H]
+    \centering
+    \caption{Space Complexity Summary of Standard Definition 10}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} &  &  \\
+        \hline
+        \textbf{In Total} &  &  \\
+        \hline
+    \end{tabular}
+    \label{tab:space_p2_d10}
+\end{table}
 
 \subsection{Complexity of Original Definition 11}
+\label{ca:p2_d11}
 
 \subsubsection{Time Complexity}
 
+\begin{table}[H]
+    \centering
+    \caption{Time Complexity Summary of Standard Definition 11}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} &  &  \\
+        \hline
+        \textbf{In Total} &  &  \\
+        \hline
+    \end{tabular}
+    \label{tab:time_p2_d11}
+\end{table}
+
 \subsubsection{Space Complexity}
+
+\begin{table}[H]
+    \centering
+    \caption{Space Complexity Summary of Standard Definition 11}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} &  &  \\
+        \hline
+        \textbf{In Total} &  &  \\
+        \hline
+    \end{tabular}
+    \label{tab:space_p2_d11}
+\end{table}
 
 \subsection{Complexity of Original Definition 12}
+\label{ca:p2_d12}
 
 \subsubsection{Time Complexity}
 
+There are two ways one could reasonably calculate this. The first is by building each row of Pascal's Triangle iteratively. This allows you to avoid multiplication whenever possible, and lets you apply a bitmask or modulus operation to take the parity of each entry. The downside is that this version is not parallelizable. Using the bit mask approach, this means that each entry will take $O(n)$ time.
+
+The other is to take advantage of the relation $\binom{n}{k} = \binom{n}{k-1} \cdot \dfrac{n - (k - 1)}{k}$. This allows you to calculate each row independently, using $\tfrac{n}{2}$ moduli, multiplications, and divisions. This means that each entry will take $O(n)$ operations, each of which take $O(\log(n) \cdot \log(\log(n)))$ if with arbitrary sized integers, totaling $O(n)$ or $O(n \cdot \log(n) \cdot \log(\log(n)))$.
+
+\renewcommand{\arraystretch}{1.25}
+\begin{table}[H]
+    \centering
+    \caption{Time Complexity Summary of Standard Definition 12}
+    \begin{tabular}{|cc|c|c|}
+        \hline
+        & & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \multirow{2}{*}{\textbf{Serial}} \hspace{-5pt} & \textbf{Per Element} & $O(n)$ & $O(n)$ \\
+        \cline{2-4}
+        & \textbf{In Total} & $O\left(n^2\right)$ & $O\left(n^2\right)$ \\
+        \hline
+        \multirow{2}{*}{\textbf{Parallel}} \hspace{-5pt} & \textbf{Per Element} & $O(n) $ & $O(n \cdot \log(n) \cdot \log(\log(n)))$ \\
+        \cline{2-4}
+        & \textbf{In Total} & $O\left(n^2\right) $ & $O\left(n^2 \cdot \log(n) \cdot \log(\log(n))\right)$ \\
+        \hline
+    \end{tabular}
+    \label{tab:time_p2_d12}
+\end{table}
+
+
 \subsubsection{Space Complexity}
+
+\begin{table}[H]
+    \centering
+    \caption{Space Complexity Summary of Standard Definition 12}
+    \begin{tabular}{|cc|c|c|}
+        \hline
+        & & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \multirow{2}{*}{\textbf{Serial}} \hspace{-5pt} & \textbf{Per Element} & $O(n)$ & $O\left(n \cdot \log(n)\right)$ \\
+        \cline{2-4}
+        & \textbf{In Total} & $O\left(n^2\right)$ & $O\left(n^2 \cdot \log(n)\right)$ \\
+        \hline
+        \multirow{2}{*}{\textbf{Parallel}} \hspace{-5pt} & \textbf{Per Element} & $O(1)$ & $O\left(\log(n)\right)$ \\
+        \cline{2-4}
+        & \textbf{In Total} & $O(n)$ & $O\left(n \cdot \log(n)^2\right)$ \\
+        \hline
+    \end{tabular}
+    \label{tab:space_p2_d12}
+\end{table}
+\renewcommand{\arraystretch}{1}
 
 \subsection{Complexity of Original Definition 13}
+\label{ca:p2_d13}
 
 \subsubsection{Time Complexity}
 
+\begin{table}[H]
+    \centering
+    \caption{Time Complexity Summary of Standard Definition 13}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} &  &  \\
+        \hline
+        \textbf{In Total} &  &  \\
+        \hline
+    \end{tabular}
+    \label{tab:time_p2_d13}
+\end{table}
+
 \subsubsection{Space Complexity}
+
+\begin{table}[H]
+    \centering
+    \caption{Space Complexity Summary of Standard Definition 13}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} &  &  \\
+        \hline
+        \textbf{In Total} &  &  \\
+        \hline
+    \end{tabular}
+    \label{tab:space_p2_d13}
+\end{table}
 
 \subsection{Complexity of Extension Definition 1}
+\label{ca:pn_d01}
 
-\subsubsection{Time Complexity}
+In an idealized case, this definition will simplify to:
+
+\begin{equation}
+T_{n,1}(x, s) = \left(\sum_{i=0}^{\ceil{\log_s(x + 1)}} \hspace{-8pt} \floor{\dfrac{x}{s^i} \mod{s}} \right) \mod{s}
+\end{equation}
+
+This is pretty explicitly $O(\log(n))$ operations. This means that generating the first $n$ entries will take $O(n\log(n))$ operations.
+
+In languages with dynamically sized integers, this can be slightly more complicated. In the above, we perform $\log(n)$ multiplications, moduli, and additions. Since additions are simpler, calculation will be dominated by multiplication, division, and moduli. Each of these take $O(\log(n) \cdot \log(\log(n)))$, where $n$ is the largest number involved. This means that in such languages, we can expect it to take $O(\log(n)^2 \cdot \log(\log(n)))$ operations per element, for $O(n \cdot \log(n)^2 \cdot \log(\log(n)))$ in total.
+
+\renewcommand{\arraystretch}{1.25}
+\begin{table}[H]
+    \centering
+    \caption{Time Complexity Summary of Extended Definition 1}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} & $O(\log(n))$ & $O(\log(n)^2 \cdot \log(\log(n)))$ \\
+        \hline
+        \textbf{In Total} & $O(n \cdot \log(n))$ & $O(n \cdot \log(n)^2 \cdot \log(\log(n)))$ \\
+        \hline
+    \end{tabular}
+    \label{tab:time_pn_d01}
+\end{table}
+\renewcommand{\arraystretch}{1}
 
 \subsubsection{Space Complexity}
+
+This is one of the more space-efficient implementation. Each element takes at most the same size as the passed integer. In languages that use Fixed Size integers, that means it will take $O(1)$ space. In languages like Python that use Arbitrary Size integers, it would take $O(\log(n))$ space, where $n$ is the largest element you intend to calculate. If you intend to store all $n$ elements, it will therefore take $O(n)$ or $O(n \cdot \log(n))$ space.
+
+\begin{table}[H]
+    \centering
+    \caption{Space Complexity Summary of Extended Definition 1}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} & $O(1)$ & $O(\log(n))$ \\
+        \hline
+        \textbf{In Total} & $O(n)$ & $O(n \cdot \log(n))$ \\
+        \hline
+    \end{tabular}
+    \label{tab:space_pn_d01}
+\end{table}
 
 \subsection{Complexity of Extension Definition 2}
+\label{ca:pn_d02}
 
 \subsubsection{Time Complexity}
 
+\begin{table}[H]
+    \centering
+    \caption{Time Complexity Summary of Extended Definition 2}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} &  &  \\
+        \hline
+        \textbf{In Total} &  &  \\
+        \hline
+    \end{tabular}
+    \label{tab:time_pn_d02}
+\end{table}
+
 \subsubsection{Space Complexity}
+
+\begin{table}[H]
+    \centering
+    \caption{Space Complexity Summary of Extended Definition 2}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} &  &  \\
+        \hline
+        \textbf{In Total} &  &  \\
+        \hline
+    \end{tabular}
+    \label{tab:space_pn_d02}
+\end{table}
 
 \subsection{Complexity of Extension Definition 3}
+\label{ca:pn_d03}
 
 \subsubsection{Time Complexity}
 
+\begin{table}[H]
+    \centering
+    \caption{Time Complexity Summary of Extended Definition 3}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} &  &  \\
+        \hline
+        \textbf{In Total} &  &  \\
+        \hline
+    \end{tabular}
+    \label{tab:time_pn_d03}
+\end{table}
+
 \subsubsection{Space Complexity}
+
+\begin{table}[H]
+    \centering
+    \caption{Space Complexity Summary of Extended Definition 3}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} &  &  \\
+        \hline
+        \textbf{In Total} &  &  \\
+        \hline
+    \end{tabular}
+    \label{tab:space_pn_d03}
+\end{table}
 
 \subsection{Complexity of Extension Definition 4}
+\label{ca:pn_d04}
 
 \subsubsection{Time Complexity}
 
+\begin{table}[H]
+    \centering
+    \caption{Time Complexity Summary of Extended Definition 4}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} &  &  \\
+        \hline
+        \textbf{In Total} &  &  \\
+        \hline
+    \end{tabular}
+    \label{tab:time_pn_d04}
+\end{table}
+
 \subsubsection{Space Complexity}
+
+\begin{table}[H]
+    \centering
+    \caption{Space Complexity Summary of Extended Definition 4}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} &  &  \\
+        \hline
+        \textbf{In Total} &  &  \\
+        \hline
+    \end{tabular}
+    \label{tab:space_pn_d04}
+\end{table}
 
 \subsection{Complexity of Extension Definition 5}
+\label{ca:pn_d05}
 
 \subsubsection{Time Complexity}
 
+At each step in calculation, the value of $n$ passed to the next recursion is divided by $s$ (the selected base). This means that it will take $O(\log_s(n))$ recursive steps. Each recursion involves at maximum 2 subtractions and a bit shift. In most languages with Fixed Size integers, this will take constant time. However, in languages with Arbitrary Size integers these subtractions will typically take $O(\log(n))$, where $n$ is the largest integer in the operation. This means we can expect it to take $O(\log(n)^2$ operations.
+
+\renewcommand{\arraystretch}{1.25}
+\begin{table}[H]
+    \centering
+    \caption{Time Complexity Summary of Extended Definition 5}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} & $O(\log(n))$ & $O(\log(n)^2)$ \\
+        \hline
+        \textbf{In Total} & $O(n \cdot \log(n))$ & $O(n \cdot \log(n)^2)$ \\
+        \hline
+    \end{tabular}
+    \label{tab:time_pn_d05}
+\end{table}
+\renewcommand{\arraystretch}{1}
+
 \subsubsection{Space Complexity}
+
+This is one of the more space-efficient implementations. Each element takes at most the same size as the passed integer. In languages that use Fixed Size integers, that means it will take $O(1)$ space. In languages like Python that use Arbitrary Size integers, it would take $O(\log(n))$ space, where $n$ is the largest element you intend to calculate. If you intend to store all $n$ elements, it will therefore take $O(n)$ or $O(n \cdot \log(n))$ space.
+
+\begin{table}[H]
+    \centering
+    \caption{Space Complexity Summary of Extended Definition 5}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} & $O(1)$ & $O(\log(n))$ \\
+        \hline
+        \textbf{In Total} & $O(n)$ & $O(n \cdot \log(n))$ \\
+        \hline
+    \end{tabular}
+    \label{tab:space_pn_d05}
+\end{table}
 
 \subsection{Complexity of Extension Definition 6}
+\label{ca:pn_d06}
 
 \subsubsection{Time Complexity}
 
+\renewcommand{\arraystretch}{1.25}
+\begin{table}[H]
+    \centering
+    \caption{Time Complexity Summary of Extended Definition 6}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} & $O(n \cdot \log(n))$ & $O\left(n \cdot \log(n)^2\right)$ \\
+        \hline
+        \textbf{In Total} & $O(n \cdot \log(n))$ & $O\left(n \cdot \log(n)^2\right)$ \\
+        \hline
+    \end{tabular}
+    \label{tab:time_pn_d06}
+\end{table}
+\renewcommand{\arraystretch}{1}
+
 \subsubsection{Space Complexity}
+
+\begin{table}[H]
+    \centering
+    \caption{Space Complexity Summary of Extended Definition 6}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} & $O(1)$ & $O(\log(n))$ \\
+        \hline
+        \textbf{In Total} & $O(1)$ & $O(\log(n))$ \\
+        \hline
+    \end{tabular}
+    \label{tab:space_pn_d06}
+\end{table}
 
 \bibliographystyle{unsrt}
 \bibliography{references}     % without the .bib extension

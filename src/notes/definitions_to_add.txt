@@ -12,7 +12,7 @@ a(n) = a(n*2^k) for k >= 0.
 a((2^m-1)^2) = (1-(-1)^m)/2 (see Hassan Tarfaoui link, Concours General 1990). (End)
 
 A004760: numbers not beginning with 10_2
-A160217: Minimal increasing sequence with a(1)=3 and the property that a(n) and n are both in or both not in A003159. 
+A160217: min incr.ing seq. w/ a(1)=3 + that a(n) & n are both in or not in A003159
 A003159: Numbers whose binary representation ends in an even number of zeros. 
 ------------------------------------------------------------
 Definitions from OEIS (n -> 1 - 2 * Thue-Morse(n): PNNPNPPN)
@@ -36,37 +36,15 @@ A309303: Expansion of g.f. (sqrt(x+1) - sqrt(1-3*x))/(2*(x+1)^(3/2)).
 Definitions from OEIS (inverse: 10010110)
 G.f.: (1/2) * (1/(1-x) + Product_{k>=0} (1 - x^2^k)). - Ralf Stephan, Jun 20 2003
 
-a(n) = A143579(n) mod 2. - Gary W. Adamson, Aug 24 2008
-
-a(n) = A059448(A054429(n)). - Antti Karttunen, May 30 2017
+a(n) = HW(A054429(n)) mod 2. - Antti Karttunen, May 30 2017
 
 If A(n)=(a(0),a(2),...,a(2^n-1)), then A(n+1)=(A(n),1-A(n)). - Arie Bos, Jul 27 2022
 
-a(n) = (1 + (-1)^A000120(n))/2. - Lorenzo Sauras Altuzarra, Mar 10 2024
+a(n) = (1 + (-1)^HW(n))/2. - Lorenzo Sauras Altuzarra, Mar 10 2024
 
 A059448: Parity of Hamming Weight of n
 A054429: Simple self-inverse permutation of natural numbers: List each block of 2^n numbers (from 2^n to 2^(n+1) - 1) in reverse order.
-A000120: Hamming Weight of n
 -------------------------------------------
 Definitions from OEIS (inv add 1: 21121221)
 
 G.f.: (3/(1 - x) - Product_{k>=0} (1 - x^(2^k)))/2. - Ilya Gutkovskiy, Apr 03 2019
-
-
-
-
-
-Dubious suggestions from chatGPT
-
-5. Relation to Cantor Set
-
-The Thue-Morse sequence can be linked to the Cantor set through a representation of its points. The Cantor set is constructed by repeatedly removing the middle third of intervals. The sequence T(n)T(n) can be thought of as representing the presence or absence of points at certain levels of this construction:
-
-    Each T(n) corresponds to whether the nth interval of the Cantor set contains a point.
-    The sequence can be defined such that T(n)=1 if the point is included in the Cantor set at the nth iteration, and T(n)=0 otherwise.
-
-11. Connection to Tilings
-
-The Thue-Morse sequence can also be associated with aperiodic tilings. An example is the domino tiling, where the sequence describes the arrangement of tiles in a non-repeating pattern. The Thue-Morse sequence can generate a substitution tiling:
-
-    Tiles can be placed according to rules derived from the sequence. For instance, placing a tile according to whether T(n)=0 or T(n)=1 could dictate different orientations or types of tiles in a geometric arrangement.

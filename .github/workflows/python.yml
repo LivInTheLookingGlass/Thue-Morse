@@ -89,8 +89,10 @@ jobs:
               test_len=25
             elif [ $start -le 56 ]; then
               test_len=26
-            else
+            elif [ $start -le 64 ]; then
               test_len=25
+            else
+              test_len=24
             fi
             echo "Testing up to 2^$test_len"
             sed -i "s/^test_len = .*/test_len = 2**$test_len/" code/test_seq.py

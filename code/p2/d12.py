@@ -1,16 +1,31 @@
-from itertools import tee
-from typing import Iterator, Tuple
+from collections import deque
+from itertools import count
+from multiprocessing import Pool, cpu_count
+from typing import Iterator
 
 from ..args import run
 
+max_size = 16 * cpu_count()
+
+
+def gould(n: int) -> int:
+    binomial_coeff = 1
+    partial_sum = 0
+    for k in range(n + 1):
+        # Add the current term to the total sum
+        partial_sum += binomial_coeff % 2
+        # C(n, k) = C(n, k-1) * (n - (k - 1)) / k
+        binomial_coeff = binomial_coeff * (n - k) // (k + 1)
+    return partial_sum
+
 
 def p2_d12(_: int = 2) -> Iterator[int]:
-    row: Tuple[int, ...] = (1, )
-    while True:
-        yield (sum(x % 2 for x in row) - 1) % 3
-        it1, it2 = tee(iter(row), 2)
-        next(it2)
-        row = (1, *(x + y for x, y in zip(it1, it2)), 1)
+    queue = deque(maxlen=max_size)
+    with Pool() as pool:
+        for i in count():
+            queue.append(pool.apply_async(gould, (i,)))
+            if len(queue) >= max_size:
+                yield (queue.popleft().get() - 1) % 3  # Blocking call to get the result
 
 
 if __name__ == '__main__':

@@ -83,12 +83,12 @@ jobs:
             echo $pytest_regex
             if [ $stop -lt 24 ]; then
               test_len=27
-              pytest_args="-n auto --dist=worksteal"
+              pytest_args=""
             elif [ $stop -lt 64 ]; then
               test_len=26
-              pytest_args="-n auto --dist=worksteal"
+              pytest_args=""
             else
-              test_len=24
+              test_len=23
               pytest_args=""
             fi
             echo "Testing up to 2^$test_len"

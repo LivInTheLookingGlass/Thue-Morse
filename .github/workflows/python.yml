@@ -26,6 +26,10 @@ jobs:
         - base_n_41_48
         - base_n_49_56
         - base_n_57_64
+        - base_n_65_72
+        - base_n_73_80
+        - base_n_81_88
+        - base_n_89_96
     runs-on: ubuntu-latest
 
     steps:

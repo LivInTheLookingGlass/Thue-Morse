@@ -1,7 +1,8 @@
 from collections import deque
 from itertools import count
 from multiprocessing import Pool, cpu_count
-from typing import Iterator
+from multiprocessing.pool import ApplyResult
+from typing import Deque, Iterator
 
 from ..args import run
 
@@ -20,7 +21,7 @@ def gould(n: int) -> int:
 
 
 def p2_d12(_: int = 2) -> Iterator[int]:
-    queue = deque(maxlen=max_size)
+    queue: Deque[ApplyResult[int]] = deque(maxlen=max_size)
     with Pool() as pool:
         for i in count():
             queue.append(pool.apply_async(gould, (i,)))

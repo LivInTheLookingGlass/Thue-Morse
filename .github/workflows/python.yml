@@ -50,7 +50,7 @@ jobs:
             python -m pytest --isort --flake8 --mypy --mypy-ignore-missing-imports -k "not test_compare"
             ;;
           base_2)
-            python -m pytest -k "test_compare_2_1"
+            python -m pytest -k "test_compare_2_1" --timeout=21300
             ;;
           *)
             IFS='_' read -r prefix1 prefix2 start stop <<< "${{matrix.selection}}"

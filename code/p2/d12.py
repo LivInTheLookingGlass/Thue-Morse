@@ -7,11 +7,14 @@ from ..args import run
 def gould(n: int) -> int:
     binomial_coeff = 1
     partial_sum = 0
-    for k in range(n + 1):
+    for k in range((n + 1) // 2):
         # Add the current term to the total sum
         partial_sum += binomial_coeff % 2
         # C(n, k) = C(n, k-1) * (n - (k - 1)) / k
         binomial_coeff = binomial_coeff * (n - k) // (k + 1)
+    partial_sum *= 2
+    if n % 2 == 0:
+        partial_sum += binomial_coeff % 2
     return partial_sum
 
 

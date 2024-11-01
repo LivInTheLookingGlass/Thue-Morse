@@ -83,13 +83,16 @@ jobs:
             echo $pytest_regex
             if [ $stop -lt 24 ]; then
               test_len=27
+              pytest_args="-n auto --dist=worksteal"
             elif [ $stop -lt 64 ]; then
               test_len=26
+              pytest_args="-n auto --dist=worksteal"
             else
               test_len=24
+              pytest_args=""
             fi
             echo "Testing up to 2^$test_len"
             sed -i "s/^test_len = .*/test_len = 2**$test_len/" code/test_seq.py
-            python -m pytest -k "$pytest_regex" -n 2 --dist=worksteal
+            python -m pytest -k "$pytest_regex" $pytest_args
             ;;
         esac

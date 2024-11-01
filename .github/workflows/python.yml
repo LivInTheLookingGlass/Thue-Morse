@@ -2,6 +2,9 @@ name: Python tests
 
 on:
   push:
+    paths:
+    - 'code/**'
+    - '.github/workflows/python.yml'
   schedule:
   - cron: "0 0 1 * *"
 
@@ -42,9 +45,6 @@ jobs:
         cache: 'pip'
         cache-dependency-path: requirements.txt
 
-    - name: Extend test range to 2^${{ matrix.selection == 'base_2_12' && 16 || 24 }}
-      run: sed -i 's/^test_len = .*/test_len = 2**${{ matrix.selection == 'base_2_12' && 16 || 24 }}/' code/test_seq.py
-
     - name: Fetch test dependencies
       run: python -m pip install -r requirements.txt
 
@@ -81,18 +81,19 @@ jobs:
             base_regex="${base_regex% or }"
             pytest_regex="test_compare_n_1_to_n and ($base_regex)"
             echo $pytest_regex
-            if [ $stop -lt 24 ]; then
+            if [ $start -le 8 ]; then
               test_len=27
-              pytest_args=""
-            elif [ $stop -lt 64 ]; then
+            elif [ $start -le 16 ]; then
               test_len=26
-              pytest_args=""
+            elif [ $start -le 40 ]; then
+              test_len=25
+            elif [ $start -le 56 ]; then
+              test_len=26
             else
-              test_len=23
-              pytest_args=""
+              test_len=25
             fi
             echo "Testing up to 2^$test_len"
             sed -i "s/^test_len = .*/test_len = 2**$test_len/" code/test_seq.py
-            python -m pytest -k "$pytest_regex" $pytest_args
+            python -m pytest -k "$pytest_regex"
             ;;
         esac

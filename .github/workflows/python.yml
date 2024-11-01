@@ -51,13 +51,13 @@ jobs:
             python -m pytest --isort --flake8 --mypy --mypy-ignore-missing-imports -k "not test_compare"
             ;;
           base_2)
-            test_len=26
+            test_len=27
             echo "Testing up to 2^$test_len"
             sed -i "s/^test_len = .*/test_len = 2**$test_len/" code/test_seq.py
             python -m pytest -k "test_compare_2_1 and not 2_12"
             ;;
           base_2_12)
-            test_len=16
+            test_len=17
             echo "Testing up to 2^$test_len"
             sed -i "s/^test_len = .*/test_len = 2**$test_len/" code/test_seq.py
             python -m pytest -k "2_12" --timeout=21300
@@ -77,8 +77,10 @@ jobs:
             base_regex="${base_regex% or }"
             pytest_regex="test_compare_n_1_to_n and ($base_regex)"
             echo $pytest_regex
-            if [ $stop -lt 64 ]; then
-              test_len=26
+            if [ $stop -lt 24 ]; then
+              test_len=27
+            elif [ $stop -lt 64 ]; then
+              test_len=25
             else
               test_len=23
             fi

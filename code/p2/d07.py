@@ -1,13 +1,13 @@
 from itertools import count
 from math import ceil, floor
-from typing import Iterator, List, Optional
+from typing import Iterator, List, Optional, cast
 
 from ..args import run
 
 
 def b(n: int, memo: List[Optional[int]]) -> int:
     if n < len(memo) and memo[n] is not None:
-        return memo[n]
+        return cast(int, memo[n])
     n2 = n / 2
     result = b(ceil(n2), memo) - b(floor(n2), memo)
     if n < len(memo):

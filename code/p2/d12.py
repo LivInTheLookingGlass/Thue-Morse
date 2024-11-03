@@ -6,20 +6,20 @@ from typing import Deque, Iterator
 
 from ..args import run
 
-max_size = 16 * cpu_count()
+max_size = 4 * cpu_count()
 
 
 def gould(n: int) -> int:
     binomial_coeff = 1
     partial_sum = 0
-    for k in range((n + 1) // 2):
+    for k in range((n + 1) >> 1):
         # Add the current term to the total sum
-        partial_sum += binomial_coeff % 2
+        partial_sum += binomial_coeff & 1
         # C(n, k) = C(n, k-1) * (n - (k - 1)) / k
         binomial_coeff = binomial_coeff * (n - k) // (k + 1)
-    partial_sum *= 2
-    if n % 2 == 0:
-        partial_sum += binomial_coeff % 2
+    partial_sum <<= 1
+    if (n & 1) == 0:
+        partial_sum += binomial_coeff & 1
     return partial_sum
 
 

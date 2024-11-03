@@ -21,38 +21,11 @@ jobs:
         - lint
         - base_2
         - base_2_12
-        - base_n_3_8
-        - base_n_9_16
-        - base_n_17_24
-        - base_n_25_32
-        - base_n_33_40
-        - base_n_41_48
-        - base_n_49_56
-        - base_n_57_64
-        - base_n_65_72
-        - base_n_73_80
-        - base_n_81_88
-        - base_n_89_96
-        - base_n_97_104
-        - base_n_105_112
-        - base_n_113_120
-        - base_n_121_128
-        - base_n_129_136
-        - base_n_137_144
-        - base_n_145_152
-        - base_n_153_160
-        - base_n_161_168
-        - base_n_169_176
-        - base_n_177_184
-        - base_n_185_192
-        - base_n_193_200
-        - base_n_201_208
-        - base_n_209_216
-        - base_n_217_224
-        - base_n_225_232
-        - base_n_233_240
-        - base_n_241_248
-        - base_n_249_255
+        - base_n_2
+        - base_n_3
+        - base_n_4
+        - base_n_5
+        - base_n_6
     runs-on: ubuntu-latest
 
     steps:
@@ -91,19 +64,8 @@ jobs:
             python -m pytest -k "2_12" --timeout=21585
             ;;
           *)
-            IFS='_' read -r prefix1 prefix2 start stop <<< "${{matrix.selection}}"
-            bases=()
-            for (( i=start; i<=stop; i++ )); do
-                bases+=("$i")
-            done
-            base_regex=""
-            for (( i=start; i<=stop; i++ )); do
-                # Format base as base_XX (ensure it's two digits)
-                formatted_base=$(printf "%03d" "$i")
-                base_regex+="base_${formatted_base} or "
-            done
-            base_regex="${base_regex% or }"
-            pytest_regex="test_compare_n_1_to_n and ($base_regex)"
+            IFS='_' read -r prefix1 prefix2 definition <<< "${{matrix.selection}}"
+            pytest_regex="test_compare_n_1_to_n[$definition-"
             echo $pytest_regex
             if [ $start -le 8 ]; then
               test_len=30

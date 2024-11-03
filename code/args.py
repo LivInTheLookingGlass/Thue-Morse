@@ -11,7 +11,7 @@ def run(num: int, func: Callable[[int], Iterable[int]], kind: str = '2') -> None
         kind_str = ''
     else:
         kind_str = f' ({args.p} selected)'
-    print(
-        f'The Thue-Morse sequence for {kind} Players{kind_str}, Definition {num:02}, up to {args.n} is:',
-        *(x for x, _ in zip(func(args.p), range(args.n)))
-    )
+    print(f'The Thue-Morse sequence for {kind} Players{kind_str}, Definition {num:02}, up to {args.n} is: ', end='')
+    for x, _ in zip(func(args.p), range(args.n)):
+        print(x, "", end='')
+    print()

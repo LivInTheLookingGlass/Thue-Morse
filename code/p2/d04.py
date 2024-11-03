@@ -13,7 +13,7 @@ def rotate(t: Sequence[T], n: int) -> Sequence[T]:
 
 
 def p2_d04(_: int = 2) -> Iterator[int]:
-    seq: bitarray = (0, 1)
+    seq: bitarray = bitarray((0, 1))
     prev_len = 0
     while True:
         yield from islice(seq, prev_len, None)

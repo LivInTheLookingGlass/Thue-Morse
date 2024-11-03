@@ -44,7 +44,7 @@ def test_compare_2_1_to_(c: str, n: int = test_len):
     print(f"All definitions agree for 2 players up to {n} iterations")
 
 
-@mark.parametrize("s", bases_tested, ids=(f'base_{s:02}' for s in bases_tested))
+@mark.parametrize("s", bases_tested, ids=(f'base_{s:03}' for s in bases_tested))
 @mark.parametrize("c", base_n_tests)
 def test_compare_n_1_to_n(c: int, s: int, n: int = test_len):
     iters = get_iters(False, True, s)

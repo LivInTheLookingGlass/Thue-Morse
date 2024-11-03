@@ -1,6 +1,6 @@
 from itertools import count
 from math import ceil, floor
-from typing import Iterator, List, Optional, cast
+from typing import Iterator
 
 from bitarray import bitarray
 
@@ -9,8 +9,8 @@ from ..args import run
 
 def b(n: int, memo: bitarray) -> int:
     if (n << 1) < len(memo):
-        result = tuple(memo[n << 1:(n + 1) << 1])
-        match result:
+        res = tuple(memo[n << 1:(n + 1) << 1])
+        match res:
             case (1, x):
                 return -x
             case (0, 1):

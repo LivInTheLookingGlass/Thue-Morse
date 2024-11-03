@@ -1,6 +1,6 @@
 from ctypes import c_uint8
 from itertools import chain, islice
-from typing import Iterator, Tuple
+from typing import Iterator
 
 from ..args import run
 from ..p2.d04 import rotate

@@ -3,3 +3,4 @@ pytest-isort
 pytest-mypy
 pytest-timeout
 pytest-xdist
+bitarray

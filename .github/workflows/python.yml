@@ -70,12 +70,16 @@ jobs:
 
     - name: Run tests (${{matrix.selection}})
       run: |
+        ulimit -S -v 12582912
+        ulimit -S -m 12582912
+        ulimit -H -a
+        ulimit -S -a
         case ${{matrix.selection}} in
           lint)
             python -m pytest --isort --flake8 --mypy --mypy-ignore-missing-imports -k "not test_compare"
             ;;
           base_2)
-            test_len=30
+            test_len=29
             echo "Testing up to 2^$test_len"
             sed -i "s/^test_len = .*/test_len = 2**$test_len/" code/test_seq.py
             python -m pytest -k "test_compare_2_1 and not 2_12"

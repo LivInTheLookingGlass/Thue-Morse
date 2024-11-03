@@ -1,5 +1,6 @@
 from importlib import import_module
 from pathlib import Path
+from signal import SIGTERM, signal
 from typing import Dict, Iterable
 
 from pytest import mark
@@ -10,6 +11,14 @@ base_2_tests = [int(p.name[1:-3]) for p in Path(__file__).parent.glob('p2/d*.py'
 base_n_tests = [int(p.name[1:-3]) for p in Path(__file__).parent.glob('pn/d*.py')]
 base_2_tests.remove(1)
 base_n_tests.remove(1)
+
+
+def signal_handler(sig, frame):
+    print("Received SIGTERM. Raising exception for pytest.")
+    raise KeyboardInterrupt
+
+
+signal(SIGTERM, signal_handler)
 
 
 def get_iters(p2: bool = True, pn: bool = False, s: int = 2) -> Dict[str, Iterable[int]]:

@@ -29,6 +29,12 @@ Repository Structure
 Usage
 -----
 
+To generate each definition of the Thue-Morse Sequence and its extensions, call:
+
+.. code-block::
+
+  python -m code.p{2,n}.d[0-9][0-9] <items to generate> [<number of players, if n players>]
+
 To run the update script, provide the zip file and the PDF file as arguments:
 
 .. code-block:: bash

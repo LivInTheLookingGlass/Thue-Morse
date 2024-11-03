@@ -8,6 +8,8 @@ from ..pn.d02 import fill_ctypes_array
 
 
 def pn_d04(n: int = 2) -> Iterator[int]:
+    if n < 2 or n > 255:
+        raise ValueError("Due to memory use optimizations, this iterator only supports bases 2 thru 255")
     capacity = n
     seq = (c_uint8 * capacity)()
     fill_ctypes_array(seq, range(n), n)

@@ -78,7 +78,7 @@ jobs:
             test_len=27
             echo "Testing up to 2^$test_len"
             sed -i "s/^test_len = .*/test_len = 2**$test_len/" code/test_seq.py
-            python -m pytest -k "test_compare_2_1 and not 2_12"
+            python -m pytest -k "test_compare_2_1 and not 2_12" -n auto --dist=worksteal
             ;;
           base_2_12)
             test_len=17
@@ -116,6 +116,6 @@ jobs:
             fi
             echo "Testing up to 2^$test_len"
             sed -i "s/^test_len = .*/test_len = 2**$test_len/" code/test_seq.py
-            python -m pytest -k "$pytest_regex"
+            python -m pytest -k "$pytest_regex" -n auto --dist=worksteal
             ;;
         esac

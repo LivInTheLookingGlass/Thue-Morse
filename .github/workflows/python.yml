@@ -70,8 +70,8 @@ jobs:
 
     - name: Run tests (${{matrix.selection}})
       run: |
-        ulimit -S -v 12582912
-        ulimit -S -m 12582912
+        ulimit -S -v 14680064
+        ulimit -S -m 14680064
         ulimit -H -a
         ulimit -S -a
         case ${{matrix.selection}} in

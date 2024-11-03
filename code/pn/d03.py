@@ -1,20 +1,29 @@
+from ctypes import c_uint8
 from itertools import chain, islice
-from typing import Iterator, Tuple
+from typing import Iterator
 
 from ..args import run
+from ..pn.d02 import fill_ctypes_array
 
 
 def pn_d03(n: int = 2) -> Iterator[int]:
-    seq: Tuple[range, ...] = (range(n), )
-    prev_len = 1
-    yield from range(n)
+    if n < 2 or n > 255:
+        raise ValueError("Due to memory use optimizations, this iterator only supports bases 2 thru 255")
+    capacity = n
+    seq = (c_uint8 * capacity)()
+    fill_ctypes_array(seq, range(n), n)
+    prev_len = 0
     while True:
-        prev_len *= n
-        seq = (*chain.from_iterable(
-            (range(x, n), range(0, x))
-            for x in chain.from_iterable(seq)
-        ), )
-        yield from islice(chain.from_iterable(seq), prev_len, None)
+        yield from islice(seq, prev_len, None)
+        prev_len = capacity
+        capacity *= n
+        new_seq = (c_uint8 * capacity)()
+        fill_ctypes_array(
+            new_seq,
+            chain.from_iterable((*range(x, n), *range(0, x)) for x in seq),
+            capacity
+        )
+        seq = new_seq
 
 
 if __name__ == '__main__':

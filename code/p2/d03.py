@@ -5,15 +5,13 @@ from ..args import run
 
 
 def p2_d03(_: int = 2) -> Iterator[int]:
-    seq: Tuple[int, ...] = (0, )
+    seq: Tuple[range, ...] = (range(2), )
     prev_len = 0
     while True:
-        yield from islice(seq, prev_len, None)
-        prev_len = len(seq)
-        seq = tuple(chain.from_iterable(
-            (0, 1) if x == 0 else (1, 0)
-            for x in seq
-        ))
+        yield from islice(chain.from_iterable(seq), prev_len, None)
+        prev_len = len(seq) * 2
+        seq = tuple(range(1, -1, -1) if x else range(2)
+                    for x in chain.from_iterable(seq))
 
 
 if __name__ == '__main__':

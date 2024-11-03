@@ -68,14 +68,14 @@ jobs:
     - name: Fetch test dependencies
       run: python -m pip install -r requirements.txt
 
-    - name: Run tests (in parallel, ${{matrix.selection}})
+    - name: Run tests (${{matrix.selection}})
       run: |
         case ${{matrix.selection}} in
           lint)
             python -m pytest --isort --flake8 --mypy --mypy-ignore-missing-imports -k "not test_compare"
             ;;
           base_2)
-            test_len=27
+            test_len=30
             echo "Testing up to 2^$test_len"
             sed -i "s/^test_len = .*/test_len = 2**$test_len/" code/test_seq.py
             python -m pytest -k "test_compare_2_1 and not 2_12"
@@ -102,17 +102,11 @@ jobs:
             pytest_regex="test_compare_n_1_to_n and ($base_regex)"
             echo $pytest_regex
             if [ $start -le 8 ]; then
-              test_len=27
+              test_len=30
             elif [ $start -le 16 ]; then
-              test_len=26
-            elif [ $start -le 40 ]; then
-              test_len=25
-            elif [ $start -le 56 ]; then
-              test_len=26
-            elif [ $start -le 64 ]; then
-              test_len=25
+              test_len=30
             else
-              test_len=24
+              test_len=30
             fi
             echo "Testing up to 2^$test_len"
             sed -i "s/^test_len = .*/test_len = 2**$test_len/" code/test_seq.py

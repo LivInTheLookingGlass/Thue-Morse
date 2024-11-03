@@ -42,9 +42,9 @@ If A(n)=(a(0),a(2),...,a(2^n-1)), then A(n+1)=(A(n),1-A(n)). - Arie Bos, Jul 27 
 
 a(n) = (1 + (-1)^HW(n))/2. - Lorenzo Sauras Altuzarra, Mar 10 2024
 
-A059448: Parity of Hamming Weight of n
 A054429: Simple self-inverse permutation of natural numbers: List each block of 2^n numbers (from 2^n to 2^(n+1) - 1) in reverse order.
 -------------------------------------------
 Definitions from OEIS (inv add 1: 21121221)
 
 G.f.: (3/(1 - x) - Product_{k>=0} (1 - x^(2^k)))/2. - Ilya Gutkovskiy, Apr 03 2019
+See infinite product def on wiki. Might shed some light on other inf. prods. in here

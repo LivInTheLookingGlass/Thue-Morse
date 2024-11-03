@@ -6,13 +6,13 @@ from ..args import run
 
 def evil(_: int = 2) -> Iterator[int]:
     for i in count():
-        if i.bit_count() % 2 == 0:
+        if i.bit_count() & 1 == 0:
             yield i
 
 
 def p2_d09(_: int = 2) -> Iterator[int]:
-    for i in evil():
-        yield (i - 2 * i) % 2
+    for n, i in enumerate(evil()):
+        yield (i - 2 * n) & 1
 
 
 if __name__ == '__main__':

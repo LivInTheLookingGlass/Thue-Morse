@@ -43,39 +43,40 @@ jobs:
 
     - name: Run tests (${{matrix.selection}})
       run: |
-        ulimit -S -v 14680064
-        ulimit -S -m 14680064
-        ulimit -H -a
-        ulimit -S -a
+        ulimit -S -v 14680064; ulimit -H -v; ulimit -S -v
+        ulimit -S -m 14680064; ulimit -H -m; ulimit -S -m
+        pytest_args=()
         case ${{matrix.selection}} in
           lint)
-            python -m pytest --isort --flake8 --mypy --mypy-ignore-missing-imports -k "not test_compare"
+            pytest_args+=(--isort --flake8 --mypy --mypy-ignore-missing-imports -k "not test_compare")
+            test_len=0
             ;;
           base_2)
             test_len=29
-            echo "Testing up to 2^$test_len"
-            sed -i "s/^test_len = .*/test_len = 2**$test_len/" code/test_seq.py
-            python -m pytest -k "test_compare_2_1 and not 2_12" --maxfail=2
+            pytest_args+=(-k "test_compare_2_1 and not 2_12" --maxfail=2)
             ;;
           base_2_12)
             test_len=17
-            echo "Testing up to 2^$test_len"
-            sed -i "s/^test_len = .*/test_len = 2**$test_len/" code/test_seq.py
-            python -m pytest -k "2_12" --timeout=21585
+            pytest_args+=(-k "2_12" --timeout=21585)
             ;;
           *)
             IFS='_' read -r prefix1 prefix2 definition <<< "${{matrix.selection}}"
-            pytest_regex="test_compare_n_1_to_n[$definition-"
-            echo $pytest_regex
-            if [ $start -le 8 ]; then
-              test_len=30
-            elif [ $start -le 16 ]; then
-              test_len=30
-            else
-              test_len=30
-            fi
-            echo "Testing up to 2^$test_len"
-            sed -i "s/^test_len = .*/test_len = 2**$test_len/" code/test_seq.py
-            python -m pytest -k "$pytest_regex" --maxfail=2
+            case $((definition)) in
+              2|4|5|6)
+                test_len=30
+                ;;
+              3)
+                test_len=29
+                ;;
+              *)
+                echo "Unknown definition; limit not set"
+                exit -1
+                ;;
+            esac
+            pytest_args=(-k "test_compare_n_1_to_n[$definition-" --maxfail=2)
             ;;
         esac
+        echo "Testing up to 2^$test_len"
+        sed -i "s/^test_len = .*/test_len = 2**$test_len/" code/test_seq.py
+        echo "${pytest_args[@]}"
+        python -m pytest "${pytest_args[@]}"

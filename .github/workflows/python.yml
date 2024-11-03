@@ -33,6 +33,26 @@ jobs:
         - base_n_73_80
         - base_n_81_88
         - base_n_89_96
+        - base_n_97_104
+        - base_n_105_112
+        - base_n_113_120
+        - base_n_121_128
+        - base_n_129_136
+        - base_n_137_144
+        - base_n_145_152
+        - base_n_153_160
+        - base_n_161_168
+        - base_n_169_176
+        - base_n_177_184
+        - base_n_185_192
+        - base_n_193_200
+        - base_n_201_208
+        - base_n_209_216
+        - base_n_217_224
+        - base_n_225_232
+        - base_n_233_240
+        - base_n_241_248
+        - base_n_249_255
     runs-on: ubuntu-latest
 
     steps:

@@ -5,7 +5,7 @@ from typing import Dict, Iterable
 from pytest import mark
 
 test_len = 2**15
-bases_tested = range(2, 97)
+bases_tested = range(2, 256)
 base_2_tests = [int(p.name[1:-3]) for p in Path(__file__).parent.glob('p2/d*.py')]
 base_n_tests = [int(p.name[1:-3]) for p in Path(__file__).parent.glob('pn/d*.py')]
 base_2_tests.remove(1)

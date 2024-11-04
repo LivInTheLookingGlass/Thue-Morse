@@ -55,11 +55,11 @@ jobs:
         ulimit -S -v 14680064; ulimit -H -v; ulimit -S -v
         ulimit -S -m 14680064; ulimit -H -m; ulimit -S -m
         case ${{matrix.def}} in
-          n_01|n_05|n_06)
+          n_01|2_05|n_05|n_06|2_13)
             test_len=30
             ;;
-          2_02|2_05|2_06|2_08|2_09|2_10|2_11|2_13)
-            test_len=30
+          2_02|2_06|2_08|2_09|2_10|2_11)
+            test_len=34
             ;;
           n_02|n_03|n_04)
             test_len=30

@@ -93,7 +93,7 @@ jobs:
             test_len=29
             ;;
           2_07)
-            test_len=20
+            test_len=21
             ;;
           2_12)
             test_len=15
@@ -105,7 +105,15 @@ jobs:
         esac
         sed -i "s/^test_len = .*/test_len = 2**$test_len/" code/test_seq.py
         echo "Testing up to 2^$test_len"
+
+        source .mem_mon.sh
+        monitor_memory &
+        monitor_pid=$!
+
         python -m pytest -k "${{matrix.def}}" --timeout=21555
+
+        kill $monitor_pid
+        echo "Lowest free memory seen during the pytest run: $min_free_mem MB"
 
   base_n:
     strategy:
@@ -178,4 +186,12 @@ jobs:
         echo "Testing up to 2^$test_len"
         sed -i "s/^test_len = .*/test_len = 2**$test_len/" code/test_seq.py
         echo $base_regex
+
+        source .mem_mon.sh
+        monitor_memory &
+        monitor_pid=$!
+
         python -m pytest -k "${{matrix.def}}- and ($base_regex)"
+
+        kill $monitor_pid
+        echo "Lowest free memory seen during the pytest run: $min_free_mem MB"

@@ -26,9 +26,11 @@ def b(n: int, memo: bitarray) -> int:
 
 
 def p2_d07(_: int = 2) -> Iterator[int]:
-    memo = bitarray((1, 0, 0, 1) + (0, ) * 28)
+    mem_limit = 1 << 20
+    memo = bitarray(1024)
+    memo[:4] = bitarray((1, 0, 0, 1))
     for i in count(1):
-        if i < (1 << 20):
+        if i < mem_limit:
             memo.extend((0, 0))
         yield (1 - b((i << 1) - 1, memo)) >> 1
 

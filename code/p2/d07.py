@@ -7,8 +7,9 @@ from ..args import run
 
 
 def b(n: int, memo: bitarray) -> int:
-    if (n << 1) < len(memo):
-        res = tuple(memo[n << 1:(n + 1) << 1])
+    nr1 = n << 1
+    if (nr1) < len(memo):
+        res = tuple(memo[nr1:(n + 1) << 1])
         match res:
             case (1, x):
                 return -x
@@ -16,11 +17,11 @@ def b(n: int, memo: bitarray) -> int:
                 return 1
     n2 = n >> 1
     result = b(n2 + (n & 1), memo) - b(n2, memo)
-    if (n << 1) < len(memo):
+    if nr1 < len(memo):
         if result == 1:
-            memo[n << 1:(n + 1) << 1] = bitarray((0, 1))
+            memo[nr1:(n + 1) << 1] = bitarray((0, 1))
         else:
-            memo[n << 1:(n + 1) << 1] = bitarray((1, abs(result)))
+            memo[nr1:(n + 1) << 1] = bitarray((1, abs(result)))
     return result
 
 

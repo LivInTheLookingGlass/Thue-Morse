@@ -113,7 +113,6 @@ jobs:
         python -m pytest -k "${{matrix.def}}" --timeout=21555
 
         kill $monitor_pid
-        echo "Lowest free memory seen during the pytest run: $min_free_mem MB"
 
   base_n:
     strategy:
@@ -194,4 +193,3 @@ jobs:
         python -m pytest -k "${{matrix.def}}- and ($base_regex)"
 
         kill $monitor_pid
-        echo "Lowest free memory seen during the pytest run: $min_free_mem MB"

@@ -55,6 +55,7 @@ jobs:
         - n_05
         - n_06
     runs-on: ubuntu-latest
+    name: Test ${{matrix.def}} in base 2
     steps:
     - uses: actions/checkout@v4
 
@@ -131,6 +132,7 @@ jobs:
 
     runs-on: ubuntu-latest
     needs: lint
+    name: Test n_0${{matrix.def}} for bases ${{matrix.bases}}
 
     steps:
     - uses: actions/checkout@v4

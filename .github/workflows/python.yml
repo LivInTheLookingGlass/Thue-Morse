@@ -93,7 +93,7 @@ jobs:
             test_len=29
             ;;
           2_07)
-            test_len=24
+            test_len=26
             ;;
           2_12)
             test_len=15
@@ -160,10 +160,10 @@ jobs:
         ulimit -S -m 15728640; ulimit -H -m; ulimit -S -m
         case ${{matrix.def}}-${{matrix.bases}} in
           [234]-*)
-            test_len=20
+            test_len=22
             ;;
           [56]-*)
-            test_len=20
+            test_len=22
             ;;
           *)
             echo "Unknown definition; limit not set"

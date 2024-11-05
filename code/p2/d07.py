@@ -1,5 +1,4 @@
 from itertools import count
-from math import ceil, floor
 from typing import Iterator
 
 from bitarray import bitarray
@@ -15,8 +14,8 @@ def b(n: int, memo: bitarray) -> int:
                 return -x
             case (0, 1):
                 return 1
-    n2 = n / 2
-    result = b(ceil(n2), memo) - b(floor(n2), memo)
+    n2 = n >> 1
+    result = b(n2 + (n & 1), memo) - b(n2, memo)
     if (n << 1) < len(memo):
         if result == 1:
             memo[n << 1:(n + 1) << 1] = bitarray((0, 1))
@@ -30,7 +29,7 @@ def p2_d07(_: int = 2) -> Iterator[int]:
     for i in count(1):
         if i < (1 << 20):
             memo.extend((0, 0))
-        yield (1 - b(2 * i - 1, memo)) // 2
+        yield (1 - b((i << 1) - 1, memo)) >> 1
 
 
 if __name__ == '__main__':

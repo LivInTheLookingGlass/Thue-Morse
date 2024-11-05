@@ -34,7 +34,7 @@ def p2_d04(_: int = 2) -> Iterator[int]:
     while True:
         yield from islice(seq, prev_len, None)
         prev_len = len(seq)
-        seq.extend(rotate(seq, prev_len // 2))
+        seq.extend(rotate(seq, prev_len >> 1))
 
 
 if __name__ == '__main__':

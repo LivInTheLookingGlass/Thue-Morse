@@ -12,7 +12,7 @@ def evil(_: int = 2) -> Iterator[int]:
 
 def p2_d09(_: int = 2) -> Iterator[int]:
     for n, i in enumerate(evil()):
-        yield (i - 2 * n) & 1
+        yield (i - (n << 1)) & 1
 
 
 if __name__ == '__main__':

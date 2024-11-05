@@ -15,7 +15,7 @@ def A001317(n: int) -> int:
         partial_sum += (binomial_coeff & 1) * exp_2_k
         # C(n, k) = C(n, k-1) * (n - (k - 1)) / k
         binomial_coeff = binomial_coeff * (n - k) // (k + 1)
-        exp_2_k *= 2
+        exp_2_k >>= 1
     return partial_sum
 
 

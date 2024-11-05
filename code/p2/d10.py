@@ -6,7 +6,7 @@ from ..args import run
 
 def A1510481(n):
     n1 = n + 1
-    return n1 // 2 + ((n1.bit_count() & 1) * (n1 & 1))
+    return (n1 >> 1) + ((n1.bit_count() & 1) * (n1 & 1))
 
 
 def p2_d10(_: int = 2) -> Iterator[int]:

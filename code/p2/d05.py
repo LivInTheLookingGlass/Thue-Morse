@@ -7,7 +7,7 @@ from ..args import run
 def T(n: int) -> int:
     if n == 0:
         return 0
-    return (n - T(n // 2)) & 1
+    return (n - T(n >> 1)) & 1
 
 
 def p2_d05(_: int = 2) -> Iterator[int]:

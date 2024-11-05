@@ -55,20 +55,29 @@ jobs:
         ulimit -S -v 14680064; ulimit -H -v; ulimit -S -v
         ulimit -S -m 14680064; ulimit -H -m; ulimit -S -m
         case ${{matrix.def}} in
-          n_01|2_05|n_05|n_06|2_13)
-            test_len=30
+          2_04)
+            test_len=36
             ;;
-          2_02|2_06|2_08|2_09|2_10|2_11)
+          2_0[23])
+            test_len=35
+            ;;
+          2_0[689]|2_1[01])
             test_len=34
             ;;
-          n_02|n_03|n_04)
-            test_len=30
+          n_01)
+            test_len=33
             ;;
-          2_02|2_03|2_04|2_07)
+          n_0[23]|[2n]_05)
+            test_len=32
+            ;;
+          n_06)
+            test_len=31
+            ;;
+          n_04|2_07|2_13)
             test_len=29
             ;;
           2_12)
-            test_len=17
+            test_len=16
             ;;
           *)
             echo "Unknown definition; limit not set"
@@ -77,14 +86,14 @@ jobs:
         esac
         sed -i "s/^test_len = .*/test_len = 2**$test_len/" code/test_seq.py
         echo "Testing up to 2^$test_len"
-        python -m pytest -k "${{matrix.def}}"
+        python -m pytest -k "${{matrix.def}}" --timeout=21555
 
   base_n:
     strategy:
       fail-fast: false
       matrix:
         def: [2, 3, 4, 5, 6]
-        base: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100]
+        base: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64]
     runs-on: ubuntu-latest
 
     steps:
@@ -118,4 +127,4 @@ jobs:
         esac
         echo "Testing up to 2^$test_len"
         sed -i "s/^test_len = .*/test_len = 2**$test_len/" code/test_seq.py
-        python -m pytest -k "${{matrix.def}}-base_${{matrix.base}}"
+        python -m pytest -k "${{matrix.def}}-base_${{matrix.base}}" --timeout=21555

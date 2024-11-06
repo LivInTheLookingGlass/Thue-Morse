@@ -19,7 +19,7 @@ Repository Structure
   │   ├── macros.tex                 # LaTeX file that contains utility functions
   │   ├── references.bib             # Bibliography file (uses BibTeX for citations)
   │   └── figures/                   # Directory for image files used
-  └── code/                          # Directory with associated code
+  └── dev/                           # Directory with associated code
       ├── README.rst                 # Readme for associated code
       ├── __init__.py                # Empty file that allows this folder to be used as a module
       ├── args.py                    # A utility file that deals with command line argument parsing
@@ -33,7 +33,7 @@ To generate each definition of the Thue-Morse Sequence and its extensions, call:
 
 .. code-block::
 
-  python -m code.p{2,n}.d[0-9][0-9] <items to generate> [<number of players, if n players>]
+  python -m dev.p{2,n}.d[0-9][0-9] <items to generate> [<number of players, if n players>]
 
 To run the update script, provide the zip file and the PDF file as arguments:
 

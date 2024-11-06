@@ -3,13 +3,12 @@ from itertools import chain, islice
 from typing import Iterator
 
 from ..args import run
-from ..p2.d04 import rotate
 from ..pn.d02 import fill_ctypes_array
 
 
-def pn_d04(n: int = 2) -> Iterator[int]:
-    if n < 2 or n > 255:
-        raise ValueError("Due to memory use optimizations, this iterator only supports bases 2 thru 255")
+def pn_d03(n: int = 2) -> Iterator[int]:
+    if n < 2 or n > 256:
+        raise ValueError("Due to memory use optimizations, this iterator only supports bases 2 thru 256")
     capacity = n
     seq = (c_uint8 * capacity)()
     fill_ctypes_array(seq, range(n), n)
@@ -21,11 +20,11 @@ def pn_d04(n: int = 2) -> Iterator[int]:
         new_seq = (c_uint8 * capacity)()
         fill_ctypes_array(
             new_seq,
-            chain.from_iterable(rotate(seq, prev_len // n * i) for i in range(n)),
+            chain.from_iterable((*range(x, n), *range(0, x)) for x in seq),
             capacity
         )
         seq = new_seq
 
 
 if __name__ == '__main__':
-    run(4, pn_d04, 'N')
+    run(3, pn_d03, 'n')

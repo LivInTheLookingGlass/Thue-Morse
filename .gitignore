@@ -2,3 +2,4 @@
 .benchmarks
 .mypy_cache
 .pytest_cache
+~$TestData.ods

@@ -1,9 +1,7 @@
 from itertools import chain, islice
 from typing import Iterator
 
-from bitarray import bitarray
-
-from ..args import run
+from ..args import bitarray, run
 
 
 def p2_d03(_: int = 2) -> Iterator[int]:

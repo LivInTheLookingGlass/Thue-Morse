@@ -1,6 +1,11 @@
 from argparse import ArgumentParser
 from typing import Callable, Iterable
 
+try:
+    from butarray import bitarray
+except ImportError:
+    bitarray = bytearray  # type: ignore
+
 
 def run(num: int, func: Callable[[int], Iterable[int]], kind: str = '2') -> None:
     parser = ArgumentParser()

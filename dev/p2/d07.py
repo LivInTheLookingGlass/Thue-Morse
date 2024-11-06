@@ -1,9 +1,7 @@
 from itertools import count
 from typing import Iterator
 
-from bitarray import bitarray
-
-from ..args import run
+from ..args import bitarray, run
 
 
 def b(n: int, memo: bitarray) -> int:

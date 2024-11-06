@@ -1,9 +1,7 @@
 from itertools import islice
 from typing import Iterator
 
-from bitarray import bitarray
-
-from ..args import run
+from ..args import bitarray, run
 
 
 def p2_d02(_: int = 2) -> Iterator[int]:
@@ -12,7 +10,7 @@ def p2_d02(_: int = 2) -> Iterator[int]:
     while True:
         yield from islice(seq, prev_len, None)
         prev_len = len(seq)
-        seq.extend(0 if x else 1 for x in seq)
+        seq.extend(0 if x else 1 for x in islice(seq, len(seq)))
 
 
 if __name__ == '__main__':

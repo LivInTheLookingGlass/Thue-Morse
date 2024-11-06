@@ -2,9 +2,7 @@ from ctypes import Array
 from itertools import chain, islice
 from typing import Iterator, Sequence, TypeVar, overload
 
-from bitarray import bitarray
-
-from ..args import run
+from ..args import bitarray, run
 from ..pn.d02 import fill_ctypes_array
 
 T = TypeVar("T")

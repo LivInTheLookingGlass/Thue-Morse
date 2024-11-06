@@ -18,11 +18,6 @@ def rotate(t: bitarray, n: int) -> bitarray:
     ...
 
 
-@overload
-def rotate(t: Array, n: int) -> Array:
-    ...
-
-
 def rotate(t, n: int):
     if isinstance(t, Array):
         if not n:

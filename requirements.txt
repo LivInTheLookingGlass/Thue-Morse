@@ -4,3 +4,4 @@ pytest-mypy
 pytest-timeout
 pytest-xdist
 bitarray
+sympy

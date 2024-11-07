@@ -35,7 +35,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        def: 
+        def:
         - 2_02
         - 2_03
         - 2_04
@@ -49,6 +49,7 @@ jobs:
         - 2_12
         - 2_13
         - 2_14
+        - 2_15
         - n_01
         - n_02
         - n_03
@@ -97,7 +98,7 @@ jobs:
           2_08)
             test_len=26
             ;;
-          2_13)
+          2_1[35])
             test_len=15
             ;;
           *)

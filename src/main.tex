@@ -20,7 +20,7 @@ Email: darowe@nmu.edu}
 \maketitle
 
 \begin{abstract}
-In this paper, we discuss various ways to extend the \TMS \cite{OEIS-TMS} when used as a fair-share sequence. Included are N definitions of the original sequence, M extensions to n players, and proofs of equality for all definitions. In the appendix are several complexity analyses for both time and space of each definition.
+In this paper, we discuss various ways to extend the \TMS \cite{OEIS-TMS} when used as a fair-share sequence. Included are \TotalOriginals definitions of the original sequence, \TotalExtensions extensions to n players, and proofs of equality for all definitions. In the appendix are several complexity analyses for both time and space of each definition.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -32,27 +32,69 @@ TBA
 \note{Make sure to add that while this paper does not deal with negative or fractional bases, many of the definitions are trivially extendable to that domain, and at least one of them already has been in another paper.}
 
 \note{All definitions are tested, though due to resource limitations, to different extents.}
+
+
 \renewcommand{\arraystretch}{1.25}
 \begin{table}[H]
+\label{tab:testing}
+\caption{Extent of Testing in Each Base}
 \centering
 \begin{tabular}{|l|l|l|}
 \hline
-\textbf{Definition}       &\textbf{Base}     &\textbf{Entries Tested}              \\ \hline
-$T_{2,12}$                &\multirow{2}{*}{2}& $2^{17} = 131,072$                  \\ \cline{1-1}\cline{3-3} 
+\textbf{Definition} &\textbf{Base / Player Count} &\textbf{Entries Tested} \\ \hline
+$T_{2,12}$                &\multirow{2}{*}{2}& $2^{17} = 131,072$          \\ \cline{1-1}\cline{3-3} 
 Not $T_{2,12}$            &                  &\multirow{2}{*}{$2^{27}=134,217,728$}\\ \cline{1-2}
 \multirow{6}{*}{$T_{n,*}$}&3 thru 8          &                                     \\ \cline{2-3} 
                           &9 thru 16         &\multirow{2}{*}{$2^{26}=67,108,864$} \\ \cline{2-2}
                           &41 thru 56        &                                     \\ \cline{2-3} 
                           &17 thru 40        &\multirow{2}{*}{$2^{25}=33,554,432$} \\ \cline{2-2}
                           &57 thru 64        &                                     \\ \cline{2-3} 
-                          &65 thru 96        & $2^{24} = 16,777,216$               \\ \hline
+                          &65 thru 255       & $2^{24} = 16,777,216$               \\ \hline
 \end{tabular}
 \end{table}
+
+\begin{table}[H]
+\label{tab:comparison-b2}
+\centering
+\caption{Comparison Matrix of the Standard Definitions}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\cline{1-1}
+\!\!\!\!$T_{2,1}$\!\!\!\!\\ \cline{1-2}
+         &\!\!\!\!$T_{2,2}$\!\!\!\!\\ \cline{1-3}
+         &         &\!\!\!\!$T_{2,3}$\!\!\!\!\\ \cline{1-4}
+         &         &         &\!\!\!\!$T_{2,4}$\!\!\!\!\\ \cline{1-5}
+         &         &         &         &\!\!\!\!$T_{2,5}$\!\!\!\!\\ \cline{1-6}
+         &         &         &         &         &\!\!\!\!$T_{2,6}$\!\!\!\!\\ \cline{1-7}
+         &         &         &         &         &         &\!\!\!\!$T_{2,7}$\!\!\!\!\\ \cline{1-8}
+         &         &         &         &         &         &         &\!\!\!\!$T_{2,8}$\!\!\!\!\\ \cline{1-9}
+         &         &         &         &         &         &         &         &\!\!\!\!$T_{2,9}$\!\!\!\!\\ \cline{1-10}
+         &         &         &         &         &         &         &         &         &\!\!\!\!$T_{2,10}$\!\!\!\!\\ \cline{1-11}
+         &         &         &         &         &         &         &         &         &         &\!\!\!\!$T_{2,11}$\!\!\!\!\\ \cline{1-12}
+         &         &         &         &         &         &         &         &         &         &         &\!\!\!\!$T_{2,12}$\!\!\!\!\\ \cline{1-13}
+         &         &         &         &         &         &         &         &         &         &         &         &\!\!\!\!$T_{2,13}$\!\!\!\!\\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\label{tab:comparison-bn}
+\centering
+\caption{Comparison Matrix of the Extended Definitions}
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\cline{1-1}
+\!\!\!\!$T_{n,1}$\!\!\!\!\\ \cline{1-2}
+         &\!\!\!\!$T_{n,2}$\!\!\!\!\\ \cline{1-3}
+         &         &\!\!\!\!$T_{n,3}$\!\!\!\!\\ \cline{1-4}
+         &         &         &\!\!\!\!$T_{n,4}$\!\!\!\!\\ \cline{1-5}
+         &         &         &         &\!\!\!\!$T_{n,5}$\!\!\!\!\\ \cline{1-6}
+         &         &         &         &         &\!\!\!\!$T_{n,6}$\!\!\!\!\\ \hline
+\end{tabular}
+\end{table}
+
 \renewcommand{\arraystretch}{1}
 
 \section{The Original Sequence}
 
-\subsection{Definition 1 - Parity of Hamming Weight}
+\subsection{Definition 1 of \TotalOriginals\xspace -- Parity of Hamming Weight}
 
 \note{This definition appears in \cite{Spiegelhofer_2020, Allouche-Shallit_1999, OEIS-TMS}}
 
@@ -69,7 +111,7 @@ T_{2,1}(n) &= p(n)
 
 The subscript indicates that we are using $2$ players (writing in base $2$) and that we are using the first definition laid out in this paper. Note that when we extend to n players, the $T$ function will get a second parameter for the number of players, so it will look like $T_{n,d}(x, s)$, where $s$ is the size of the player pool, and therefore the base we use to define the sequence.
 
-\subsection{Definition 2 - Invert and Extend}
+\subsection{Definition 2 of \TotalOriginals\xspace -- Invert and Extend}
 
 \note{Appears in \cite{OEIS-TMS}}
 
@@ -101,7 +143,7 @@ T_{2,2}(n) &= T_{2,2}\left(n - 2^{\floor{\log_2(n)}}\right) + 1 \pmod{2}
     \end{aligned}
 \end{equation}
 
-\subsection{Definition 3 - Substitute and Flatten}
+\subsection{Definition 3 of \TotalOriginals\xspace -- Substitute and Flatten}
 
 \note{This definition appears in \cite{Spiegelhofer_2020, Kolář-Nori_1991, OEIS-TMS}}
 
@@ -132,7 +174,7 @@ T_{2,3}(3) &= t(\ceil{\log_2(3 + 1)})_3 \\
     \end{aligned}
 \end{equation}
 
-\subsection{Definition 4 - Recursive Rotation}
+\subsection{Definition 4 of \TotalOriginals\xspace -- Recursive Rotation}
 
 Another way to phrase the above definition is as recursive rotation. If we decompose $s$, we can instead represent it as:
 
@@ -150,7 +192,7 @@ r(\mathbf{x}, i) &= \begin{aligned}[c]
     \end{aligned}
 \end{equation}
 
-\subsection{Definition 5 - Recursion}
+\subsection{Definition 5 of \TotalOriginals\xspace -- Recursion}
 
 \note{This definition appears in \cite{Kolář-Nori_1991, OEIS-TMS}}
 
@@ -163,7 +205,7 @@ T_{2,5}(2n+1) &= 1 - T_{2,5}(n) \pmod{2}
     \end{aligned}
 \end{equation}
 
-\subsection{Definition 6 - Highest Bit Difference}
+\subsection{Definition 6 of \TotalOriginals\xspace -- Highest Bit Difference}
 
 \note{This definition appears in \cite{Arndt_2010}}
 
@@ -194,7 +236,7 @@ T_{2,6}(n) &= \begin{aligned}[c]
     \end{aligned}
 \end{equation}
 
-\subsection{Definition 7 - Floor-Ceiling Difference}
+\subsection{Definition 7 of \TotalOriginals\xspace -- Floor-Ceiling Difference}
 
 \note{Appears in \cite{OEIS-TMS}}
 
@@ -211,7 +253,7 @@ T_{2,7}(n) &= \dfrac{1 - b(2n)}{2} \pmod{2}
 
 \note{This seems very similar to the highest bit difference definition, and I think it may be what that was derived from}
 
-\subsection{Definition 8 - Odious Number Derivation}
+\subsection{Definition 8 of \TotalOriginals\xspace -- Odious Number Derivation}
 
 \note{Definition appears in \cite{OEIS-TMS}}
 
@@ -244,7 +286,7 @@ T_{2,8}(n) = \text{Odious}(n) + 1 \pmod{2}
 \end{equation*}
 }
 
-\subsection{Definition 9 - Evil Numbers Derivation 1}
+\subsection{Definition 9 of \TotalOriginals\xspace -- Evil Numbers Derivation 1}
 
 \note{Appears in \cite{OEIS-TMS}}
 
@@ -268,7 +310,7 @@ def p2_d09():
 T_{2,9}(n) = \text{Evil}(n) - 2n \pmod{2}
 \end{equation}
 
-\subsection{Definition 10 - Evil Numbers Derivation 2}
+\subsection{Definition 10 of \TotalOriginals\xspace -- Evil Numbers Derivation 2}
 
 \note{Appears in \cite{OEIS-TMS-inv}}
 
@@ -282,7 +324,7 @@ T_{2,10}(n) &= 1 - ce(n + 1) + ce(n)
     \end{aligned}
 \end{equation}
 
-\subsection{Definition 11 - Odious \& Evil Numbers Derivation}
+\subsection{Definition 11 of \TotalOriginals\xspace -- Odious \& Evil Numbers Derivation}
 
 \note{Appears in \cite{OEIS-TMS-inv}}
 
@@ -299,7 +341,7 @@ T_{2,11}(n) &= 1 - oe(n) \pmod{2}
     \end{aligned}
 \end{equation}
 
-\subsection{Definition 12 - Gould's Sequence Derivation}
+\subsection{Definition 12 of \TotalOriginals\xspace -- Gould's Sequence Derivation}
 
 \note{Appears in \cite{OEIS-TMS}}
 
@@ -315,7 +357,7 @@ T_{2,12}(n) &= \text{Gould}(n) - 1 \mod{3} \\
     \end{aligned}
 \end{equation}
 
-\subsection{Definition 13 - Derivation from Blue Code}
+\subsection{Definition 13 of \TotalOriginals\xspace -- Derivation from Blue Code}
 
 \note{Appears in \cite{OEIS-TMS}}
 
@@ -354,7 +396,7 @@ This is identical to Equation \ref{eq:p2d01}, where we define $T_{2,1}$.
 
 \section{The Extensions}
 
-\subsection{Definition 1 - Modular Digit Sums}
+\subsection{Extension 1 of \TotalExtensions\xspace -- Modular Digit Sums}
 
 \note{Definition appears in \cite{Astudillo_2003, Dekking_2023, OEIS-TMS-3-2}}
 
@@ -389,7 +431,7 @@ x + \floor{\dfrac{x}{2}} + p_2\left(\floor{\dfrac{x}{2^2}}\right) &= x + \floor{
     \end{aligned}
 \end{equation}
 
-\subsection{Definition 2 - Increment and Extend}
+\subsection{Extension 2 of \TotalExtensions\xspace -- Increment and Extend}
 
 In the original version of this definition, we inverted the elements. In base $2$, this is the same thing as adding $1$ (mod $2$). Given that, let $t(x, n)$ be the first $n^x$ elements of the \ETMS, for $n \in \Integers_{\ge 2}$.
 
@@ -420,7 +462,7 @@ T_{n,2}(x, s) &= T_{n,2}\left(x - s^{\floor{\log_s(x)}}, s\right) + 1 \pmod{s}
 
 \subsubsection{Proof of Equivalence with Original Definition 2}
 
-\subsection{Definition 3 - Substitute and Flatten}
+\subsection{Extension 3 of \TotalExtensions\xspace -- Substitute and Flatten}
 
 \note{There's a bit of a leap here, since we have to explain why the rotation is equivalent to the binary choice presented in the original. There also might be a better syntax to define the rotation, perhaps using the format used in inv and inc.}
 
@@ -441,7 +483,7 @@ r(\mathbf{x}, i) &= \begin{aligned}[c]
 
 \subsubsection{Proof of Equivalence with Original Definition 3}
 
-\subsection{Definition 4 - Recursive Rotation}
+\subsection{Extension 4 of \TotalExtensions\xspace -- Recursive Rotation}
 
 \begin{equation}
     \label{eq:pnd04}
@@ -459,13 +501,13 @@ r(\mathbf{x}, i) &= \begin{aligned}[c]
 
 \subsubsection{Proof of Equivalence with Original Definition 4}
 
-\subsection{Definition 5 - Recursion}
+\subsection{Extension 5 of \TotalExtensions\xspace -- Recursion}
 
 \note{Need to reference eq \ref{eq:p2d05s} in definition}
 
 \subsubsection{Proof of Equivalence with Original Definition 5}
 
-\subsection{Definition 6 - Highest Digit Difference}
+\subsection{Extension 6 of \TotalExtensions\xspace -- Highest Digit Difference}
 
 \begin{equation}
     \begin{aligned}
@@ -749,7 +791,7 @@ This is one of the more space-efficient implementations. Each element takes at m
         \hline
         \textbf{Per Element} & $O(1)$ & $O(\log(n))$ \\
         \hline
-        \textbf{In Total} & $O(1)$ & $O(\log(n))$ \\
+        \textbf{In Total} & $O(n)$ & $O(n \cdot \log(n))$ \\
         \hline
     \end{tabular}
     \label{tab:space_p2_d06}
@@ -1287,6 +1329,7 @@ This is one of the more space-efficient implementations. Each element takes at m
 \bibliography{references}     % without the .bib extension
 
 \onecolumn
+
 \lstset{basicstyle=\ttfamily, breaklines=true}
 \lstinputlisting{notes/definitions_to_add.txt}
 

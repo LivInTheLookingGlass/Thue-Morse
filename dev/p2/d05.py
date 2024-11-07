@@ -1,9 +1,7 @@
-from ctypes import Array
-from itertools import chain, islice
+from itertools import islice
 from typing import Iterator, Sequence, TypeVar, overload
 
 from ..args import bitarray, run
-from ..pn.d03 import fill_ctypes_array
 
 T = TypeVar("T")
 
@@ -19,17 +17,7 @@ def rotate(t: bitarray, n: int) -> bitarray:
 
 
 def rotate(t, n: int):
-    if isinstance(t, Array):
-        if not n:
-            return t
-        new = (t._type_ * len(t))()
-        fill_ctypes_array(new, chain(t[n:], t[:n]), len(t))
-        return new
-    if isinstance(t, bitarray):
-        return n and (t[n:] + t[:n]) or t
-    if isinstance(t, Sequence):
-        return n and (*t[n:], *t[:n]) or t
-    raise TypeError("Not a registered type")
+    return n and (t[n:] + t[:n]) or t
 
 
 def p2_d05(_: int = 2) -> Iterator[int]:

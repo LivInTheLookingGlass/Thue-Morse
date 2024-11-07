@@ -4,15 +4,15 @@ from typing import Iterator
 from ..args import run
 
 
-def evil(_: int = 2) -> Iterator[int]:
+def odious() -> Iterator[int]:
     for i in count():
-        if i.bit_count() & 1 == 0:
+        if i.bit_count() & 1:
             yield i
 
 
 def p2_d09(_: int = 2) -> Iterator[int]:
-    for n, i in enumerate(evil()):
-        yield (i - (n << 1)) & 1
+    for i in odious():
+        yield (i + 1) & 1
 
 
 if __name__ == '__main__':

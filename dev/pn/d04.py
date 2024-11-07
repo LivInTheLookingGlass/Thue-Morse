@@ -3,8 +3,7 @@ from itertools import chain, islice
 from typing import Iterator
 
 from ..args import run
-from ..p2.d04 import rotate
-from ..pn.d02 import fill_ctypes_array
+from ..pn.d03 import fill_ctypes_array
 
 
 def pn_d04(n: int = 2) -> Iterator[int]:
@@ -21,11 +20,11 @@ def pn_d04(n: int = 2) -> Iterator[int]:
         new_seq = (c_uint8 * capacity)()
         fill_ctypes_array(
             new_seq,
-            chain.from_iterable(rotate(seq, prev_len // n * i) for i in range(n)),
+            chain.from_iterable((*range(x, n), *range(0, x)) for x in seq),
             capacity
         )
         seq = new_seq
 
 
 if __name__ == '__main__':
-    run(4, pn_d04, 'N')
+    run(4, pn_d04, 'n')

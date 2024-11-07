@@ -36,20 +36,52 @@ TBA
 
 \renewcommand{\arraystretch}{1.25}
 \begin{table}[H]
-\label{tab:testing}
+\label{tab:testing_b2}
+\caption{Extent of Testing in Base 2}
+\centering
+\begin{tabular}{|l|r|}
+\hline
+Definition & Extent of Testing            \\ \hline
+$T_{2,1}$  &\multirow{2}{*}{$2^{35}=34,359,738,368$}\\ \cline{1-1}
+$T_{2,2}$  &                              \\ \hline
+$T_{2,3}$  & $2^{34} = 17,179,869,184$    \\ \hline
+$T_{2,4}$  & $2^{33} = 17,179,869,184$    \\ \hline
+$T_{2,5}$  &\multirow{2}{*}{$2^{32}=4,294,967,296$}\\ \cline{1-1}
+$T_{2,6}$  &                              \\ \hline
+$T_{2,7}$  & $2^{35} = 34,359,738,368$    \\ \hline
+$T_{2,8}$  & $2^{26} = 67,108,864$        \\ \hline
+$T_{2,9}$  &\multirow{4}{*}{$2^{35}=34,359,738,368$}\\ \cline{1-1}
+$T_{2,10}$ &                              \\ \cline{1-1}
+$T_{2,11}$ &                              \\ \cline{1-1}
+$T_{2,12}$ &                              \\ \hline
+$T_{2,13}$ & $2^{15} = 32,768$            \\ \hline
+$T_{2,14}$ & $2^{29} = 536,870,912$       \\ \hline
+$T_{n,1}$  &\multirow{2}{*}{$2^{33}=8,589,934,592$}\\ \cline{1-1}
+$T_{n,2}$  &                              \\ \hline
+$T_{n,3}$  &\multirow{2}{*}{$2^{32}=4,294,967,296$}\\ \cline{1-1}
+$T_{n,4}$  &                              \\ \hline
+$T_{n,5}$  & $2^{29} = 536,870,912$       \\ \hline
+$T_{n,6}$  & $2^{32} = 4,294,967,296$     \\ \hline
+$T_{n,7}$  & $2^{31} = 2,147,483,648$     \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\label{tab:testing_bn}
 \caption{Extent of Testing in Each Base}
 \centering
-\begin{tabular}{|l|l|l|}
+\begin{tabular}{|l|c|r|}
 \hline
-\textbf{Definition} &\textbf{Base / Player Count} &\textbf{Entries Tested} \\ \hline
-$T_{2,12}$                &\multirow{2}{*}{2}& $2^{17} = 131,072$          \\ \cline{1-1}\cline{3-3} 
-Not $T_{2,12}$            &                  &\multirow{2}{*}{$2^{27}=134,217,728$}\\ \cline{1-2}
-\multirow{6}{*}{$T_{n,*}$}&3 thru 8          &                                     \\ \cline{2-3} 
-                          &9 thru 16         &\multirow{2}{*}{$2^{26}=67,108,864$} \\ \cline{2-2}
-                          &41 thru 56        &                                     \\ \cline{2-3} 
-                          &17 thru 40        &\multirow{2}{*}{$2^{25}=33,554,432$} \\ \cline{2-2}
-                          &57 thru 64        &                                     \\ \cline{2-3} 
-                          &65 thru 255       & $2^{24} = 16,777,216$               \\ \hline
+\textbf{Definition}       & \textbf{Bases}         & \textbf{Entries Tested}              \\\hline
+$T_{n,1}$                 &\multirow{2}{*}{3 - 256}& $2^{26} = 67,108,864$                \\\cline{1-1}\cline{3-3}
+$T_{n,2}$                 &                        &\multirow{2}{*}{$2^{25} = 33,554,432$}\\\cline{1-2}
+\multirow{2}{*}{$T_{n,3}$}& 3 - 192                &                                      \\\cline{2-3} 
+                          & 193 - 256              & $2^{24} = 16,777,216$                \\\hline
+$T_{n,4}$                 & 3 - 256                & $2^{25} = 33,554,432$                \\\hline
+\multirow{2}{*}{$T_{n,5}$}& 3 - 192                & $2^{24} = 16,777,216$                \\\cline{2-3} 
+                          & 193 - 256              & $2^{23} = 8,388,608$                 \\\hline
+$T_{n,6}$                 &\multirow{2}{*}{3 - 256}&\multirow{2}{*}{$2^{26} = 67,108,864$}\\\cline{1-1}
+$T_{n,7}$                 &                        &                                      \\\hline
 \end{tabular}
 \end{table}
 
@@ -57,21 +89,23 @@ Not $T_{2,12}$            &                  &\multirow{2}{*}{$2^{27}=134,217,72
 \label{tab:comparison-b2}
 \centering
 \caption{Comparison Matrix of the Standard Definitions}
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\note{X = done, O = target} \\
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
 \cline{1-1}
 \!\!\!\!$T_{2,1}$\!\!\!\!\\ \cline{1-2}
-         &\!\!\!\!$T_{2,2}$\!\!\!\!\\ \cline{1-3}
+    O    &\!\!\!\!$T_{2,2}$\!\!\!\!\\ \cline{1-3}
          &         &\!\!\!\!$T_{2,3}$\!\!\!\!\\ \cline{1-4}
          &         &         &\!\!\!\!$T_{2,4}$\!\!\!\!\\ \cline{1-5}
-         &         &         &         &\!\!\!\!$T_{2,5}$\!\!\!\!\\ \cline{1-6}
-         &         &         &         &         &\!\!\!\!$T_{2,6}$\!\!\!\!\\ \cline{1-7}
+          &         &         &    O    &\!\!\!\!$T_{2,5}$\!\!\!\!\\ \cline{1-6}
+    X    &         &         &         &         &\!\!\!\!$T_{2,6}$\!\!\!\!\\ \cline{1-7}
          &         &         &         &         &         &\!\!\!\!$T_{2,7}$\!\!\!\!\\ \cline{1-8}
-         &         &         &         &         &         &         &\!\!\!\!$T_{2,8}$\!\!\!\!\\ \cline{1-9}
+         &         &         &         &         &         &      O  &\!\!\!\!$T_{2,8}$\!\!\!\!\\ \cline{1-9}
          &         &         &         &         &         &         &         &\!\!\!\!$T_{2,9}$\!\!\!\!\\ \cline{1-10}
-         &         &         &         &         &         &         &         &         &\!\!\!\!$T_{2,10}$\!\!\!\!\\ \cline{1-11}
+         &         &         &         &         &         &         &         &     O   &\!\!\!\!$T_{2,10}$\!\!\!\!\\ \cline{1-11}
          &         &         &         &         &         &         &         &         &         &\!\!\!\!$T_{2,11}$\!\!\!\!\\ \cline{1-12}
          &         &         &         &         &         &         &         &         &         &         &\!\!\!\!$T_{2,12}$\!\!\!\!\\ \cline{1-13}
-         &         &         &         &         &         &         &         &         &         &         &         &\!\!\!\!$T_{2,13}$\!\!\!\!\\ \hline
+         &         &         &         &         &         &         &         &         &         &         &         &\!\!\!\!$T_{2,13}$\!\!\!\!\\ \cline{1-14}
+         &         &         &         &         &         &         &         &         &         &         &         &     &\!\!\!\!$T_{2,14}$\!\!\!\!\\ \hline
 \end{tabular}
 \end{table}
 
@@ -79,14 +113,16 @@ Not $T_{2,12}$            &                  &\multirow{2}{*}{$2^{27}=134,217,72
 \label{tab:comparison-bn}
 \centering
 \caption{Comparison Matrix of the Extended Definitions}
+\note{X = done, O = target} \\
 \begin{tabular}{|c|c|c|c|c|c|c|}
 \cline{1-1}
 \!\!\!\!$T_{n,1}$\!\!\!\!\\ \cline{1-2}
-         &\!\!\!\!$T_{n,2}$\!\!\!\!\\ \cline{1-3}
-         &         &\!\!\!\!$T_{n,3}$\!\!\!\!\\ \cline{1-4}
-         &         &         &\!\!\!\!$T_{n,4}$\!\!\!\!\\ \cline{1-5}
-         &         &         &         &\!\!\!\!$T_{n,5}$\!\!\!\!\\ \cline{1-6}
-         &         &         &         &         &\!\!\!\!$T_{n,6}$\!\!\!\!\\ \hline
+    O    &\!\!\!\!$T_{n,2}$\!\!\!\!\\ \cline{1-3}
+         &    O    &\!\!\!\!$T_{n,3}$\!\!\!\!\\ \cline{1-4}
+         &         &    O     &\!\!\!\!$T_{n,4}$\!\!\!\!\\ \cline{1-5}
+         &         &         &     O   &\!\!\!\!$T_{n,5}$\!\!\!\!\\ \cline{1-6}
+    O    &         &         &         &         &\!\!\!\!$T_{n,6}$\!\!\!\!\\ \cline{1-7}
+         &         &         &         &         &\!\!\!\!&      $T_{n,7}$\!\!\!\!\\ \hline
 \end{tabular}
 \end{table}
 
@@ -94,24 +130,39 @@ Not $T_{2,12}$            &                  &\multirow{2}{*}{$2^{27}=134,217,72
 
 \section{The Original Sequence}
 
-\subsection{Definition 1 of \TotalOriginals\xspace -- Parity of Hamming Weight}
+\subsection{Definition \arabic{stddefctr} of \TotalOriginals\xspace -- Parity of Hamming Weight}
 
 \note{This definition appears in \cite{Spiegelhofer_2020, Allouche-Shallit_1999, OEIS-TMS}}
 
 The Hamming Weight, as typically defined, is the digit sum of a binary number. In other words, it is a count of the high bits in a given number. A common way to generate the \TMS is to take the parity\footnote{Whether a number is odd or even} of the Hamming Weight\footnote{The count of $1$s in the binary representation of a number} for each natural number. We can define that as follows:
 
 \begin{equation}
-    \label{eq:p2d01}
+    \edef\tempLabel{eq:p2_d\arabic{stddefctr}}
+    \label{\tempLabel}
     \begin{aligned}
       p(0) &= 0 \\
       p(n) &= n + p\left(\floor{\dfrac{n}{2}}\right) \pmod{2} \\
-T_{2,1}(n) &= p(n)
+T_{2,\arabic{stddefctr}}(n) &= p(n)
     \end{aligned}
 \end{equation}
 
 The subscript indicates that we are using $2$ players (writing in base $2$) and that we are using the first definition laid out in this paper. Note that when we extend to n players, the $T$ function will get a second parameter for the number of players, so it will look like $T_{n,d}(x, s)$, where $s$ is the size of the player pool, and therefore the base we use to define the sequence.
 
-\subsection{Definition 2 of \TotalOriginals\xspace -- Invert and Extend}
+\stepcounter{stddefctr}
+\subsection{Definition \arabic{stddefctr} of \TotalOriginals\xspace -- Root of Unity}
+
+\note{This appears in \cite{OEIS-TMS-inv}}
+
+\begin{equation}
+    \edef\tempLabel{eq:p2_d\arabic{stddefctr}}
+    \label{\tempLabel}
+    \begin{aligned}
+T_{2,\arabic{stddefctr}}(n) &= \dfrac{1 - (-1)^{p(n)}}{2}
+    \end{aligned}
+\end{equation}
+
+\stepcounter{stddefctr}
+\subsection{Definition \arabic{stddefctr} of \TotalOriginals\xspace -- Invert and Extend}
 
 \note{Appears in \cite{OEIS-TMS}}
 
@@ -136,19 +187,22 @@ Given the above, we can define a recurrence relation that will give us individua
 \note{Should the below have a +1 inside the log?}
 
 \begin{equation}
-    \label{eq:p2d02}
+    \edef\tempLabel{eq:p2_d\arabic{stddefctr}}
+    \label{\tempLabel}
     \begin{aligned}
-T_{2,2}(0) &= 0 \\
-T_{2,2}(n) &= T_{2,2}\left(n - 2^{\floor{\log_2(n)}}\right) + 1 \pmod{2}
+T_{2,\arabic{stddefctr}}(0) &= 0 \\
+T_{2,\arabic{stddefctr}}(n) &= T_{2,\arabic{stddefctr}}\left(n - 2^{\floor{\log_2(n)}}\right) + 1 \pmod{2}
     \end{aligned}
 \end{equation}
 
-\subsection{Definition 3 of \TotalOriginals\xspace -- Substitute and Flatten}
+\stepcounter{stddefctr}
+\subsection{Definition \arabic{stddefctr} of \TotalOriginals\xspace -- Substitute and Flatten}
 
 \note{This definition appears in \cite{Spiegelhofer_2020, Kolář-Nori_1991, OEIS-TMS}}
 
 \begin{equation}
-    \label{eq:p2d03}
+    \edef\tempLabel{eq:p2_d\arabic{stddefctr}}
+    \label{\tempLabel}
     \begin{aligned}
       s(n) &= \begin{cases}
           \tuple{0, 1}, & \text{if } n = 0 \\
@@ -156,7 +210,7 @@ T_{2,2}(n) &= T_{2,2}\left(n - 2^{\floor{\log_2(n)}}\right) + 1 \pmod{2}
       \end{cases} \\
       t(0) &= \tuple{0} \\
       t(n) &= \bigparallel_{i=0}^{2^{n-1}-1} s(t(n-1)_i)  \\
-T_{2,3}(n) &= t(\ceil{\log_2(n + 1)})_n
+T_{2,\arabic{stddefctr}}(n) &= t(\ceil{\log_2(n + 1)})_n
     \end{aligned}
 \end{equation}
 
@@ -167,19 +221,21 @@ So for example, calculating $T_{2,3}(3)$ would look like:
       t(0) &= \tuple{0} \\
       t(1) &= \bigparallel_{i=0}^{0} s(t(0)_i) = \tuple{0, 1} \\
       t(2) &= \bigparallel_{i=0}^{1} s(t(1)_i) = \tuple{0, 1, 1, 0} \\
-T_{2,3}(3) &= t(\ceil{\log_2(3 + 1)})_3 \\
+T_{2,\arabic{stddefctr}}(3) &= t(\ceil{\log_2(3 + 1)})_3 \\
            &= t(2)_3 \\
            &= \tuple{0, 1, 1, 0}_3 \\
            &= 0
     \end{aligned}
 \end{equation}
 
-\subsection{Definition 4 of \TotalOriginals\xspace -- Recursive Rotation}
+\stepcounter{stddefctr}
+\subsection{Definition \arabic{stddefctr} of \TotalOriginals\xspace -- Recursive Rotation}
 
 Another way to phrase the above definition is as recursive rotation. If we decompose $s$, we can instead represent it as:
 
 \begin{equation}
-    \label{eq:p2d04}
+    \edef\tempLabel{eq:p2_d\arabic{stddefctr}}
+    \label{\tempLabel}
     \begin{aligned}
 r(\mathbf{x}, i) &= \begin{aligned}[c]
                    &\tuple{x_{0 + i \mod{|\mathbf{x}|}}, x_{1 + i \mod{|\mathbf{x}|}}, \ldots} \\
@@ -188,24 +244,27 @@ r(\mathbf{x}, i) &= \begin{aligned}[c]
             t(0) &= \tuple{0} \\
             t(1) &= \tuple{0, 1} \\
             t(n) &= \bigparallel_{i=0}^1 r\left(t(n-1), i \cdot 2^{n-2}\right) \\
-      T_{2,4}(n) &= t(\ceil{\log_2(n + 1)})_n
+      T_{2,\arabic{stddefctr}}(n) &= t(\ceil{\log_2(n + 1)})_n
     \end{aligned}
 \end{equation}
 
-\subsection{Definition 5 of \TotalOriginals\xspace -- Recursion}
+\stepcounter{stddefctr}
+\subsection{Definition \arabic{stddefctr} of \TotalOriginals\xspace -- Recursion}
 
 \note{This definition appears in \cite{Kolář-Nori_1991, OEIS-TMS}}
 
 \begin{equation}
-    \label{eq:p2d05}
+    \edef\tempLabel{eq:p2_d\arabic{stddefctr}}
+    \label{\tempLabel}
     \begin{aligned}
-   T_{2,5}(0) &= 0 \\
-  T_{2,5}(2n) &= T_{2,5}(n) \\
-T_{2,5}(2n+1) &= 1 - T_{2,5}(n) \pmod{2}
+   T_{2,\arabic{stddefctr}}(0) &= 0 \\
+  T_{2,\arabic{stddefctr}}(2n) &= T_{2,\arabic{stddefctr}}(n) \\
+T_{2,\arabic{stddefctr}}(2n+1) &= 1 - T_{2,\arabic{stddefctr}}(n) \pmod{2}
     \end{aligned}
 \end{equation}
 
-\subsection{Definition 6 of \TotalOriginals\xspace -- Highest Bit Difference}
+\stepcounter{stddefctr}
+\subsection{Definition \arabic{stddefctr} of \TotalOriginals\xspace -- Highest Bit Difference}
 
 \note{This definition appears in \cite{Arndt_2010}}
 
@@ -214,7 +273,7 @@ T_{2,5}(2n+1) &= 1 - T_{2,5}(n) \pmod{2}
 \noindent\begin{minipage}[H]{0.48\textwidth}\begin{lstlisting}[style=pythonstyle]
 from itertools import count
 
-def p2_d06():
+def p2_d07():
     value = 1
     for n in count():
         # Assumes that (-1).bit_length() == 1
@@ -225,35 +284,41 @@ def p2_d06():
         yield value
 \end{lstlisting}\end{minipage}
 
+\note{Should there be a +1 inside that call to log2?}
+
 \begin{equation}
-    \label{eq:p2d06}
+    \edef\tempLabel{eq:p2_d\arabic{stddefctr}}
+    \label{\tempLabel}
     \begin{aligned}
-T_{2,6}(0) &= 0 \\
-T_{2,6}(n) &= \begin{aligned}[c]
+T_{2,\arabic{stddefctr}}(0) &= 0 \\
+T_{2,\arabic{stddefctr}}(n) &= \begin{aligned}[c]
     &\floor{\log_2(n \oplus (n - 1))} \\
-    &+ T_{2,6}(n - 1) \pm 1
+    &+ T_{2,\arabic{stddefctr}}(n - 1) \pm 1
 \end{aligned} \pmod{2}
     \end{aligned}
 \end{equation}
 
-\subsection{Definition 7 of \TotalOriginals\xspace -- Floor-Ceiling Difference}
+\stepcounter{stddefctr}
+\subsection{Definition \arabic{stddefctr} -- Floor-Ceiling Difference}
 
 \note{Appears in \cite{OEIS-TMS}}
 
 \begin{equation}
-    \label{eq:p2d07}
+    \edef\tempLabel{eq:p2_d\arabic{stddefctr}}
+    \label{\tempLabel}
     \begin{aligned}
       b(n) &= \begin{cases}
           &n \quad \text{if } n \le 1 \\
           &b\left(\ceil{\dfrac{n}{2}}\right) - b\left(\floor{\dfrac{n}{2}}\right) \quad \text{otherwise}
 \end{cases} \\
-T_{2,7}(n) &= \dfrac{1 - b(2n)}{2} \pmod{2}
+T_{2,\arabic{stddefctr}}(n) &= \dfrac{1 - b(2n)}{2} \pmod{2}
     \end{aligned}
 \end{equation}
 
 \note{This seems very similar to the highest bit difference definition, and I think it may be what that was derived from}
 
-\subsection{Definition 8 of \TotalOriginals\xspace -- Odious Number Derivation}
+\stepcounter{stddefctr}
+\subsection{Definition \arabic{stddefctr} -- Odious Number Derivation}
 
 \note{Definition appears in \cite{OEIS-TMS}}
 
@@ -262,15 +327,16 @@ Another way to generate the \TMS is to take the sequence of Odious Numbers \cite
 \noindent\begin{minipage}[H]{0.48\textwidth}\begin{lstlisting}[style=pythonstyle]
 from itertools import count
 
-def seq_p2_d08():
+def seq_p2_d09():
     for i in count():
         if i.bit_count() & 1:
             yield (i + 1) & 1
 \end{lstlisting}\end{minipage}
 
 \begin{equation}
-\label{eq:p2d08}
-T_{2,8}(n) = \text{Odious}(n) + 1 \pmod{2}
+\edef\tempLabel{eq:p2_d\arabic{stddefctr}}
+\label{\tempLabel}
+T_{2,\arabic{stddefctr}}(n) = \text{Odious}(n) + 1 \pmod{2}
 \end{equation}
 
 \note{Aren't Odious Numbers exactly the numbers where the parity of the hamming weight is 1? So doesn't that mean that the Thue-Morse Sequence selects which numbers are Odious? From cursory testing, it seems to. There's something to be had there.}
@@ -286,7 +352,8 @@ T_{2,8}(n) = \text{Odious}(n) + 1 \pmod{2}
 \end{equation*}
 }
 
-\subsection{Definition 9 of \TotalOriginals\xspace -- Evil Numbers Derivation 1}
+\stepcounter{stddefctr}
+\subsection{Definition \arabic{stddefctr} -- Evil Numbers Derivation 1}
 
 \note{Appears in \cite{OEIS-TMS}}
 
@@ -300,48 +367,54 @@ def evil():
         if i.bit_count() & 1 == 0:
             yield i
 
-def p2_d09():
+def p2_d10():
     for n, i in enumerate(evil()):
         yield (i - 2 * n) & 1
 \end{lstlisting}\end{minipage}
 
 \begin{equation}
-\label{eq:p2d09}
-T_{2,9}(n) = \text{Evil}(n) - 2n \pmod{2}
+\edef\tempLabel{eq:p2_d\arabic{stddefctr}}
+\label{\tempLabel}
+T_{2,\arabic{stddefctr}}(n) = \text{Evil}(n) - 2n \pmod{2}
 \end{equation}
 
-\subsection{Definition 10 of \TotalOriginals\xspace -- Evil Numbers Derivation 2}
+\stepcounter{stddefctr}
+\subsection{Definition \arabic{stddefctr} -- Evil Numbers Derivation 2}
 
 \note{Appears in \cite{OEIS-TMS-inv}}
 
-A second, more-efficient derivation from the Evil Numbers is as follows, where $ce()$ is the count of Evil Numbers less than $n$ \cite{OEIS-A159481}, and $p()$ is the function defined in Equation \ref{eq:p2d01}.
+A second, more-efficient derivation from the Evil Numbers is as follows, where $ce()$ is the count of Evil Numbers less than $n$ \cite{OEIS-A159481}, and $p()$ is the function defined in Equation \ref{eq:p2_d1}.
 
 \begin{equation}
-    \label{eq:p2d10}
+    \edef\tempLabel{eq:p2_d\arabic{stddefctr}}
+    \label{\tempLabel}
     \begin{aligned}
      ce(n) &= \floor{\dfrac{n + 1}{2}} + p(n + 1) \cdot (n + 1 \mod{2}) \\
-T_{2,10}(n) &= 1 - ce(n + 1) + ce(n)
+T_{2,\arabic{stddefctr}}(n) &= 1 - ce(n + 1) + ce(n)
     \end{aligned}
 \end{equation}
 
-\subsection{Definition 11 of \TotalOriginals\xspace -- Odious \& Evil Numbers Derivation}
+\stepcounter{stddefctr}
+\subsection{Definition \arabic{stddefctr} -- Odious \& Evil Numbers Derivation}
 
 \note{Appears in \cite{OEIS-TMS-inv}}
 
-A second, more-efficient derivation from the Evil Numbers is as follows, where $ce()$ is the count of Evil Numbers less than $n$ \cite{OEIS-A159481}, and $p()$ is the function defined in Equation \ref{eq:p2d01}.
+A second, more-efficient derivation from the Evil Numbers is as follows, where $ce()$ is the count of Evil Numbers less than $n$ \cite{OEIS-A159481}, and $p()$ is the function defined in Equation \ref{eq:p2_d1}.
 
 \begin{equation}
-    \label{eq:p2d11}
+    \edef\tempLabel{eq:p2_d\arabic{stddefctr}}
+    \label{\tempLabel}
     \begin{aligned}
      oe(n) &= \begin{cases}
          &\text{Odious}\left(\floor{\dfrac{n}{2}}\right) \quad \text{if } n \mod{2} = 0 \\
          &\text{Evil}\left(\floor{\dfrac{n}{2}}\right) \quad\quad\; \text{if } n \mod{2} = 1
      \end{cases} \\
-T_{2,11}(n) &= 1 - oe(n) \pmod{2}
+T_{2,\arabic{stddefctr}}(n) &= 1 - oe(n) \pmod{2}
     \end{aligned}
 \end{equation}
 
-\subsection{Definition 12 of \TotalOriginals\xspace -- Gould's Sequence Derivation}
+\stepcounter{stddefctr}
+\subsection{Definition \arabic{stddefctr} -- Gould's Sequence Derivation}
 
 \note{Appears in \cite{OEIS-TMS}}
 
@@ -350,25 +423,30 @@ Gould's Sequence \cite{OEIS-Gould} are the number of odd entries in a given row 
 \note{Why mod 3? Everything else is mod 2. This definition is unlikely to be extendable, unless you interpret this as the hamming weight of a given row, and extend the idea of hamming weight to those other bases. If so, I predict that the final mod is mod $(n + 1)$}
 
 \begin{equation}
-    \label{eq:p2d12}
+    \edef\tempLabel{eq:p2_d\arabic{stddefctr}}
+    \label{\tempLabel}
     \begin{aligned}
-T_{2,12}(n) &= \text{Gould}(n) - 1 \mod{3} \\
+T_{2,\arabic{stddefctr}}(n) &= \text{Gould}(n) - 1 \mod{3} \\
             &= \left(\sum_{k=0}^n \left(\binom{n}{k} \mod{2} \right)\right) - 1 \mod{3}
     \end{aligned}
 \end{equation}
 
-\subsection{Definition 13 of \TotalOriginals\xspace -- Derivation from Blue Code}
+\stepcounter{stddefctr}
+\subsection{Definition \arabic{stddefctr} -- Derivation from Blue Code}
 
 \note{Appears in \cite{OEIS-TMS}}
 
 In the OEIS, this sequence \cite{OEIS-A193231} is defined as the "binary coding of a polynomial over GF(2), substitute x+1 for x". There are a number of ways to generate it. One of the more computationally-accessible ones is:
 
+\note{I strongly suspect I have translated this incorrectly. See code for canonical version}
+
 \begin{equation}
-    \label{eq:p2d13}
+    \edef\tempLabel{eq:p2_d\arabic{stddefctr}}
+    \label{\tempLabel}
     \begin{aligned}
 \text{A001317}(n) &= \sum_{k=0}^n \left(\binom{n}{k} \mod{2} \right) \cdot 2^k \\
 \text{A193231}(n) &= \bigoplus_{i=0}^{\ceil{\log_2(n)}} \hspace{-5pt} \text{A001317}\left(i \cdot \floor{\dfrac{n \mod{2}}{2^i}}\right) \\
-      T_{2,13}(n) &= \text{A193231}(n) \pmod{2}
+      T_{2,\arabic{stddefctr}}(n) &= \text{A193231}(n) \pmod{2}
     \end{aligned}
 \end{equation}
 
@@ -380,23 +458,23 @@ Translated into words, this function computes the value of Sierpiński's triangl
 
 \section{Proving Equivalence Between Standard Definitions}
 
-\subsection{Correlating Definition 1 and Definition 5}
+\subsection{Correlating Definition 1 and Definition 6}
 
-Note that in Equation \ref{eq:p2d05} where we define $T_{2,5}$, we are working in mod 2, where $+1$ and $-1$ are logically equivalent. We can therefore simplify its definition to be:
+Note that in Equation \ref{eq:p2_d6} where we define $T_{2,6}$, we are working in mod 2, where $+1$ and $-1$ are logically equivalent. We can therefore simplify its definition to be:
 
 \begin{equation}
-    \label{eq:p2d05s}
+    \label{eq:p2d06s}
     \begin{aligned}
-T_{2,5}(0) &= 0 \\
-T_{2,5}(n) &= n + T_{2,5}\left(\floor{\dfrac{n}{2}}\right) \pmod{2}
+T_{2,6}(0) &= 0 \\
+T_{2,6}(n) &= n + T_{2,6}\left(\floor{\dfrac{n}{2}}\right) \pmod{2}
     \end{aligned}
 \end{equation}
 
-This is identical to Equation \ref{eq:p2d01}, where we define $T_{2,1}$.
+This is identical to Equation \ref{eq:p2_d1}, where we define $T_{2,1}$.
 
 \section{The Extensions}
 
-\subsection{Extension 1 of \TotalExtensions\xspace -- Modular Digit Sums}
+\subsection{Extension \arabic{extdefctr} of \TotalExtensions\xspace -- Modular Digit Sums}
 
 \note{Definition appears in \cite{Astudillo_2003, Dekking_2023, OEIS-TMS-3-2}}
 
@@ -412,13 +490,14 @@ p_n(x) &= x + p_n\left(\floor{\dfrac{x}{n}}\right) \pmod{n}
 Under this definition, you can construct the \TMS using the following, starting at 0:
 
 \begin{equation}
-    \label{eq:pnd01}
-    T_{n,1}(x, s) = p_s(x)
+    \edef\tempLabel{eq:pn_d\arabic{extdefctr}}
+    \label{\tempLabel}
+    T_{n,\arabic{extdefctr}}(x, s) = p_s(x)
 \end{equation}
 
 Note that this definition is trivially extensible to non-integer bases, though that is beyond the scope of this paper.
 
-\subsubsection{Proof of Equivalence with Original Definition 1}
+\subsubsection{Proof of Equivalence with Original Definition \arabic{extdefctr}}
 
 It is clear from visual inspection that $p_2$ is identical to our original definition of $p$.
 
@@ -431,7 +510,22 @@ x + \floor{\dfrac{x}{2}} + p_2\left(\floor{\dfrac{x}{2^2}}\right) &= x + \floor{
     \end{aligned}
 \end{equation}
 
-\subsection{Extension 2 of \TotalExtensions\xspace -- Increment and Extend}
+\stepcounter{extdefctr}
+\subsection{Extended Definition \arabic{extdefctr} of \TotalExtensions\xspace -- Roots of Unity}
+
+\begin{equation}
+    \edef\tempLabel{eq:pn_d\arabic{extdefctr}}
+    \label{\tempLabel}
+    \begin{aligned}
+    f(x) &= k \text{ where } \omega^k = x \text{ and } \omega^s = 1 \\
+T_{n,\arabic{extdefctr}}(n) &= f\left(\omega^{p(n)}\right)
+    \end{aligned}
+\end{equation}
+
+\subsubsection{Proof of Equivalence with Original Definition \arabic{extdefctr}}
+
+\stepcounter{extdefctr}
+\subsection{Extended Definition \arabic{extdefctr} of \TotalExtensions\xspace -- Increment and Extend}
 
 In the original version of this definition, we inverted the elements. In base $2$, this is the same thing as adding $1$ (mod $2$). Given that, let $t(x, n)$ be the first $n^x$ elements of the \ETMS, for $n \in \Integers_{\ge 2}$.
 
@@ -453,21 +547,24 @@ t(x, n) &= t(x - 1, n) \cdot \text{inc}(t(x - 1, n), n)
 Given the above, we can define a recurrence relation that will give us individual elements. It will be less efficient to compute, but will allow proofs of equivalence to be easier.
 
 \begin{equation}
-    \label{eq:pnd02}
+    \edef\tempLabel{eq:pn_d\arabic{extdefctr}}
+    \label{\tempLabel}
     \begin{aligned}
-T_{n,2}(0, s) &= 0 \\
-T_{n,2}(x, s) &= T_{n,2}\left(x - s^{\floor{\log_s(x)}}, s\right) + 1 \pmod{s}
+T_{n,\arabic{extdefctr}}(0, s) &= 0 \\
+T_{n,\arabic{extdefctr}}(x, s) &= T_{n,\arabic{extdefctr}}\left(x - s^{\floor{\log_s(x)}}, s\right) + 1 \pmod{s}
     \end{aligned}
 \end{equation}
 
 \subsubsection{Proof of Equivalence with Original Definition 2}
 
-\subsection{Extension 3 of \TotalExtensions\xspace -- Substitute and Flatten}
+\stepcounter{extdefctr}
+\subsection{Extended Definition \arabic{extdefctr} of \TotalExtensions\xspace -- Substitute and Flatten}
 
 \note{There's a bit of a leap here, since we have to explain why the rotation is equivalent to the binary choice presented in the original. There also might be a better syntax to define the rotation, perhaps using the format used in inv and inc.}
 
 \begin{equation}
-    \label{eq:pnd03}
+    \edef\tempLabel{eq:pn_d\arabic{extdefctr}}
+    \label{\tempLabel}
     \begin{aligned}
             b(s) &= \tuple{0, 1, \cdots, s - 2, s - 1} \\
 r(\mathbf{x}, i) &= \begin{aligned}[c]
@@ -477,16 +574,18 @@ r(\mathbf{x}, i) &= \begin{aligned}[c]
          s(x, s) &= r(b(s), x) \\
             t(0) &= \tuple{0} \\
          t(x, s) &= \bigparallel_{i=0}^{2^{x-1}-1} s(t(x-1)_i, s)  \\
-   T_{n,3}(x, s) &= t(\ceil{\log_s(x + 1)}, s)_x
+   T_{n,\arabic{extdefctr}}(x, s) &= t(\ceil{\log_s(x + 1)}, s)_x
     \end{aligned}
 \end{equation}
 
-\subsubsection{Proof of Equivalence with Original Definition 3}
+\subsubsection{Proof of Equivalence with Original Definition \arabic{extdefctr}}
 
-\subsection{Extension 4 of \TotalExtensions\xspace -- Recursive Rotation}
+\stepcounter{extdefctr}
+\subsection{Extended Definition \arabic{extdefctr} of \TotalExtensions\xspace -- Recursive Rotation}
 
 \begin{equation}
-    \label{eq:pnd04}
+    \edef\tempLabel{eq:pn_d\arabic{extdefctr}}
+    \label{\tempLabel}
     \begin{aligned}
 r(\mathbf{x}, i) &= \begin{aligned}[c]
                    &\tuple{x_{0 + i \mod{|\mathbf{x}|}}, x_{1 + i \mod{|\mathbf{x}|}}, \ldots} \\
@@ -495,34 +594,38 @@ r(\mathbf{x}, i) &= \begin{aligned}[c]
          t(0, s) &= \tuple{0} \\
          t(1, s) &= \tuple{0, 1, \ldots, s - 1} \\
          t(x, s) &= \bigparallel_{i=0}^{s-1} r\left(t(x-1, s), i \cdot s^{x-2}\right) \\
-   T_{n,4}(x, s) &= t(\ceil{\log_s(x + 1)}, s)_x
+   T_{n,\arabic{extdefctr}}(x, s) &= t(\ceil{\log_s(x + 1)}, s)_x
     \end{aligned}
 \end{equation}
 
-\subsubsection{Proof of Equivalence with Original Definition 4}
+\subsubsection{Proof of Equivalence with Original Definition \arabic{extdefctr}}
 
-\subsection{Extension 5 of \TotalExtensions\xspace -- Recursion}
+\stepcounter{extdefctr}
+\subsection{Extended Definition \arabic{extdefctr} of \TotalExtensions\xspace -- Recursion}
 
-\note{Need to reference eq \ref{eq:p2d05s} in definition}
+\note{Need to reference eq \ref{eq:p2d06s} in definition}
 
-\subsubsection{Proof of Equivalence with Original Definition 5}
+\subsubsection{Proof of Equivalence with Original Definition \arabic{extdefctr}}
 
-\subsection{Extension 6 of \TotalExtensions\xspace -- Highest Digit Difference}
+\stepcounter{extdefctr}
+\subsection{Extended Definition \arabic{extdefctr} of \TotalExtensions\xspace -- Highest Digit Difference}
 
 \begin{equation}
+    \edef\tempLabel{eq:pn_d\arabic{extdefctr}}
+    \label{\tempLabel}
     \begin{aligned}
 \text{XOR}_{n}(a, b) &= \hspace{-13pt} \sum_{i=0}^{\ceil{\log_{n}(\max(a,b) + 1)}} \hspace{-15pt} n^i \left(\floor{\dfrac{a}{n^i}} - \floor{\dfrac{b}{n^i}} \mod{n}\right) \\
-       T_{n,6}(0, s) &= 0 \\
-       T_{n,6}(x, s) &= \begin{aligned}[c]
+       T_{n,\arabic{extdefctr}}(0, s) &= 0 \\
+       T_{n,\arabic{extdefctr}}(x, s) &= \begin{aligned}[c]
            &\floor{\log_s(\text{XOR}_{s}(x, x - 1))} \\
-           &+ T_{n,6}(x - 1, s) + 1
+           &+ T_{n,\arabic{extdefctr}}(x - 1, s) + 1
        \end{aligned} \pmod{s}
     \end{aligned}
 \end{equation}
 
 \note{Substitute n for 2, then simplify, plus a bit}
 
-\subsubsection{Proof of Equivalence with Original Definition 6}
+\subsubsection{Proof of Equivalence with Original Definition \arabic{extdefctr}}
 
 \subsection{Summary}
 
@@ -551,15 +654,19 @@ acknowledgments in the unnumbered footnote on the first page.
 
 \section{Appendix}
 
-\subsection{Complexity of Original Definition 1}
-\label{ca:p2_d01}
+\setcounter{stddefctr}{1}
+\setcounter{extdefctr}{1}
+
+\subsection{Complexity of Original Definition \arabic{stddefctr}}
+\edef\tempLabel{ca:p2_d\arabic{stddefctr}}
+\expandafter\label\expandafter\tempLabel
 
 \subsubsection{Time Complexity}
 
 In an idealized case, this definition will simplify to:
 
 \begin{equation}
-T_{2,1}(n) = \left(\sum_{i=0}^{\ceil{\log_2(n + 1)}} \hspace{-8pt} \floor{\dfrac{n}{2^i} \mod{2}} \right) \mod{2}
+T_{2,\arabic{stddefctr}}(n) = \left(\sum_{i=0}^{\ceil{\log_2(n + 1)}} \hspace{-8pt} \floor{\dfrac{n}{2^i} \mod{2}} \right) \mod{2}
 \end{equation}
 
 This is pretty explicitly $O(\log(n))$ operations. This means that generating the first $n$ entries will take $O(n\log(n))$ operations.
@@ -569,7 +676,7 @@ In languages with dynamically sized integers, this can be slightly more complica
 \renewcommand{\arraystretch}{1.25}
 \begin{table}[H]
     \centering
-    \caption{Time Complexity Summary of Standard Definition 1}
+    \caption{Time Complexity Summary of Standard Definition \arabic{stddefctr}}
     \begin{tabular}{|c|c|c|}
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
@@ -579,7 +686,8 @@ In languages with dynamically sized integers, this can be slightly more complica
         \textbf{In Total} & $O(n \cdot \log(n))$ & $O(n \cdot \log(n)^2 \cdot \log(\log(n)))$ \\
         \hline
     \end{tabular}
-    \label{tab:time_p2_d01}
+    \edef\tempLabel{tab:time_p2_d\arabic{stddefctr}}
+     \expandafter\label\expandafter\tempLabel
 \end{table}
 \renewcommand{\arraystretch}{1}
 
@@ -589,7 +697,7 @@ This is one of the more space-efficient implementations. Each element takes at m
 
 \begin{table}[H]
     \centering
-    \caption{Space Complexity Summary of Standard Definition 1}
+    \caption{Space Complexity Summary of Standard Definition \arabic{stddefctr}}
     \begin{tabular}{|c|c|c|}
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
@@ -599,17 +707,20 @@ This is one of the more space-efficient implementations. Each element takes at m
         \textbf{In Total} & $O(n)$ & $O(n \cdot \log(n))$ \\
         \hline
     \end{tabular}
-    \label{tab:space_p2_d01}
+    \edef\tempLabel{tab:space_p2_d\arabic{stddefctr}}
+     \expandafter\label\expandafter\tempLabel
 \end{table}
 
-\subsection{Complexity of Original Definition 2}
-\label{ca:p2_d02}
+\stepcounter{stddefctr}
+\subsection{Complexity of Original Definition \arabic{stddefctr}}
+\edef\tempLabel{ca:p2_d\arabic{stddefctr}}
+ \expandafter\label\expandafter\tempLabel
 
 \subsubsection{Time Complexity}
 
 \begin{table}[H]
     \centering
-    \caption{Time Complexity Summary of Standard Definition 2}
+    \caption{Time Complexity Summary of Standard Definition \arabic{stddefctr}}
     \begin{tabular}{|c|c|c|}
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
@@ -619,14 +730,15 @@ This is one of the more space-efficient implementations. Each element takes at m
         \textbf{In Total} &  &  \\
         \hline
     \end{tabular}
-    \label{tab:time_p2_d02}
+    \edef\tempLabel{tab:time_p2_d\arabic{stddefctr}}
+     \expandafter\label\expandafter\tempLabel
 \end{table}
 
 \subsubsection{Space Complexity}
 
 \begin{table}[H]
     \centering
-    \caption{Space Complexity Summary of Standard Definition 2}
+    \caption{Space Complexity Summary of Standard Definition \arabic{stddefctr}}
     \begin{tabular}{|c|c|c|}
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
@@ -636,17 +748,20 @@ This is one of the more space-efficient implementations. Each element takes at m
         \textbf{In Total} &  &  \\
         \hline
     \end{tabular}
-    \label{tab:space_p2_d02}
+    \edef\tempLabel{tab:space_p2_d\arabic{stddefctr}}
+     \expandafter\label\expandafter\tempLabel
 \end{table}
 
-\subsection{Complexity of Original Definition 3}
-\label{ca:p2_d03}
+\stepcounter{stddefctr}
+\subsection{Complexity of Original Definition \arabic{stddefctr}}
+\edef\tempLabel{ca:p2_d\arabic{stddefctr}}
+ \expandafter\label\expandafter\tempLabel
 
 \subsubsection{Time Complexity}
 
 \begin{table}[H]
     \centering
-    \caption{Time Complexity Summary of Standard Definition 3}
+    \caption{Time Complexity Summary of Standard Definition \arabic{stddefctr}}
     \begin{tabular}{|c|c|c|}
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
@@ -656,14 +771,15 @@ This is one of the more space-efficient implementations. Each element takes at m
         \textbf{In Total} &  &  \\
         \hline
     \end{tabular}
-    \label{tab:time_p2_d03}
+    \edef\tempLabel{tab:time_p2_d\arabic{stddefctr}}
+     \expandafter\label\expandafter\tempLabel
 \end{table}
 
 \subsubsection{Space Complexity}
 
 \begin{table}[H]
     \centering
-    \caption{Space Complexity Summary of Standard Definition 3}
+    \caption{Space Complexity Summary of Standard Definition \arabic{stddefctr}}
     \begin{tabular}{|c|c|c|}
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
@@ -673,17 +789,20 @@ This is one of the more space-efficient implementations. Each element takes at m
         \textbf{In Total} &  &  \\
         \hline
     \end{tabular}
-    \label{tab:space_p2_d03}
+    \edef\tempLabel{tab:space_p2_d\arabic{stddefctr}}
+     \expandafter\label\expandafter\tempLabel
 \end{table}
 
-\subsection{Complexity of Original Definition 4}
-\label{ca:p2_d04}
+\stepcounter{stddefctr}
+\subsection{Complexity of Original Definition \arabic{stddefctr}}
+\edef\tempLabel{ca:p2_d\arabic{stddefctr}}
+ \expandafter\label\expandafter\tempLabel
 
 \subsubsection{Time Complexity}
 
 \begin{table}[H]
     \centering
-    \caption{Time Complexity Summary of Standard Definition 4}
+    \caption{Time Complexity Summary of Standard Definition \arabic{stddefctr}}
     \begin{tabular}{|c|c|c|}
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
@@ -693,14 +812,15 @@ This is one of the more space-efficient implementations. Each element takes at m
         \textbf{In Total} &  &  \\
         \hline
     \end{tabular}
-    \label{tab:time_p2_d04}
+    \edef\tempLabel{tab:time_p2_d\arabic{stddefctr}}
+     \expandafter\label\expandafter\tempLabel
 \end{table}
 
 \subsubsection{Space Complexity}
 
 \begin{table}[H]
     \centering
-    \caption{Space Complexity Summary of Standard Definition 4}
+    \caption{Space Complexity Summary of Standard Definition \arabic{stddefctr}}
     \begin{tabular}{|c|c|c|}
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
@@ -710,11 +830,55 @@ This is one of the more space-efficient implementations. Each element takes at m
         \textbf{In Total} &  &  \\
         \hline
     \end{tabular}
-    \label{tab:space_p2_d04}
+    \edef\tempLabel{tab:space_p2_d\arabic{stddefctr}}
+     \expandafter\label\expandafter\tempLabel
 \end{table}
 
-\subsection{Complexity of Original Definition 5}
-\label{ca:p2_d05}
+\stepcounter{stddefctr}
+\subsection{Complexity of Original Definition \arabic{stddefctr}}
+\edef\tempLabel{ca:p2_d\arabic{stddefctr}}
+ \expandafter\label\expandafter\tempLabel
+
+\subsubsection{Time Complexity}
+
+\begin{table}[H]
+    \centering
+    \caption{Time Complexity Summary of Standard Definition \arabic{stddefctr}}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} &  &  \\
+        \hline
+        \textbf{In Total} &  &  \\
+        \hline
+    \end{tabular}
+    \edef\tempLabel{tab:time_p2_d\arabic{stddefctr}}
+     \expandafter\label\expandafter\tempLabel
+\end{table}
+
+\subsubsection{Space Complexity}
+
+\begin{table}[H]
+    \centering
+    \caption{Space Complexity Summary of Standard Definition \arabic{stddefctr}}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} &  &  \\
+        \hline
+        \textbf{In Total} &  &  \\
+        \hline
+    \end{tabular}
+    \edef\tempLabel{tab:space_p2_d\arabic{stddefctr}}
+     \expandafter\label\expandafter\tempLabel
+\end{table}
+
+\stepcounter{stddefctr}
+\subsection{Complexity of Original Definition \arabic{stddefctr}}
+\edef\tempLabel{ca:p2_d\arabic{stddefctr}}
+ \expandafter\label\expandafter\tempLabel
 
 \subsubsection{Time Complexity}
 
@@ -723,7 +887,7 @@ At each step in calculation, the value of $n$ passed to the next recursion is ha
 \renewcommand{\arraystretch}{1.25}
 \begin{table}[H]
     \centering
-    \caption{Time Complexity Summary of Standard Definition 5}
+    \caption{Time Complexity Summary of Standard Definition \arabic{stddefctr}}
     \begin{tabular}{|c|c|c|}
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
@@ -733,7 +897,8 @@ At each step in calculation, the value of $n$ passed to the next recursion is ha
         \textbf{In Total} & $O(n \cdot \log(n))$ & $O(n \cdot \log(n)^2)$ \\
         \hline
     \end{tabular}
-    \label{tab:time_p2_d05}
+    \edef\tempLabel{tab:time_p2_d\arabic{stddefctr}}
+     \expandafter\label\expandafter\tempLabel
 \end{table}
 \renewcommand{\arraystretch}{1}
 
@@ -743,7 +908,7 @@ This is one of the more space-efficient implementations. Each element takes at m
 
 \begin{table}[H]
     \centering
-    \caption{Space Complexity Summary of Standard Definition 1}
+    \caption{Space Complexity Summary of Standard Definition \arabic{stddefctr}}
     \begin{tabular}{|c|c|c|}
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
@@ -753,11 +918,14 @@ This is one of the more space-efficient implementations. Each element takes at m
         \textbf{In Total} & $O(n)$ & $O(n \cdot \log(n))$ \\
         \hline
     \end{tabular}
-    \label{tab:space_p2_d05}
+    \edef\tempLabel{tab:space_p2_d\arabic{stddefctr}}
+     \expandafter\label\expandafter\tempLabel
 \end{table}
 
-\subsection{Complexity of Original Definition 6}
-\label{ca:p2_d06}
+\stepcounter{stddefctr}
+\subsection{Complexity of Original Definition \arabic{stddefctr}}
+\edef\tempLabel{ca:p2_d\arabic{stddefctr}}
+ \expandafter\label\expandafter\tempLabel
 
 \subsubsection{Time Complexity}
 
@@ -766,7 +934,7 @@ This is one of the more space-efficient implementations. Each element takes at m
 \renewcommand{\arraystretch}{1.25}
 \begin{table}[H]
     \centering
-    \caption{Time Complexity Summary of Standard Definition 6}
+    \caption{Time Complexity Summary of Standard Definition \arabic{stddefctr}}
     \begin{tabular}{|c|c|c|}
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
@@ -776,7 +944,8 @@ This is one of the more space-efficient implementations. Each element takes at m
         \textbf{In Total} & $O(n \cdot \log(n))$ & $O\left(n \cdot \log(n)^2\right)$ \\
         \hline
     \end{tabular}
-    \label{tab:time_p2_d06}
+    \edef\tempLabel{tab:time_p2_d\arabic{stddefctr}}
+     \expandafter\label\expandafter\tempLabel
 \end{table}
 \renewcommand{\arraystretch}{1}
 
@@ -784,7 +953,7 @@ This is one of the more space-efficient implementations. Each element takes at m
 
 \begin{table}[H]
     \centering
-    \caption{Space Complexity Summary of Standard Definition 6}
+    \caption{Space Complexity Summary of Standard Definition \arabic{stddefctr}}
     \begin{tabular}{|c|c|c|}
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
@@ -794,11 +963,14 @@ This is one of the more space-efficient implementations. Each element takes at m
         \textbf{In Total} & $O(n)$ & $O(n \cdot \log(n))$ \\
         \hline
     \end{tabular}
-    \label{tab:space_p2_d06}
+    \edef\tempLabel{tab:space_p2_d\arabic{stddefctr}}
+     \expandafter\label\expandafter\tempLabel
 \end{table}
 
-\subsection{Complexity of Original Definition 7}
-\label{ca:p2_d07}
+\stepcounter{stddefctr}
+\subsection{Complexity of Original Definition \arabic{stddefctr}}
+\edef\tempLabel{ca:p2_d\arabic{stddefctr}}
+ \expandafter\label\expandafter\tempLabel
 
 \subsubsection{Time Complexity}
 
@@ -807,7 +979,7 @@ This is one of the more space-efficient implementations. Each element takes at m
 \renewcommand{\arraystretch}{1.25}
 \begin{table}[H]
     \centering
-    \caption{Time Complexity Summary of Standard Definition 7}
+    \caption{Time Complexity Summary of Standard Definition \arabic{stddefctr}}
     \begin{tabular}{|c|c|c|}
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
@@ -817,7 +989,8 @@ This is one of the more space-efficient implementations. Each element takes at m
         \textbf{In Total} & $O\left(n^2\right)$ & $O\left(n^2 \cdot \log(n) \cdot \log(\log(n))\right)$ \\
         \hline
     \end{tabular}
-    \label{tab:time_p2_d07}
+    \edef\tempLabel{tab:time_p2_d\arabic{stddefctr}}
+     \expandafter\label\expandafter\tempLabel
 \end{table}
 
 \subsubsection{Space Complexity}
@@ -828,7 +1001,7 @@ In a recursive approach, you will end up descending $O(\log(n))$ stack frames, e
 
 \begin{table}[H]
     \centering
-    \caption{Space Complexity Summary of Standard Definition 7}
+    \caption{Space Complexity Summary of Standard Definition \arabic{stddefctr}}
     \begin{tabular}{|cc|c|c|}
         \hline
         & & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
@@ -842,18 +1015,21 @@ In a recursive approach, you will end up descending $O(\log(n))$ stack frames, e
         & \textbf{In Total} & $O\left(n^2\right)$ & $O\left(n^2 \cdot \log(n)\right)$ \\
         \hline
     \end{tabular}
-    \label{tab:space_p2_d07}
+    \edef\tempLabel{tab:space_p2_d\arabic{stddefctr}}
+     \expandafter\label\expandafter\tempLabel
 \end{table}
 \renewcommand{\arraystretch}{1}
 
-\subsection{Complexity of Original Definition 8}
-\label{ca:p2_d08}
+\stepcounter{stddefctr}
+\subsection{Complexity of Original Definition \arabic{stddefctr}}
+\edef\tempLabel{ca:p2_d\arabic{stddefctr}}
+ \expandafter\label\expandafter\tempLabel
 
 \subsubsection{Time Complexity}
 
 \begin{table}[H]
     \centering
-    \caption{Time Complexity Summary of Standard Definition 8}
+    \caption{Time Complexity Summary of Standard Definition \arabic{stddefctr}}
     \begin{tabular}{|c|c|c|}
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
@@ -863,14 +1039,15 @@ In a recursive approach, you will end up descending $O(\log(n))$ stack frames, e
         \textbf{In Total} &  &  \\
         \hline
     \end{tabular}
-    \label{tab:time_p2_d08}
+    \edef\tempLabel{tab:time_p2_d\arabic{stddefctr}}
+     \expandafter\label\expandafter\tempLabel
 \end{table}
 
 \subsubsection{Space Complexity}
 
 \begin{table}[H]
     \centering
-    \caption{Space Complexity Summary of Standard Definition 8}
+    \caption{Space Complexity Summary of Standard Definition \arabic{stddefctr}}
     \begin{tabular}{|c|c|c|}
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
@@ -880,17 +1057,20 @@ In a recursive approach, you will end up descending $O(\log(n))$ stack frames, e
         \textbf{In Total} &  &  \\
         \hline
     \end{tabular}
-    \label{tab:space_p2_d08}
+    \edef\tempLabel{tab:space_p2_d\arabic{stddefctr}}
+     \expandafter\label\expandafter\tempLabel
 \end{table}
 
-\subsection{Complexity of Original Definition 9}
-\label{ca:p2_d09}
+\stepcounter{stddefctr}
+\subsection{Complexity of Original Definition \arabic{stddefctr}}
+\edef\tempLabel{ca:p2_d\arabic{stddefctr}}
+ \expandafter\label\expandafter\tempLabel
 
 \subsubsection{Time Complexity}
 
 \begin{table}[H]
     \centering
-    \caption{Time Complexity Summary of Standard Definition 9}
+    \caption{Time Complexity Summary of Standard Definition \arabic{stddefctr}}
     \begin{tabular}{|c|c|c|}
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
@@ -900,14 +1080,15 @@ In a recursive approach, you will end up descending $O(\log(n))$ stack frames, e
         \textbf{In Total} &  &  \\
         \hline
     \end{tabular}
-    \label{tab:time_p2_d09}
+    \edef\tempLabel{tab:time_p2_d\arabic{stddefctr}}
+     \expandafter\label\expandafter\tempLabel
 \end{table}
 
 \subsubsection{Space Complexity}
 
 \begin{table}[H]
     \centering
-    \caption{Space Complexity Summary of Standard Definition 9}
+    \caption{Space Complexity Summary of Standard Definition \arabic{stddefctr}}
     \begin{tabular}{|c|c|c|}
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
@@ -917,17 +1098,20 @@ In a recursive approach, you will end up descending $O(\log(n))$ stack frames, e
         \textbf{In Total} &  &  \\
         \hline
     \end{tabular}
-    \label{tab:space_p2_d09}
+    \edef\tempLabel{tab:space_p2_d\arabic{stddefctr}}
+     \expandafter\label\expandafter\tempLabel
 \end{table}
 
-\subsection{Complexity of Original Definition 10}
-\label{ca:p2_d10}
+\stepcounter{stddefctr}
+\subsection{Complexity of Original Definition \arabic{stddefctr}}
+\edef\tempLabel{ca:p2_d\arabic{stddefctr}}
+ \expandafter\label\expandafter\tempLabel
 
 \subsubsection{Time Complexity}
 
 \begin{table}[H]
     \centering
-    \caption{Time Complexity Summary of Standard Definition 10}
+    \caption{Time Complexity Summary of Standard Definition \arabic{stddefctr}}
     \begin{tabular}{|c|c|c|}
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
@@ -937,14 +1121,15 @@ In a recursive approach, you will end up descending $O(\log(n))$ stack frames, e
         \textbf{In Total} &  &  \\
         \hline
     \end{tabular}
-    \label{tab:time_p2_d10}
+    \edef\tempLabel{tab:time_p2_d\arabic{stddefctr}}
+     \expandafter\label\expandafter\tempLabel
 \end{table}
 
 \subsubsection{Space Complexity}
 
 \begin{table}[H]
     \centering
-    \caption{Space Complexity Summary of Standard Definition 10}
+    \caption{Space Complexity Summary of Standard Definition \arabic{stddefctr}}
     \begin{tabular}{|c|c|c|}
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
@@ -954,17 +1139,20 @@ In a recursive approach, you will end up descending $O(\log(n))$ stack frames, e
         \textbf{In Total} &  &  \\
         \hline
     \end{tabular}
-    \label{tab:space_p2_d10}
+    \edef\tempLabel{tab:space_p2_d\arabic{stddefctr}}
+     \expandafter\label\expandafter\tempLabel
 \end{table}
 
-\subsection{Complexity of Original Definition 11}
-\label{ca:p2_d11}
+\stepcounter{stddefctr}
+\subsection{Complexity of Original Definition \arabic{stddefctr}}
+\edef\tempLabel{ca:p2_d\arabic{stddefctr}}
+ \expandafter\label\expandafter\tempLabel
 
 \subsubsection{Time Complexity}
 
 \begin{table}[H]
     \centering
-    \caption{Time Complexity Summary of Standard Definition 11}
+    \caption{Time Complexity Summary of Standard Definition \arabic{stddefctr}}
     \begin{tabular}{|c|c|c|}
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
@@ -974,14 +1162,15 @@ In a recursive approach, you will end up descending $O(\log(n))$ stack frames, e
         \textbf{In Total} &  &  \\
         \hline
     \end{tabular}
-    \label{tab:time_p2_d11}
+    \edef\tempLabel{tab:time_p2_d\arabic{stddefctr}}
+     \expandafter\label\expandafter\tempLabel
 \end{table}
 
 \subsubsection{Space Complexity}
 
 \begin{table}[H]
     \centering
-    \caption{Space Complexity Summary of Standard Definition 11}
+    \caption{Space Complexity Summary of Standard Definition \arabic{stddefctr}}
     \begin{tabular}{|c|c|c|}
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
@@ -991,11 +1180,14 @@ In a recursive approach, you will end up descending $O(\log(n))$ stack frames, e
         \textbf{In Total} &  &  \\
         \hline
     \end{tabular}
-    \label{tab:space_p2_d11}
+    \edef\tempLabel{tab:space_p2_d\arabic{stddefctr}}
+     \expandafter\label\expandafter\tempLabel
 \end{table}
 
-\subsection{Complexity of Original Definition 12}
-\label{ca:p2_d12}
+\stepcounter{stddefctr}
+\subsection{Complexity of Original Definition \arabic{stddefctr}}
+\edef\tempLabel{ca:p2_d\arabic{stddefctr}}
+ \expandafter\label\expandafter\tempLabel
 
 \subsubsection{Time Complexity}
 
@@ -1006,7 +1198,7 @@ The other is to take advantage of the relation $\binom{n}{k} = \binom{n}{k-1} \c
 \renewcommand{\arraystretch}{1.25}
 \begin{table}[H]
     \centering
-    \caption{Time Complexity Summary of Standard Definition 12}
+    \caption{Time Complexity Summary of Standard Definition \arabic{stddefctr}}
     \begin{tabular}{|cc|c|c|}
         \hline
         & & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
@@ -1020,7 +1212,8 @@ The other is to take advantage of the relation $\binom{n}{k} = \binom{n}{k-1} \c
         & \textbf{In Total} & $O\left(n^2\right) $ & $O\left(n^2 \cdot \log(n) \cdot \log(\log(n))\right)$ \\
         \hline
     \end{tabular}
-    \label{tab:time_p2_d12}
+    \edef\tempLabel{tab:time_p2_d\arabic{stddefctr}}
+     \expandafter\label\expandafter\tempLabel
 \end{table}
 
 
@@ -1028,7 +1221,7 @@ The other is to take advantage of the relation $\binom{n}{k} = \binom{n}{k-1} \c
 
 \begin{table}[H]
     \centering
-    \caption{Space Complexity Summary of Standard Definition 12}
+    \caption{Space Complexity Summary of Standard Definition \arabic{stddefctr}}
     \begin{tabular}{|cc|c|c|}
         \hline
         & & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
@@ -1042,18 +1235,21 @@ The other is to take advantage of the relation $\binom{n}{k} = \binom{n}{k-1} \c
         & \textbf{In Total} & $O(n)$ & $O\left(n \cdot \log(n)^2\right)$ \\
         \hline
     \end{tabular}
-    \label{tab:space_p2_d12}
+    \edef\tempLabel{tab:space_p2_d\arabic{stddefctr}}
+     \expandafter\label\expandafter\tempLabel
 \end{table}
 \renewcommand{\arraystretch}{1}
 
-\subsection{Complexity of Original Definition 13}
-\label{ca:p2_d13}
+\stepcounter{stddefctr}
+\subsection{Complexity of Original Definition \arabic{stddefctr}}
+\edef\tempLabel{ca:p2_d\arabic{stddefctr}}
+ \expandafter\label\expandafter\tempLabel
 
 \subsubsection{Time Complexity}
 
 \begin{table}[H]
     \centering
-    \caption{Time Complexity Summary of Standard Definition 13}
+    \caption{Time Complexity Summary of Standard Definition \arabic{stddefctr}}
     \begin{tabular}{|c|c|c|}
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
@@ -1063,14 +1259,15 @@ The other is to take advantage of the relation $\binom{n}{k} = \binom{n}{k-1} \c
         \textbf{In Total} &  &  \\
         \hline
     \end{tabular}
-    \label{tab:time_p2_d13}
+    \edef\tempLabel{tab:time_p2_d\arabic{stddefctr}}
+     \expandafter\label\expandafter\tempLabel
 \end{table}
 
 \subsubsection{Space Complexity}
 
 \begin{table}[H]
     \centering
-    \caption{Space Complexity Summary of Standard Definition 13}
+    \caption{Space Complexity Summary of Standard Definition \arabic{stddefctr}}
     \begin{tabular}{|c|c|c|}
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
@@ -1080,16 +1277,18 @@ The other is to take advantage of the relation $\binom{n}{k} = \binom{n}{k-1} \c
         \textbf{In Total} &  &  \\
         \hline
     \end{tabular}
-    \label{tab:space_p2_d13}
+    \edef\tempLabel{tab:space_p2_d\arabic{stddefctr}}
+     \expandafter\label\expandafter\tempLabel
 \end{table}
 
-\subsection{Complexity of Extension Definition 1}
-\label{ca:pn_d01}
+\subsection{Complexity of Extension Definition \arabic{extdefctr}}
+\edef\tempLabel{ca:pn_d\arabic{extdefctr}}
+ \expandafter\label\expandafter\tempLabel
 
 In an idealized case, this definition will simplify to:
 
 \begin{equation}
-T_{n,1}(x, s) = \left(\sum_{i=0}^{\ceil{\log_s(x + 1)}} \hspace{-8pt} \floor{\dfrac{x}{s^i} \mod{s}} \right) \mod{s}
+T_{n,\arabic{extdefctr}}(x, s) = \left(\sum_{i=0}^{\ceil{\log_s(x + 1)}} \hspace{-8pt} \floor{\dfrac{x}{s^i} \mod{s}} \right) \mod{s}
 \end{equation}
 
 This is pretty explicitly $O(\log(n))$ operations. This means that generating the first $n$ entries will take $O(n\log(n))$ operations.
@@ -1099,7 +1298,7 @@ In languages with dynamically sized integers, this can be slightly more complica
 \renewcommand{\arraystretch}{1.25}
 \begin{table}[H]
     \centering
-    \caption{Time Complexity Summary of Extended Definition 1}
+    \caption{Time Complexity Summary of Extended Definition \arabic{extdefctr}}
     \begin{tabular}{|c|c|c|}
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
@@ -1109,7 +1308,8 @@ In languages with dynamically sized integers, this can be slightly more complica
         \textbf{In Total} & $O(n \cdot \log(n))$ & $O(n \cdot \log(n)^2 \cdot \log(\log(n)))$ \\
         \hline
     \end{tabular}
-    \label{tab:time_pn_d01}
+     \edef\tempLabel{tab:time_pn_d\arabic{extdefctr}}
+     \expandafter\label\expandafter\tempLabel
 \end{table}
 \renewcommand{\arraystretch}{1}
 
@@ -1119,7 +1319,7 @@ This is one of the more space-efficient implementation. Each element takes at mo
 
 \begin{table}[H]
     \centering
-    \caption{Space Complexity Summary of Extended Definition 1}
+    \caption{Space Complexity Summary of Extended Definition \arabic{extdefctr}}
     \begin{tabular}{|c|c|c|}
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
@@ -1129,17 +1329,20 @@ This is one of the more space-efficient implementation. Each element takes at mo
         \textbf{In Total} & $O(n)$ & $O(n \cdot \log(n))$ \\
         \hline
     \end{tabular}
-    \label{tab:space_pn_d01}
+     \edef\tempLabel{tab:space_pn_d\arabic{extdefctr}}
+     \expandafter\label\expandafter\tempLabel
 \end{table}
 
-\subsection{Complexity of Extension Definition 2}
-\label{ca:pn_d02}
+\stepcounter{extdefctr}
+\subsection{Complexity of Extension Definition \arabic{extdefctr}}
+\edef\tempLabel{ca:pn_d\arabic{extdefctr}}
+ \expandafter\label\expandafter\tempLabel
 
 \subsubsection{Time Complexity}
 
 \begin{table}[H]
     \centering
-    \caption{Time Complexity Summary of Extended Definition 2}
+    \caption{Time Complexity Summary of Extended Definition \arabic{extdefctr}}
     \begin{tabular}{|c|c|c|}
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
@@ -1149,14 +1352,15 @@ This is one of the more space-efficient implementation. Each element takes at mo
         \textbf{In Total} &  &  \\
         \hline
     \end{tabular}
-    \label{tab:time_pn_d02}
+     \edef\tempLabel{tab:time_pn_d\arabic{extdefctr}}
+     \expandafter\label\expandafter\tempLabel
 \end{table}
 
 \subsubsection{Space Complexity}
 
 \begin{table}[H]
     \centering
-    \caption{Space Complexity Summary of Extended Definition 2}
+    \caption{Space Complexity Summary of Extended Definition \arabic{extdefctr}}
     \begin{tabular}{|c|c|c|}
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
@@ -1166,17 +1370,20 @@ This is one of the more space-efficient implementation. Each element takes at mo
         \textbf{In Total} &  &  \\
         \hline
     \end{tabular}
-    \label{tab:space_pn_d02}
+     \edef\tempLabel{tab:space_pn_d\arabic{extdefctr}}
+     \expandafter\label\expandafter\tempLabel
 \end{table}
 
-\subsection{Complexity of Extension Definition 3}
-\label{ca:pn_d03}
+\stepcounter{extdefctr}
+\subsection{Complexity of Extension Definition \arabic{extdefctr}}
+\edef\tempLabel{ca:pn_d\arabic{extdefctr}}
+ \expandafter\label\expandafter\tempLabel
 
 \subsubsection{Time Complexity}
 
 \begin{table}[H]
     \centering
-    \caption{Time Complexity Summary of Extended Definition 3}
+    \caption{Time Complexity Summary of Extended Definition \arabic{extdefctr}}
     \begin{tabular}{|c|c|c|}
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
@@ -1186,14 +1393,15 @@ This is one of the more space-efficient implementation. Each element takes at mo
         \textbf{In Total} &  &  \\
         \hline
     \end{tabular}
-    \label{tab:time_pn_d03}
+     \edef\tempLabel{tab:time_pn_d\arabic{extdefctr}}
+     \expandafter\label\expandafter\tempLabel
 \end{table}
 
 \subsubsection{Space Complexity}
 
 \begin{table}[H]
     \centering
-    \caption{Space Complexity Summary of Extended Definition 3}
+    \caption{Space Complexity Summary of Extended Definition \arabic{extdefctr}}
     \begin{tabular}{|c|c|c|}
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
@@ -1203,17 +1411,20 @@ This is one of the more space-efficient implementation. Each element takes at mo
         \textbf{In Total} &  &  \\
         \hline
     \end{tabular}
-    \label{tab:space_pn_d03}
+     \edef\tempLabel{tab:space_pn_d\arabic{extdefctr}}
+     \expandafter\label\expandafter\tempLabel
 \end{table}
 
-\subsection{Complexity of Extension Definition 4}
-\label{ca:pn_d04}
+\stepcounter{extdefctr}
+\subsection{Complexity of Extension Definition \arabic{extdefctr}}
+\edef\tempLabel{ca:pn_d\arabic{extdefctr}}
+ \expandafter\label\expandafter\tempLabel
 
 \subsubsection{Time Complexity}
 
 \begin{table}[H]
     \centering
-    \caption{Time Complexity Summary of Extended Definition 4}
+    \caption{Time Complexity Summary of Extended Definition \arabic{extdefctr}}
     \begin{tabular}{|c|c|c|}
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
@@ -1223,14 +1434,15 @@ This is one of the more space-efficient implementation. Each element takes at mo
         \textbf{In Total} &  &  \\
         \hline
     \end{tabular}
-    \label{tab:time_pn_d04}
+     \edef\tempLabel{tab:time_pn_d\arabic{extdefctr}}
+     \expandafter\label\expandafter\tempLabel
 \end{table}
 
 \subsubsection{Space Complexity}
 
 \begin{table}[H]
     \centering
-    \caption{Space Complexity Summary of Extended Definition 4}
+    \caption{Space Complexity Summary of Extended Definition \arabic{extdefctr}}
     \begin{tabular}{|c|c|c|}
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
@@ -1240,11 +1452,55 @@ This is one of the more space-efficient implementation. Each element takes at mo
         \textbf{In Total} &  &  \\
         \hline
     \end{tabular}
-    \label{tab:space_pn_d04}
+     \edef\tempLabel{tab:space_pn_d\arabic{extdefctr}}
+     \expandafter\label\expandafter\tempLabel
 \end{table}
 
-\subsection{Complexity of Extension Definition 5}
-\label{ca:pn_d05}
+\stepcounter{extdefctr}
+\subsection{Complexity of Extension Definition \arabic{extdefctr}}
+\edef\tempLabel{ca:pn_d\arabic{extdefctr}}
+ \expandafter\label\expandafter\tempLabel
+
+\subsubsection{Time Complexity}
+
+\begin{table}[H]
+    \centering
+    \caption{Time Complexity Summary of Extended Definition \arabic{extdefctr}}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} &  &  \\
+        \hline
+        \textbf{In Total} &  &  \\
+        \hline
+    \end{tabular}
+     \edef\tempLabel{tab:time_pn_d\arabic{extdefctr}}
+     \expandafter\label\expandafter\tempLabel
+\end{table}
+
+\subsubsection{Space Complexity}
+
+\begin{table}[H]
+    \centering
+    \caption{Space Complexity Summary of Extended Definition \arabic{extdefctr}}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} &  &  \\
+        \hline
+        \textbf{In Total} &  &  \\
+        \hline
+    \end{tabular}
+     \edef\tempLabel{tab:space_pn_d\arabic{extdefctr}}
+     \expandafter\label\expandafter\tempLabel
+\end{table}
+
+\stepcounter{extdefctr}
+\subsection{Complexity of Extension Definition \arabic{extdefctr}}
+\edef\tempLabel{ca:pn_d\arabic{extdefctr}}
+ \expandafter\label\expandafter\tempLabel
 
 \subsubsection{Time Complexity}
 
@@ -1253,7 +1509,7 @@ At each step in calculation, the value of $n$ passed to the next recursion is di
 \renewcommand{\arraystretch}{1.25}
 \begin{table}[H]
     \centering
-    \caption{Time Complexity Summary of Extended Definition 5}
+    \caption{Time Complexity Summary of Extended Definition \arabic{extdefctr}}
     \begin{tabular}{|c|c|c|}
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
@@ -1263,7 +1519,8 @@ At each step in calculation, the value of $n$ passed to the next recursion is di
         \textbf{In Total} & $O(n \cdot \log(n))$ & $O(n \cdot \log(n)^2)$ \\
         \hline
     \end{tabular}
-    \label{tab:time_pn_d05}
+     \edef\tempLabel{tab:time_pn_d\arabic{extdefctr}}
+     \expandafter\label\expandafter\tempLabel
 \end{table}
 \renewcommand{\arraystretch}{1}
 
@@ -1273,7 +1530,7 @@ This is one of the more space-efficient implementations. Each element takes at m
 
 \begin{table}[H]
     \centering
-    \caption{Space Complexity Summary of Extended Definition 5}
+    \caption{Space Complexity Summary of Extended Definition \arabic{extdefctr}}
     \begin{tabular}{|c|c|c|}
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
@@ -1283,18 +1540,21 @@ This is one of the more space-efficient implementations. Each element takes at m
         \textbf{In Total} & $O(n)$ & $O(n \cdot \log(n))$ \\
         \hline
     \end{tabular}
-    \label{tab:space_pn_d05}
+     \edef\tempLabel{tab:space_pn_d\arabic{extdefctr}}
+     \expandafter\label\expandafter\tempLabel
 \end{table}
 
-\subsection{Complexity of Extension Definition 6}
-\label{ca:pn_d06}
+\stepcounter{extdefctr}
+\subsection{Complexity of Extension Definition \arabic{extdefctr}}
+\edef\tempLabel{ca:pn_d\arabic{extdefctr}}
+ \expandafter\label\expandafter\tempLabel
 
 \subsubsection{Time Complexity}
 
 \renewcommand{\arraystretch}{1.25}
 \begin{table}[H]
     \centering
-    \caption{Time Complexity Summary of Extended Definition 6}
+    \caption{Time Complexity Summary of Extended Definition \arabic{extdefctr}}
     \begin{tabular}{|c|c|c|}
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
@@ -1304,7 +1564,8 @@ This is one of the more space-efficient implementations. Each element takes at m
         \textbf{In Total} & $O(n \cdot \log(n))$ & $O\left(n \cdot \log(n)^2\right)$ \\
         \hline
     \end{tabular}
-    \label{tab:time_pn_d06}
+     \edef\tempLabel{tab:time_pn_d\arabic{extdefctr}}
+     \expandafter\label\expandafter\tempLabel
 \end{table}
 \renewcommand{\arraystretch}{1}
 
@@ -1312,7 +1573,7 @@ This is one of the more space-efficient implementations. Each element takes at m
 
 \begin{table}[H]
     \centering
-    \caption{Space Complexity Summary of Extended Definition 6}
+    \caption{Space Complexity Summary of Extended Definition \arabic{extdefctr}}
     \begin{tabular}{|c|c|c|}
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
@@ -1322,7 +1583,8 @@ This is one of the more space-efficient implementations. Each element takes at m
         \textbf{In Total} & $O(1)$ & $O(\log(n))$ \\
         \hline
     \end{tabular}
-    \label{tab:space_pn_d06}
+     \edef\tempLabel{tab:space_pn_d\arabic{extdefctr}}
+     \expandafter\label\expandafter\tempLabel
 \end{table}
 
 \bibliographystyle{unsrt}

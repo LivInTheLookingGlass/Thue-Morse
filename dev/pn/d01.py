@@ -4,13 +4,17 @@ from typing import Iterator
 from ..args import run
 
 
-def pn_d01(p: int = 2) -> Iterator[int]:
+def p(x: int, n: int) -> int:
+    digit_sum = 0
+    while x:
+        digit_sum += x % n
+        x //= n
+    return digit_sum % n
+
+
+def pn_d01(n: int = 2) -> Iterator[int]:
     for x in count():
-        digit_sum = 0
-        while x:
-            digit_sum += x % p
-            x //= p
-        yield digit_sum % p
+        yield p(x, n)
 
 
 if __name__ == '__main__':

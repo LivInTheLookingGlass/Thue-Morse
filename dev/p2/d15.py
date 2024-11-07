@@ -1,6 +1,3 @@
-from functools import reduce
-from itertools import count
-from operator import xor
 from typing import Iterator
 
 from sympy import symbols

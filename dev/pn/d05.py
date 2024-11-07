@@ -1,4 +1,3 @@
-from ctypes import c_uint8
 from itertools import chain, islice
 from typing import Iterator
 

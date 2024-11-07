@@ -20,7 +20,7 @@ Email: darowe@nmu.edu}
 \maketitle
 
 \begin{abstract}
-In this paper, we discuss various ways to extend the \TMS \cite{OEIS-TMS} when used as a fair-share sequence. Included are \TotalOriginals definitions of the original sequence, \TotalExtensions extensions to n players, and proofs of equality for all definitions. In the appendix are several complexity analyses for both time and space of each definition.
+In this paper, we discuss various ways to extend the \TMS \cite{OEIS-TMS} when used as a fair-share sequence. Included are \TotalOriginals definitions of the original sequence, \TotalExtensions extensions to n players, for a total of \TotalDefs definitions. Also included are proofs of equality for all definitions. In the appendix are several complexity analyses for both time and space of each definition.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -41,12 +41,12 @@ TBA
 \centering
 \begin{tabular}{|l|r|}
 \hline
-Definition & Extent of Testing            \\ \hline
+\textbf{Definition} & \textbf{Entries Tested}      \\ \hline
 $T_{2,1}$  &\multirow{2}{*}{$2^{35}=34,359,738,368$}\\ \cline{1-1}
 $T_{2,2}$  &                              \\ \hline
-$T_{2,3}$  & $2^{34} = 17,179,869,184$    \\ \hline
-$T_{2,4}$  & $2^{33} = 17,179,869,184$    \\ \hline
-$T_{2,5}$  &\multirow{2}{*}{$2^{32}=4,294,967,296$}\\ \cline{1-1}
+$T_{2,3}$  & $2^{33} = 8,589,934,592$     \\ \hline
+$T_{2,4}$  &\multirow{3}{*}{$2^{32}=4,294,967,296$}\\ \cline{1-1}
+$T_{2,5}$  &                              \\ \cline{1-1}
 $T_{2,6}$  &                              \\ \hline
 $T_{2,7}$  & $2^{35} = 34,359,738,368$    \\ \hline
 $T_{2,8}$  & $2^{26} = 67,108,864$        \\ \hline
@@ -56,6 +56,7 @@ $T_{2,11}$ &                              \\ \cline{1-1}
 $T_{2,12}$ &                              \\ \hline
 $T_{2,13}$ & $2^{15} = 32,768$            \\ \hline
 $T_{2,14}$ & $2^{29} = 536,870,912$       \\ \hline
+$T_{2,15}$ & $2^{15} = 32,768$            \\ \hline
 $T_{n,1}$  &\multirow{2}{*}{$2^{33}=8,589,934,592$}\\ \cline{1-1}
 $T_{n,2}$  &                              \\ \hline
 $T_{n,3}$  &\multirow{2}{*}{$2^{32}=4,294,967,296$}\\ \cline{1-1}
@@ -72,16 +73,16 @@ $T_{n,7}$  & $2^{31} = 2,147,483,648$     \\ \hline
 \centering
 \begin{tabular}{|l|c|r|}
 \hline
-\textbf{Definition}       & \textbf{Bases}         & \textbf{Entries Tested}              \\\hline
-$T_{n,1}$                 &\multirow{2}{*}{3 - 256}& $2^{26} = 67,108,864$                \\\cline{1-1}\cline{3-3}
-$T_{n,2}$                 &                        &\multirow{2}{*}{$2^{25} = 33,554,432$}\\\cline{1-2}
-\multirow{2}{*}{$T_{n,3}$}& 3 - 192                &                                      \\\cline{2-3} 
-                          & 193 - 256              & $2^{24} = 16,777,216$                \\\hline
-$T_{n,4}$                 & 3 - 256                & $2^{25} = 33,554,432$                \\\hline
-\multirow{2}{*}{$T_{n,5}$}& 3 - 192                & $2^{24} = 16,777,216$                \\\cline{2-3} 
-                          & 193 - 256              & $2^{23} = 8,388,608$                 \\\hline
-$T_{n,6}$                 &\multirow{2}{*}{3 - 256}&\multirow{2}{*}{$2^{26} = 67,108,864$}\\\cline{1-1}
-$T_{n,7}$                 &                        &                                      \\\hline
+\textbf{Definition}       & \textbf{Bases}         & \textbf{Entries Tested}            \\\hline
+$T_{n,1}$                 &\multirow{2}{*}{3 - 256}& $2^{26} = 67,108,864$              \\\cline{1-1}\cline{3-3}
+$T_{n,2}$                 &                        &\multirow{2}{*}{$2^{25}=33,554,432$}\\\cline{1-2}
+\multirow{2}{*}{$T_{n,3}$}& 3 - 192                &                                    \\\cline{2-3} 
+                          & 193 - 256              & $2^{24} = 16,777,216$              \\\hline
+$T_{n,4}$                 & 3 - 256                & $2^{25} = 33,554,432$              \\\hline
+\multirow{2}{*}{$T_{n,5}$}& 3 - 192                & $2^{24} = 16,777,216$              \\\cline{2-3} 
+                          & 193 - 256              & $2^{23} = 8,388,608$               \\\hline
+$T_{n,6}$                 &\multirow{2}{*}{3 - 256}&\multirow{2}{*}{$2^{26}=67,108,864$}\\\cline{1-1}
+$T_{n,7}$                 &                        &                                    \\\hline
 \end{tabular}
 \end{table}
 
@@ -96,13 +97,13 @@ $T_{n,7}$                 &                        &                            
     O    &\!\!\!\!$T_{2,2}$\!\!\!\!\\ \cline{1-3}
          &         &\!\!\!\!$T_{2,3}$\!\!\!\!\\ \cline{1-4}
          &         &         &\!\!\!\!$T_{2,4}$\!\!\!\!\\ \cline{1-5}
-          &         &         &    O    &\!\!\!\!$T_{2,5}$\!\!\!\!\\ \cline{1-6}
+         &         &         &    O    &\!\!\!\!$T_{2,5}$\!\!\!\!\\ \cline{1-6}
     X    &         &         &         &         &\!\!\!\!$T_{2,6}$\!\!\!\!\\ \cline{1-7}
          &         &         &         &         &         &\!\!\!\!$T_{2,7}$\!\!\!\!\\ \cline{1-8}
          &         &         &         &         &         &      O  &\!\!\!\!$T_{2,8}$\!\!\!\!\\ \cline{1-9}
          &         &         &         &         &         &         &         &\!\!\!\!$T_{2,9}$\!\!\!\!\\ \cline{1-10}
          &         &         &         &         &         &         &         &     O   &\!\!\!\!$T_{2,10}$\!\!\!\!\\ \cline{1-11}
-         &         &         &         &         &         &         &         &         &         &\!\!\!\!$T_{2,11}$\!\!\!\!\\ \cline{1-12}
+    O    &         &         &         &         &         &         &         &         &    O    &\!\!\!\!$T_{2,11}$\!\!\!\!\\ \cline{1-12}
          &         &         &         &         &         &         &         &         &         &         &\!\!\!\!$T_{2,12}$\!\!\!\!\\ \cline{1-13}
          &         &         &         &         &         &         &         &         &         &         &         &\!\!\!\!$T_{2,13}$\!\!\!\!\\ \cline{1-14}
          &         &         &         &         &         &         &         &         &         &         &         &     &\!\!\!\!$T_{2,14}$\!\!\!\!\\ \hline
@@ -453,6 +454,23 @@ In the OEIS, this sequence \cite{OEIS-A193231} is defined as the "binary coding 
 Translated into words, this function computes the value of Sierpiński's triangle for the index of each high bit, then takes the bitwise exclusive or of all such resulting values. Note that since $\text{A001317}(0) = 0$, each low bit can be simplified out when calculating.
 
 \note{It seems to me that this might be extendable by using GF(n) instead of GF(2), though I don't know of a way to efficient compute or prove such a result}
+
+\stepcounter{stddefctr}
+\subsection{Definition \arabic{stddefctr} -- Generating Function}
+
+\note{Appears in \cite{OEIS-TMS}}
+
+\begin{equation}
+    T_{2,\arabic{stddefctr}} = \mathcal{G.F.} \;\; \begin{aligned}[c]
+        \dfrac{\displaystyle\dfrac{1}{1 - x} - \prod^{\infty}_{k \ge 0} (1 - x^{2^k})}{2}
+    \end{aligned}
+\end{equation}
+
+The logic of this construction is fairly clear. The component that is $\tfrac{1}{1-x}$ will generate coefficients of all $1$s. This is then subtracted by a sequence that counts the high bits of a given index, evaluating to $-1$ if the number of bits is even, and $1$ if it is odd. This means that the only possible outputs of the top part are $0$ or $2$, so the divisor corrects for that.
+
+This means that it is equivalent to $T_{2,1}$ \note{(prove it)}.
+
+In practice, to get the coefficients up to the $n$th term, one needs to only expand the product to $k_\text{max} = \floor{\log_2(n + 1)} - 1$.
 
 \subsection{Summary}
 

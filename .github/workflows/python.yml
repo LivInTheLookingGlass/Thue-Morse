@@ -121,7 +121,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        bases: 
+        bases:
         - 003-016
         - 017-032
         - 033-048
@@ -183,13 +183,15 @@ jobs:
             ;;
         esac
         IFS='-' read -r start stop <<< "${{matrix.bases}}"
+        start=$((10#$start))
+        stop=$((10#$stop))
         bases=()
         for (( i=start; i<=stop; i++ )); do
             bases+=("$i")
         done
         base_regex=""
         for (( i=start; i<=stop; i++ )); do
-            # Format base as base_XX (ensure it's two digits)
+            # Format base as base_XXX (ensure it's three digits)
             formatted_base=$(printf "%03d" "$i")
             base_regex+="base_${formatted_base} or "
         done

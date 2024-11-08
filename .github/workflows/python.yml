@@ -58,6 +58,9 @@ jobs:
         - n_06
         - n_07
     runs-on: ubuntu-latest
+    env:
+      swap_size: 12  # in GiB
+      max_mem: 15
     name: Test ${{matrix.def}} in base 2
     steps:
     - uses: actions/checkout@v4
@@ -72,10 +75,17 @@ jobs:
     - name: Fetch test dependencies
       run: python -O -m pip install -r requirements.txt
 
+    - name: Create and enable swapfile
+      run: |
+        sudo fallocate -l ${{env.swap_size}}G /swapfile
+        sudo chmod 600 /swapfile
+        sudo mkswap /swapfile
+        sudo swapon /swapfile
+        sudo swapon --show
+
     - name: Run tests (${{matrix.def}})
       run: |
-        ulimit -S -v 15728640; ulimit -H -v; ulimit -S -v
-        ulimit -S -m 15728640; ulimit -H -m; ulimit -S -m
+        ulimit -S -v $(( (4 + max_mem + swap_size) * 1024 * 1024)); ulimit -H -v; ulimit -S -v
         case ${{matrix.def}} in
           2_02)
             test_len=35
@@ -83,23 +93,29 @@ jobs:
           2_0[79]|2_1[012])
             test_len=34
             ;;
-          n_0[12])
+          n_0[1234]|2_0[345])
             test_len=33
             ;;
-          n_0[346]|2_0[3456])
+          [2n]_06)
             test_len=32
             ;;
           n_07)
             test_len=31
             ;;
-          n_05|2_14)
+          n_05)
+            test_len=30
+            ;;
+          2_14)
             test_len=29
             ;;
           2_08)
             test_len=26
             ;;
-          2_1[35])
+          2_13)
             test_len=15
+            ;;
+          2_15)
+            test_len=13
             ;;
           *)
             echo "Unknown definition; limit not set"
@@ -141,6 +157,9 @@ jobs:
         def: [2, 3, 4, 5, 6, 7]
 
     runs-on: ubuntu-latest
+    env:
+      swap_size: 12  # in GiB
+      max_mem: 15
     needs: lint
     name: Test n_0${{matrix.def}} in bases ${{matrix.bases}}
 
@@ -157,25 +176,29 @@ jobs:
     - name: Fetch test dependencies
       run: python -O -m pip install -r requirements.txt
 
+    - name: Create and enable swapfile
+      run: |
+        sudo fallocate -l ${{env.swap_size}}G /swapfile
+        sudo chmod 600 /swapfile
+        sudo mkswap /swapfile
+        sudo swapon /swapfile
+        sudo swapon --show
+
     - name: Run tests (${{matrix.def}} ${{matrix.bases}})
       run: |
-        ulimit -S -v 15728640; ulimit -H -v; ulimit -S -v
-        ulimit -S -m 15728640; ulimit -H -m; ulimit -S -m
+        ulimit -S -v $(( (4 + max_mem + swap_size) * 1024 * 1024)); ulimit -H -v; ulimit -S -v
         case ${{matrix.def}}-${{matrix.bases}} in
           5-193*|5-209*|5-225*|5-241*)
-            test_len=23
+            test_len=24
             ;;
           3-209*|3-225*|3-241*)
-            test_len=24
-            ;;
-          [67]-*)
-            test_len=26
-            ;;
-          [234]-*)
             test_len=25
             ;;
-          5-*)
-            test_len=24
+          [3467]-*)
+            test_len=26
+            ;;
+          [25]-*)
+            test_len=25
             ;;
           *)
             echo "Unknown definition; limit not set"

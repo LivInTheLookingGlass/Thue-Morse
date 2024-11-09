@@ -185,7 +185,7 @@ jobs:
       run: |
         ulimit -S -v $(( (4 + max_mem + swap_size) * 1024 * 1024)); ulimit -H -v; ulimit -S -v
         case ${{matrix.def}}-${{matrix.bases}} in
-          5-193*|5-209*|5-225*|5-241*)
+          2-003*|5-193*|5-209*|5-225*|5-241*)
             test_len=28
             ;;
           3-209*|3-225*|3-241*)

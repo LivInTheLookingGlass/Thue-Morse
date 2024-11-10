@@ -1,8 +1,0 @@
-% Define p(0) = 0 for non-negative integers only
-nonneg_int(n) -> p(0) = 0.
-
-% Recursive definition of p(n) with non-negative integer condition
-nonneg_int(n) -> p(n) = mod(n + p(floor_div(n, 2))), 2).
-
-% Definition of T_{2,1}(x) with non-negative integer condition
-nonneg_int(x) -> T_2_1(x) = p(x).

@@ -1,8 +1,0 @@
-% Define the function p_n(x)
-p_n(0, n) = 0.  % Base case: p_n(0) = 0
-
-% Recursive case for p_n(x)
-p_n(x, n) = x + p_n(floor(x / n), n) mod n :- nonneg_int(x), n >= 2, x > 0.
-
-% Define T_{n,1}(x, s)
-T_n_1(x, s) = p_s(x).

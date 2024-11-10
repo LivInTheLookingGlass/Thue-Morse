@@ -14,7 +14,7 @@ def p2_d01(_: int = 2) -> Iterator[int]:
         yield x.bit_count() & 1
 
 
-def to_z3() -> Dict[str, Union['Function', 'RecFunction']]:
+def to_z3(_: Union[int, 'Int'] = 2) -> Dict[str, Union['Function', 'RecFunction']]:
     n = Int('n')
     p = RecFunction('p', IntSort(), IntSort())
     T2_01 = RecFunction('T2_01', IntSort(), IntSort())

@@ -39,7 +39,7 @@ def get_modules(p2: bool = True, pn: bool = False, s: int = 2) -> Dict[str, Iter
 
 def get_iters(p2: bool = True, pn: bool = False, s: int = 2) -> Dict[str, Iterable[int]]:
     return {
-        key: getattr(val, f'{key.replace(".", "_")}')(s)
+        key: getattr(value, f'{key.replace(".", "_")}')(s)
         for key, value in get_modules().items()
         if ('p2' in key and p2) or ('pn' in key and pn)
     }
@@ -47,7 +47,7 @@ def get_iters(p2: bool = True, pn: bool = False, s: int = 2) -> Dict[str, Iterab
 
 def get_z3s(p2: bool = True, pn: bool = False, s: int = 2) -> Dict[str, Iterable[int]]:
     return {
-        key: val.get_z3(s)
+        key: value.get_z3(s)
         for key, value in get_modules().items()
         if hasattr(value, 'get_z3') and (('p2' in key and p2) or ('pn' in key and pn))
     }

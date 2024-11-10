@@ -25,3 +25,4 @@ def pn_d02(n: int = 2) -> Iterator[int]:
 
 if __name__ == '__main__':
     run(2, pn_d02, 'N')
+

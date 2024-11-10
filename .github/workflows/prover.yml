@@ -20,7 +20,6 @@ jobs:
         opam install coq -y
         git clone https://github.com/SMTCoq/smtcoq.git
         cd smtcoq
-        make
         sudo make install
         cd ..
 
@@ -31,6 +30,7 @@ jobs:
 
         # Run the Python script (assuming the script is called `test_z3.py`)
         python3 test_z3.py
+        mv *.smt2 output.smt2
 
     - name: Create Coq file for SMTCoq
       run: |

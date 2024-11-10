@@ -6,6 +6,8 @@ from typing import Dict, Iterable
 
 from pytest import mark
 
+from dev import get_iters
+
 test_len = 2**15
 bases_tested = range(2, 256)
 base_2_tests = [int(p.name[1:-3]) for p in Path(__file__).parent.glob('p2/d*.py')]
@@ -20,21 +22,6 @@ def signal_handler(sig, frame):
 
 
 signal(SIGTERM, signal_handler)
-
-
-def get_iters(p2: bool = True, pn: bool = False, s: int = 2) -> Dict[str, Iterable[int]]:
-    parent_name = '.'.join(__name__.split('.')[:-1])
-    iters = {}
-    for kind in "2" * p2 + "n" * pn:
-        for d in range(1, 100):
-            name = f'p{kind}.d{d:02}'
-            try:
-                iters[name] = getattr(import_module(f'{parent_name}.{name}'), f'{name.replace(".", "_")}')(s)
-            except ImportError:
-                continue
-            except Exception as e:
-                print(e)
-    return iters
 
 
 @mark.parametrize("c", [f'2_{n:02}' for n in base_2_tests] + ['n_01'] + [f'n_{n:02}' for n in base_n_tests])

@@ -22,14 +22,14 @@ def get_modules(p2: bool = True, pn: bool = False, s: int = 2) -> Dict[str, Modu
 def get_iters(p2: bool = True, pn: bool = False, s: int = 2) -> Dict[str, Iterable[int]]:
     return {
         key: getattr(value, f'{key.replace(".", "_")}')(s)
-        for key, value in get_modules().items()
+        for key, value in get_modules(p2, pn).items()
         if ('p2' in key and p2) or ('pn' in key and pn)
     }
 
 
 def get_z3s(p2: bool = True, pn: bool = False, s: int = 2) -> Dict[str, Dict[str, Any]]:
     ret: Dict[str, Dict[str, Any]] = {}
-    for key, value in get_modules().items():
+    for key, value in get_modules(p2, pn).items():
         if hasattr(value, 'to_z3') and (('p2' in key and p2) or ('pn' in key and pn)):
             try:
                 ret[key] = value.to_z3(s)

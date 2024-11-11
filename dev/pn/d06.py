@@ -1,5 +1,10 @@
 from itertools import count
-from typing import Iterator
+from typing import Iterator, Union
+
+try:
+    from z3 import If, Int, IntSort, RecAddDefinition, RecFunction
+except ImportError:
+    pass
 
 from ..args import run
 
@@ -13,6 +18,16 @@ def T(x: int, n: int) -> int:
 def pn_d06(n: int = 2) -> Iterator[int]:
     for i in count():
         yield T(i, n)
+
+
+def to_z3(s: Union[int, 'Int'] = 2) -> 'RecFunction':
+    n = Int('n')
+    p = RecFunction('pn_06', IntSort(), IntSort())
+    Tn_06 = RecFunction('Tn_06', IntSort(), IntSort())
+    RecAddDefinition(p, [n], If(n == 0, 0,
+                                (n - p(n / s)) % s))
+    RecAddDefinition(Tn_06, [n], p(n))
+    return Tn_06
 
 
 if __name__ == '__main__':

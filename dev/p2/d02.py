@@ -1,8 +1,8 @@
 from itertools import count
-from typing import Dict, Iterator, Union
+from typing import Iterator, Union
 
 try:
-    from z3 import Function, If, Int, IntSort, RecAddDefinition, RecFunction, ToInt
+    from z3 import If, Int, IntSort, RecAddDefinition, RecFunction, ToInt
 except ImportError:
     pass
 
@@ -14,15 +14,14 @@ def p2_d02(_: int = 2) -> Iterator[int]:
         yield (1 - (-1)**(x.bit_count())) >> 1
 
 
-def to_z3(_: Union[int, 'Int'] = 2) -> Dict[str, Union['Function', 'RecFunction']]:
+def to_z3(_: Union[int, 'Int'] = 2) -> 'RecFunction':
     n = Int('n')
-    p = RecFunction('p', IntSort(), IntSort())
-    RecAddDefinition(p, [n], If(n == 0, 0, (p(n / 2) + (n % 2))))
-    T2_02 = ToInt((1 - (-1)**p(n)) / 2)
-    return {
-        'p': p,
-        'T': T2_02
-    }
+    p = RecFunction('p2_02', IntSort(), IntSort())
+    T2_02 = RecFunction('T2_02', IntSort(), IntSort())
+    RecAddDefinition(p, [n], If(n == 0, 0,
+                                p(n / 2) + (n % 2)))
+    RecAddDefinition(T2_02, [n], ToInt((1 - (-1)**p(n)) / 2))
+    return T2_02
 
 
 if __name__ == '__main__':

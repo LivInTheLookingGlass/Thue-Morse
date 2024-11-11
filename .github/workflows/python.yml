@@ -47,7 +47,7 @@ jobs:
       run: python -O -m pip install -r requirements.txt
 
     - name: Run Z3 Tests
-      run: python -O -m pytest -k "z3" -n auto --dist=worksteal
+      run: python -O -m pytest -s -k "z3"
 
   base_2:
     strategy:

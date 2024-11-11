@@ -1,8 +1,8 @@
 from itertools import count
-from typing import Dict, Iterator, Union
+from typing import Iterator, Union
 
 try:
-    from z3 import Function, If, Int, IntSort, RecAddDefinition, RecFunction
+    from z3 import If, Int, IntSort, RecAddDefinition, RecFunction
 except ImportError:
     pass
 
@@ -19,16 +19,24 @@ def p2_d07(_: int = 2) -> Iterator[int]:
         yield value
 
 
-def to_z3(_: Union[int, 'Int'] = 2) -> Dict[str, Union['Function', 'RecFunction']]:
+def to_z3(_: Union[int, 'Int'] = 2) -> 'RecFunction':
     n = Int('n')
-    p = RecFunction('p', IntSort(), IntSort())
+    x = Int('x')
+    y = Int('y')
+    ilog2 = RecFunction('ilog2_2_07', IntSort(), IntSort())
+    xor = RecFunction('xor_2_07', IntSort(), IntSort(), IntSort())
+    p = RecFunction('p2_07', IntSort(), IntSort())
     T2_07 = RecFunction('T2_07', IntSort(), IntSort())
-    RecAddDefinition(p, [n], log2(n ^ (n - 1) + 1)
-    RecAddDefinition(T2_07, [n], If(n == 0, 0, If(p(n) % 2 == 0, 1 - T(n-1), T(n-1)))
-    return {
-        'p': p,
-        'T': T2_07
-    }
+    RecAddDefinition(xor, [x, y], If(x == 0, y,
+                                     If(y == 0, x,
+                                        ((x % 2) + (y % 2)) % 2 + 2 * xor(x / 2, y / 2))))
+    RecAddDefinition(ilog2, [n], If(n <= 1, 0,
+                                    1 + ilog2(n / 2)))
+    RecAddDefinition(p, [n], ilog2(xor(n, (n - 1))) + 1)
+    RecAddDefinition(T2_07, [n], If(n == 0, 0,
+                                    If(p(n) % 2 == 0, 1 - T2_07(n - 1),
+                                       T2_07(n - 1))))
+    return T2_07
 
 
 if __name__ == '__main__':

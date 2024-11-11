@@ -79,6 +79,8 @@ jobs:
     env:
       swap_size: 12  # in GiB
       max_mem: 15
+    needs: satisfiable
+    if: ${{ always() }}
     name: Test ${{matrix.def}} in base 2
     steps:
     - uses: actions/checkout@v4
@@ -175,7 +177,8 @@ jobs:
     env:
       swap_size: 12  # in GiB
       max_mem: 15
-    needs: lint
+    needs: [lint, satisfiable]
+    if: ${{ always() }}
     name: Test n_0${{matrix.def}} in bases ${{matrix.bases}}
 
     steps:

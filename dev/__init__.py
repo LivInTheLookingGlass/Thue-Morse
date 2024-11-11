@@ -28,7 +28,7 @@ def get_iters(p2: bool = True, pn: bool = False, s: int = 2) -> Dict[str, Iterab
 
 
 def get_z3s(p2: bool = True, pn: bool = False, s: int = 2) -> Dict[str, Dict[str, Any]]:
-    ret: Dict[str, Dict[str, Any]]
+    ret: Dict[str, Dict[str, Any]] = {}
     for key, value in get_modules().items():
         if hasattr(value, 'to_z3') and (('p2' in key and p2) or ('pn' in key and pn)):
             try:

@@ -2,7 +2,7 @@ from itertools import count
 from typing import Dict, Iterator, Union
 
 try:
-    from z3 import Function, Int, IntSortRecAddDefinition, RecFunction
+    from z3 import Function, If, Int, IntSort, RecAddDefinition, RecFunction
 except ImportError:
     pass
 
@@ -29,7 +29,7 @@ def to_z3(_: Union[int, 'Int'] = 2) -> Dict[str, Union['Function', 'RecFunction'
     p = RecFunction('p', IntSort(), IntSort())
     T2_06 = RecFunction('T2_06', IntSort(), IntSort())
     RecAddDefinition(p, [n], If(n == 0, 0, (n - p(n / 2) % 2)))
-    RecAddDefinition(T2_01, [n], p(n))
+    RecAddDefinition(T2_06, [n], p(n))
     return {
         'p': p,
         'T2_06': T2_06
@@ -37,4 +37,4 @@ def to_z3(_: Union[int, 'Int'] = 2) -> Dict[str, Union['Function', 'RecFunction'
 
 
 if __name__ == '__main__':
-    run(1, p2_d01, '2')
+    run(1, p2_d06, '2')

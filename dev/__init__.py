@@ -1,28 +1,10 @@
 from importlib import import_module
-from itertools import product
-from pathlib import Path
-from signal import SIGTERM, signal
-from typing import Dict, Iterable
-
-from pytest import mark
-
-test_len = 2**15
-bases_tested = range(2, 256)
-base_2_tests = [int(p.name[1:-3]) for p in Path(__file__).parent.glob('p2/d*.py')]
-base_n_tests = [int(p.name[1:-3]) for p in Path(__file__).parent.glob('pn/d*.py')]
-base_2_tests.remove(1)
-base_n_tests.remove(1)
+from traceback import print_exc
+from types import ModuleType
+from typing import Any, Dict, Iterable
 
 
-def signal_handler(sig, frame):
-    print("Received SIGTERM. Raising exception for pytest.")
-    raise RuntimeError()
-
-
-signal(SIGTERM, signal_handler)
-
-
-def get_modules(p2: bool = True, pn: bool = False, s: int = 2) -> Dict[str, Iterable[int]]:
+def get_modules(p2: bool = True, pn: bool = False, s: int = 2) -> Dict[str, ModuleType]:
     parent_name = '.'.join(__name__.split('.')[:-1])
     iters = {}
     for kind in "2" * p2 + "n" * pn:
@@ -45,9 +27,12 @@ def get_iters(p2: bool = True, pn: bool = False, s: int = 2) -> Dict[str, Iterab
     }
 
 
-def get_z3s(p2: bool = True, pn: bool = False, s: int = 2) -> Dict[str, Iterable[int]]:
-    return {
-        key: value.get_z3(s)
-        for key, value in get_modules().items()
-        if hasattr(value, 'get_z3') and (('p2' in key and p2) or ('pn' in key and pn))
-    }
+def get_z3s(p2: bool = True, pn: bool = False, s: int = 2) -> Dict[str, Dict[str, Any]]:
+    ret: Dict[str, Dict[str, Any]]
+    for key, value in get_modules().items():
+        if hasattr(value, 'to_z3') and (('p2' in key and p2) or ('pn' in key and pn)):
+            try:
+                ret[key] = value.to_z3(s)
+            except Exception:
+                print_exc()
+    return ret

@@ -1,12 +1,11 @@
-from importlib import import_module
 from itertools import combinations, product
 from pathlib import Path
 from signal import SIGTERM, signal
-from typing import Dict, Iterable
 
 from pytest import mark
+
 try:
-    from z3 import *
+    from z3 import ForAll, Implies, Int, Solver, sat
     disable_z3 = False
 except ImportError:
     disable_z3 = True
@@ -72,7 +71,7 @@ def test_z3_cmp(T1_name: str, T1, T2_name, T2):
     solver = Solver()
     solver.set(proof=True)
 
-    # Add equivalence check for T1 and T2
+    n = Int('n')
     solver.add(ForAll(n, Implies(n >= 0, T1(n) == T2(n))))
 
     # Check if the assertion is valid

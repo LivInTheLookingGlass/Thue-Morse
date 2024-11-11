@@ -2,7 +2,7 @@ from itertools import count
 from typing import Dict, Iterator, Union
 
 try:
-    from z3 import Function, Int, IntSortRecAddDefinition, RecFunction
+    from z3 import Function, If, Int, IntSort, RecAddDefinition, RecFunction
 except ImportError:
     pass
 

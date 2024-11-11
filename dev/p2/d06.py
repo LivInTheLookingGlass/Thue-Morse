@@ -20,10 +20,6 @@ def p2_d06(_: int = 2) -> Iterator[int]:
         yield T(i)
 
 
-if __name__ == '__main__':
-    run(6, p2_d06, '2')
-
-
 def to_z3(_: Union[int, 'Int'] = 2) -> Dict[str, Union['Function', 'RecFunction']]:
     n = Int('n')
     p = RecFunction('p', IntSort(), IntSort())
@@ -32,9 +28,9 @@ def to_z3(_: Union[int, 'Int'] = 2) -> Dict[str, Union['Function', 'RecFunction'
     RecAddDefinition(T2_06, [n], p(n))
     return {
         'p': p,
-        'T2_06': T2_06
+        'T': T2_06
     }
 
 
 if __name__ == '__main__':
-    run(1, p2_d06, '2')
+    run(6, p2_d06, '2')

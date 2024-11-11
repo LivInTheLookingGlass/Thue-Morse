@@ -72,7 +72,7 @@ def test_z3_cmp(T1_name: str, T1, T2_name, T2):
     solver.set(proof=True)
 
     n = Int('n')
-    solver.add(ForAll(n, Implies(n >= 0, T1(n) == T2(n))))
+    solver.add(ForAll(n, Implies(n >= 0, T1['T'](n) == T2['T'](n))))
 
     # Check if the assertion is valid
     if solver.check() == sat:

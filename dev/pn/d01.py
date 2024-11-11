@@ -30,7 +30,7 @@ def to_z3(s: Union[int, 'Int'] = 2) -> Dict[str, Union['Function', 'RecFunction'
     RecAddDefinition(Tn_01, [n], ps(n) % s)
     return {
         'p': p,
-        'Tn_01': Tn_01
+        'T': Tn_01
     }
 
 

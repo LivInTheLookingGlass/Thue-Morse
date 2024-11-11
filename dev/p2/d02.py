@@ -21,7 +21,7 @@ def to_z3(_: Union[int, 'Int'] = 2) -> Dict[str, Union['Function', 'RecFunction'
     T2_02 = (1 - (-1)**p(n)) / 2
     return {
         'p': p,
-        'T2_02': T2_02
+        'T': T2_02
     }
 
 

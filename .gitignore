@@ -3,4 +3,3 @@
 .mypy_cache
 .pytest_cache
 ~$TestData.ods
-smt/

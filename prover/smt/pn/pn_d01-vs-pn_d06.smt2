@@ -1,0 +1,22 @@
+; benchmark generated from python API
+(set-info :status unknown)
+(declare-fun s () Int)
+(define-funs-rec ( ( Tn_06 ((x!1 Int)) Int)
+                   ( pn_06 ((x!1 Int)) Int)
+                   ( Tn_01 ((x!1 Int)) Int)
+                   ( pn_01 ((x!1 Int)) Int))
+                 ( ((_ pn_06 0) x!1)
+                   (let ((a!1 (mod (- x!1 ((_ pn_06 0) (div x!1 s))) s)))
+                     (ite (= x!1 0) 0 a!1))
+                   (mod ((_ pn_01 0) x!1) s)
+                   (ite (= x!1 0) 0 (+ ((_ pn_01 0) (div x!1 s)) x!1))))
+(assert
+ (>= s 2))
+(assert
+ (forall ((n Int) )(let ((?x128907 ((_ Tn_06 0) n)))
+(let ((?x47981 ((_ Tn_01 0) n)))
+(let (($x313 (= ?x47981 ?x128907)))
+(let (($x80505 (>= n 0)))
+(=> $x80505 $x313))))))
+)
+(check-sat)

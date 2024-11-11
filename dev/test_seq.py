@@ -40,41 +40,6 @@ def signal_handler(sig, frame):
 signal(SIGTERM, signal_handler)
 
 
-@mark.parametrize("c", [f'2_{n:02}' for n in base_2_tests] + ['n_01'] + [f'n_{n:02}' for n in base_n_tests])
-def test_compare_2_1_to_(c: str, n: int = test_len):
-    iters = get_iters(True, True)
-    cs = 'p{}.d{}'.format(*c.split('_'))
-    iters = {
-        k: d for k, d in iters.items()
-        if k in (cs, "p2.d01")
-    }
-    assert len(iters) == 2
-    for idx, tup in enumerate(zip(*iters.values())):
-        if len(set(tup)) != 1:
-            raise ValueError(f"Failed at idx {idx}: {dict((f, x) for f, x in zip(iters.keys(), tup))}")
-        if idx >= n:
-            break
-    print(f"All definitions agree for 2 players up to {n} iterations")
-
-
-@mark.parametrize("s, c", product(bases_tested, base_n_tests),
-                  ids=(f'{c:01}-base_{s:03}' for s, c in product(bases_tested, base_n_tests)))
-def test_compare_n_1_to_n(c: int, s: int, n: int = test_len):
-    iters = get_iters(False, True, s)
-    cs = str(c).zfill(2)
-    iters = {
-        k: d for k, d in iters.items()
-        if cs in k or "01" in k
-    }
-    assert len(iters) == 2
-    for idx, tup in enumerate(zip(*iters.values())):
-        if len(set(tup)) != 1:
-            raise ValueError(f"Failed at idx {idx}: {dict((f, x) for f, x in zip(iters.keys(), tup))}")
-        if idx >= n:
-            break
-    print(f"All definitions agree for {s} players up to {n} iterations")
-
-
 @mark.skipif(disable_z3, reason="Requires z3-solver")
 @mark.parametrize("T1_name, T1, T2_name, T2", z3_tests_b2,
                   ids=(f'{T1_name}-vs-{T2_name}' for T1_name, _, T2_name, _ in z3_tests_b2))
@@ -113,7 +78,8 @@ def run_solver(
     print("Statistics:")
     print(solver.statistics())
 
-    fname = Path(f"./smt/p{mode}/{T1_name.replace('.', '_')}-vs-{T2_name.replace('.', '_')}.smt2")
+    fname_noext = f"{T1_name.replace('.', '_')}-vs-{T2_name.replace('.', '_')}"
+    fname = Path(f"./prover/smt/p{mode}/{fname_noext}.smt2")
     fname.parent.mkdir(exist_ok=True, parents=True)
     with fname.open("w") as f:
         f.write(solver.to_smt2())
@@ -123,13 +89,57 @@ def run_solver(
     try:
         m = solver.model()
         print("Traversing model...")
-        for d in m.decls():
-            print(f'{d.name()} = {m[d]}')
+        fname = Path(f"./prover/model/p{mode}/{fname_noext}.smt2")
+        fname.parent.mkdir(exist_ok=True, parents=True)
+        with fname.open("w") as f:
+            for d in m.decls():
+                string = f'{d.name()} = {m[d]}'
+                print(string)
+                f.write(string)
     except Exception:
         print("Model failed. Moving on.")
 
     print("Trying proof...")
     try:
         print(solver.proof())
+        fname = Path(f"./prover/proof/p{mode}/{fname_noext}.smt2")
+        fname.parent.mkdir(exist_ok=True, parents=True)
+        with fname.open("w") as f:
+            f.write(str(solver.proof()))
     except Exception:
         print("Proof failed. Moving on.")
+
+
+@mark.parametrize("c", [f'2_{n:02}' for n in base_2_tests] + ['n_01'] + [f'n_{n:02}' for n in base_n_tests])
+def test_compare_2_1_to_(c: str, n: int = test_len):
+    iters = get_iters(True, True)
+    cs = 'p{}.d{}'.format(*c.split('_'))
+    iters = {
+        k: d for k, d in iters.items()
+        if k in (cs, "p2.d01")
+    }
+    assert len(iters) == 2
+    for idx, tup in enumerate(zip(*iters.values())):
+        if len(set(tup)) != 1:
+            raise ValueError(f"Failed at idx {idx}: {dict((f, x) for f, x in zip(iters.keys(), tup))}")
+        if idx >= n:
+            break
+    print(f"All definitions agree for 2 players up to {n} iterations")
+
+
+@mark.parametrize("s, c", product(bases_tested, base_n_tests),
+                  ids=(f'{c:01}-base_{s:03}' for s, c in product(bases_tested, base_n_tests)))
+def test_compare_n_1_to_n(c: int, s: int, n: int = test_len):
+    iters = get_iters(False, True, s)
+    cs = str(c).zfill(2)
+    iters = {
+        k: d for k, d in iters.items()
+        if cs in k or "01" in k
+    }
+    assert len(iters) == 2
+    for idx, tup in enumerate(zip(*iters.values())):
+        if len(set(tup)) != 1:
+            raise ValueError(f"Failed at idx {idx}: {dict((f, x) for f, x in zip(iters.keys(), tup))}")
+        if idx >= n:
+            break
+    print(f"All definitions agree for {s} players up to {n} iterations")

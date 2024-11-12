@@ -1,5 +1,5 @@
 from itertools import count
-from typing import Dict, Iterator, Union
+from typing import Iterator, Union
 
 try:
     from z3 import If, Int, IntSort, RecAddDefinition, RecFunction
@@ -19,7 +19,7 @@ def p2_d11(_: int = 2) -> Iterator[int]:
         yield 1 - A1510481(i) + A1510481(i - 1)
 
 
-def to_z3(_: Union[int, 'Int'] = 2) -> Dict[str, 'RecFunction']:
+def to_z3(_: Union[int, 'Int'] = 2) -> 'RecFunction':
     n = Int('n')
     ilog2 = RecFunction('ilog2_2_11', IntSort(), IntSort())
     p = RecFunction('p2_11', IntSort(), IntSort())
@@ -28,7 +28,7 @@ def to_z3(_: Union[int, 'Int'] = 2) -> Dict[str, 'RecFunction']:
                                     1 + ilog2(n / 2)))
     RecAddDefinition(p, [n], n / 2 + (ilog2(n + 1) % 2) * (n % 2))
     RecAddDefinition(T2_11, [n], 1 - p(n + 1) + p(n))
-    return {'ilog2': ilog2, 'p': p, 'T': T2_11}
+    return T2_11
 
 
 if __name__ == '__main__':

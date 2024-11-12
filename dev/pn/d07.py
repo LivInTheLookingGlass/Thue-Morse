@@ -1,6 +1,6 @@
 from itertools import count
 from math import log
-from typing import Dict, Iterator, Union
+from typing import Iterator, Union
 
 try:
     from z3 import If, Int, IntSort, RecAddDefinition, RecFunction
@@ -33,12 +33,12 @@ def pn_d07(n: int = 2) -> Iterator[int]:
         yield value
 
 
-def to_z3(s: Union[int, 'Int'] = 2) -> Dict[str, 'RecFunction']:
+def to_z3(s: Union[int, 'Int'] = 2) -> 'RecFunction':
     n = Int('n')
     x = Int('x')
     y = Int('y')
-    ilogn = RecFunction('ilogn_07', IntSort(), IntSort(), IntSort())
-    xorn = RecFunction('xorn_07', IntSort(), IntSort(), IntSort(), IntSort())
+    ilogn = RecFunction('ilog2', IntSort(), IntSort(), IntSort())
+    xorn = RecFunction('xorn', IntSort(), IntSort(), IntSort(), IntSort())
     p = RecFunction('pn_07', IntSort(), IntSort())
     Tn_07 = RecFunction('Tn_07', IntSort(), IntSort())
     RecAddDefinition(xorn, [x, y, n],
@@ -52,7 +52,7 @@ def to_z3(s: Union[int, 'Int'] = 2) -> Dict[str, 'RecFunction']:
     RecAddDefinition(Tn_07, [n],
                      If(n < s, n,
                         (ilogn(xorn(n, n - 1, s), s) + Tn_07(n - 1) + 1) % s))
-    return {'ilogn': ilogn, 'xorn': xorn, 'p': p, 'T': Tn_07}
+    return Tn_07
 
 
 if __name__ == '__main__':

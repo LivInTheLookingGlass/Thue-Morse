@@ -1,5 +1,5 @@
 from itertools import chain
-from typing import Dict, Iterator, Union
+from typing import Iterator, Union
 
 try:
     from z3 import If, Int, IntSort, RecAddDefinition, RecFunction
@@ -16,7 +16,7 @@ def p2_d12(_: int = 2) -> Iterator[int]:
         yield 1 - i & 1
 
 
-def to_z3(_: Union[int, 'Int'] = 2) -> Dict[str, 'RecFunction']:
+def to_z3(_: Union[int, 'Int'] = 2) -> 'RecFunction':
     n = Int('n')
     fe = RecFunction('fe2_12', IntSort(), IntSort())
     fo = RecFunction('fo2_12', IntSort(), IntSort())
@@ -35,7 +35,7 @@ def to_z3(_: Union[int, 'Int'] = 2) -> Dict[str, 'RecFunction']:
     RecAddDefinition(o, [n], If(n == 0, 1,
                                 fo(o(n - 1) + 1)))
     RecAddDefinition(T2_12, [n], (e(n) + 1) % 2)
-    return {'fe': fe, 'fo': fo, 'p': p, 'e': e, 'o': o, 'T': T2_12}
+    return T2_12
 
 
 if __name__ == '__main__':

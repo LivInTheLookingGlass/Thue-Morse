@@ -1,7 +1,7 @@
 from itertools import combinations, product
 from pathlib import Path
 from signal import SIGTERM, signal
-from typing import Any, Dict, List, Literal, Union
+from typing import Any, List, Literal, Union
 
 from pytest import mark
 
@@ -43,26 +43,20 @@ signal(SIGTERM, signal_handler)
 @mark.skipif(disable_z3, reason="Requires z3-solver")
 @mark.parametrize("T1_name, T1, T2_name, T2", z3_tests_b2,
                   ids=(f'{T1_name}-vs-{T2_name}' for T1_name, _, T2_name, _ in z3_tests_b2))
-def test_z3_cmp_b2(
-    T1_name: str, T1: Dict[str, 'RecFunction'],
-    T2_name: str, T2: Dict[str, 'RecFunction']
-):
+def test_z3_cmp_b2(T1_name: str, T1: 'RecFunction', T2_name, T2: 'RecFunction'):
     run_solver(T1_name, T1, T2_name, T2, "2", [])
 
 
 @mark.skipif(disable_z3, reason="Requires z3-solver")
 @mark.parametrize("T1_name, T1, T2_name, T2", z3_tests_bn,
                   ids=(f'{T1_name}-vs-{T2_name}' for T1_name, _, T2_name, _ in z3_tests_bn))
-def test_z3_cmp_bn(
-    T1_name: str, T1: Dict[str, 'RecFunction'],
-    T2_name: str, T2: Dict[str, 'RecFunction']
-):
+def test_z3_cmp_bn(T1_name: str, T1: 'RecFunction', T2_name, T2: 'RecFunction'):
     run_solver(T1_name, T1, T2_name, T2, "n", [s_ref >= 2])
 
 
 def run_solver(
-    T1_name: str, T1: Dict[str, 'RecFunction'],
-    T2_name: str, T2: Dict[str, 'RecFunction'],
+    T1_name: str, T1: 'RecFunction',
+    T2_name: str, T2: 'RecFunction',
     mode: Union[Literal["2"], Literal["n"]],
     extras: List[Any]
 ) -> None:
@@ -74,8 +68,7 @@ def run_solver(
 
     n = Int('n')
     solver.add(*extras)
-    solver.add(*T1.values(), *T2.values())
-    solver.add(ForAll(n, Implies(n >= 0, T1['T'](n) == T2['T'](n))))
+    solver.add(ForAll(n, Implies(n >= 0, T1(n) == T2(n))))
 
     # Check if the assertion is valid
     if solver.check() == sat:

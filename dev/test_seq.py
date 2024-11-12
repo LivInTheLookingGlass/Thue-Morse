@@ -1,3 +1,4 @@
+from functools import partial
 from itertools import combinations, product
 from pathlib import Path
 from signal import SIGTERM, signal
@@ -10,11 +11,8 @@ try:
     disable_z3 = False
     set_param('verbose', 1)
     set_param('timeout', 60)
-    set_param('stats', True)
-    set_param('proof', True)
-    set_param("model", True)
-    set_param("dump_models", True)
-    set_param("unsat_core", True)
+    for param in ('stats', 'proof', 'model', 'dump_models', 'unsat_core'):
+        set_param(param, True)
 except ImportError:
     Int = str  # type: ignore
     disable_z3 = True
@@ -32,12 +30,10 @@ z3_tests_b2 = [x + y for x, y in combinations(get_z3s(True, True).items(), 2)]
 z3_tests_bn = [x + y for x, y in combinations(get_z3s(False, True, s_ref).items(), 2)]
 
 
+@partial(signal, SIGTERM)
 def signal_handler(sig, frame):
     print("Received SIGTERM. Raising exception for pytest.")
     raise RuntimeError()
-
-
-signal(SIGTERM, signal_handler)
 
 
 @mark.skipif(disable_z3, reason="Requires z3-solver")

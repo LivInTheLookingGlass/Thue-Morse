@@ -195,7 +195,7 @@ proof-trail(assumption(asserted(s >= 2), s >= 2),
                           Or(s >= 0, Not(s >= 2))),
             th-assumption(th-lemma(Or(s <= 0, s >= 0)),
                           Or(s <= 0, s >= 0)),
-            th-assumption(th-lemma(Or(div0(0, s) + -1*(0/s) >=
+            th-assumption(th-lemma(Or(0/s + -1*div0(0, s) >=
                                       0,
-                                      div0(0, s) + -1*(0/s) <=
+                                      0/s + -1*div0(0, s) <=
 ...

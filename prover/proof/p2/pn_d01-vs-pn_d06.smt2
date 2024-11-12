@@ -51,58 +51,58 @@ proof-trail(assumption(mp(mp~(mp(asserted(ForAll(n,
                        recfun-num-rounds),
             assumption(asserted(seq.max_unfolding),
                        seq.max_unfolding),
-            th-assumption(th-lemma(Or(0%0 + -1*mod0(0, 0) >=
+            th-assumption(th-lemma(Or(mod0(0, 0) + -1*(0%0) >=
                                       0,
-                                      0%0 + -1*mod0(0, 0) <=
+                                      mod0(0, 0) + -1*(0%0) <=
                                       0)),
-                          Or(0%0 + -1*mod0(0, 0) >= 0,
-                             0%0 + -1*mod0(0, 0) <= 0)),
-            th-assumption(th-lemma(Or(0%0 + -1*mod0(0, 0) >=
+                          Or(mod0(0, 0) + -1*(0%0) >= 0,
+                             mod0(0, 0) + -1*(0%0) <= 0)),
+            th-assumption(th-lemma(Or(mod0(0, 0) + -1*(0%0) >=
                                       0,
-                                      0%0 + -1*mod0(0, 0) <=
+                                      mod0(0, 0) + -1*(0%0) <=
                                       0)),
-                          Or(0%0 + -1*mod0(0, 0) <= 0,
-                             0%0 + -1*mod0(0, 0) >= 0)),
-            th-assumption(th-lemma(Or(Not(0%0 == mod0(0, 0)),
-                                      0%0 + -1*mod0(0, 0) <=
+                          Or(mod0(0, 0) + -1*(0%0) <= 0,
+                             mod0(0, 0) + -1*(0%0) >= 0)),
+            th-assumption(th-lemma(Or(Not(mod0(0, 0) == 0%0),
+                                      mod0(0, 0) + -1*(0%0) <=
                                       0)),
-                          Or(Not(0%0 == mod0(0, 0)),
-                             0%0 + -1*mod0(0, 0) <= 0)),
-            th-assumption(th-lemma(Or(Not(0%0 == mod0(0, 0)),
-                                      0%0 + -1*mod0(0, 0) <=
+                          Or(Not(mod0(0, 0) == 0%0),
+                             mod0(0, 0) + -1*(0%0) <= 0)),
+            th-assumption(th-lemma(Or(Not(mod0(0, 0) == 0%0),
+                                      mod0(0, 0) + -1*(0%0) <=
                                       0)),
-                          Or(Not(0%0 == mod0(0, 0)),
-                             0%0 + -1*mod0(0, 0) <= 0)),
-            th-assumption(th-lemma(Or(Not(0%0 == mod0(0, 0)),
-                                      0%0 + -1*mod0(0, 0) >=
+                          Or(Not(mod0(0, 0) == 0%0),
+                             mod0(0, 0) + -1*(0%0) <= 0)),
+            th-assumption(th-lemma(Or(Not(mod0(0, 0) == 0%0),
+                                      mod0(0, 0) + -1*(0%0) >=
                                       0)),
-                          Or(Not(0%0 == mod0(0, 0)),
-                             0%0 + -1*mod0(0, 0) >= 0)),
-            th-assumption(th-lemma(Or(Not(0%0 == mod0(0, 0)),
-                                      0%0 + -1*mod0(0, 0) >=
+                          Or(Not(mod0(0, 0) == 0%0),
+                             mod0(0, 0) + -1*(0%0) >= 0)),
+            th-assumption(th-lemma(Or(Not(mod0(0, 0) == 0%0),
+                                      mod0(0, 0) + -1*(0%0) >=
                                       0)),
-                          Or(Not(0%0 == mod0(0, 0)),
-                             0%0 + -1*mod0(0, 0) >= 0)),
-            th-assumption(th-lemma(Or(0%0 == mod0(0, 0),
-                                      Not(0%0 +
-                                        -1*mod0(0, 0) <=
+                          Or(Not(mod0(0, 0) == 0%0),
+                             mod0(0, 0) + -1*(0%0) >= 0)),
+            th-assumption(th-lemma(Or(mod0(0, 0) == 0%0,
+                                      Not(mod0(0, 0) +
+                                        -1*(0%0) <=
                                         0),
-                                      Not(0%0 +
-                                        -1*mod0(0, 0) >=
+                                      Not(mod0(0, 0) +
+                                        -1*(0%0) >=
                                         0))),
-                          Or(0%0 == mod0(0, 0),
-                             Not(0%0 + -1*mod0(0, 0) <= 0),
-                             Not(0%0 + -1*mod0(0, 0) >= 0))),
-            th-assumption(th-lemma(Or(0%0 == mod0(0, 0),
-                                      Not(0%0 +
-                                        -1*mod0(0, 0) <=
+                          Or(mod0(0, 0) == 0%0,
+                             Not(mod0(0, 0) + -1*(0%0) <= 0),
+                             Not(mod0(0, 0) + -1*(0%0) >= 0))),
+            th-assumption(th-lemma(Or(mod0(0, 0) == 0%0,
+                                      Not(mod0(0, 0) +
+                                        -1*(0%0) <=
                                         0),
-                                      Not(0%0 +
-                                        -1*mod0(0, 0) >=
+                                      Not(mod0(0, 0) +
+                                        -1*(0%0) >=
                                         0))),
-                          Or(0%0 == mod0(0, 0),
-                             Not(0%0 + -1*mod0(0, 0) <= 0),
-                             Not(0%0 + -1*mod0(0, 0) >= 0))),
+                          Or(mod0(0, 0) == 0%0,
+                             Not(mod0(0, 0) + -1*(0%0) <= 0),
+                             Not(mod0(0, 0) + -1*(0%0) >= 0))),
             th-assumption(th-lemma(Or(0%s >= 0, 0%s <= 0)),
                           Or(0%s >= 0, 0%s <= 0)),
             th-assumption(th-lemma(Or(0%s >= 0, 0%s <= 0)),
@@ -194,8 +194,8 @@ proof-trail(assumption(mp(mp~(mp(asserted(ForAll(n,
                           Or(s <= 0, s >= 0)),
             th-assumption(th-lemma(Or(s <= 0, s >= 0)),
                           Or(s >= 0, s <= 0)),
-            th-assumption(th-lemma(Or(0/s + -1*div0(0, s) >=
+            th-assumption(th-lemma(Or(div0(0, s) + -1*(0/s) >=
                                       0,
-                                      0/s + -1*div0(0, s) <=
+                                      div0(0, s) + -1*(0/s) <=
                                       0)),
 ...

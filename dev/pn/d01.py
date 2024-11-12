@@ -1,5 +1,5 @@
 from itertools import count
-from typing import Iterator, Union
+from typing import Dict, Iterator, Union
 
 try:
     from z3 import If, Int, IntSort, RecAddDefinition, RecFunction
@@ -22,14 +22,14 @@ def pn_d01(n: int = 2) -> Iterator[int]:
         yield p(x, n)
 
 
-def to_z3(s: Union[int, 'Int'] = 2) -> 'RecFunction':
+def to_z3(s: Union[int, 'Int'] = 2) -> Dict[str, 'RecFunction']:
     n = Int('n')
     ps = RecFunction('pn_01', IntSort(), IntSort())
     Tn_01 = RecFunction('Tn_01', IntSort(), IntSort())
     RecAddDefinition(ps, [n], If(n == 0, 0,
                                  ps(n / s) + n))
     RecAddDefinition(Tn_01, [n], ps(n) % s)
-    return Tn_01
+    return {'p': p, 'T': Tn_01}
 
 
 if __name__ == '__main__':

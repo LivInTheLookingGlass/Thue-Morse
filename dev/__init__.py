@@ -1,7 +1,12 @@
 from importlib import import_module
 from traceback import print_exc
 from types import ModuleType
-from typing import Any, Dict, Iterable
+from typing import Dict, Iterable
+
+try:
+    from z3 import RecFunction
+except ImportError:
+    pass
 
 
 def get_modules(p2: bool = True, pn: bool = False, s: int = 2) -> Dict[str, ModuleType]:
@@ -27,8 +32,8 @@ def get_iters(p2: bool = True, pn: bool = False, s: int = 2) -> Dict[str, Iterab
     }
 
 
-def get_z3s(p2: bool = True, pn: bool = False, s: int = 2) -> Dict[str, Dict[str, Any]]:
-    ret: Dict[str, Dict[str, Any]] = {}
+def get_z3s(p2: bool = True, pn: bool = False, s: int = 2) -> Dict[str, Dict[str, 'RecFunction']]:
+    ret: Dict[str, Dict[str, 'RecFunction']] = {}
     for key, value in get_modules(p2, pn).items():
         if hasattr(value, 'to_z3') and (('p2' in key and p2) or ('pn' in key and pn)):
             try:

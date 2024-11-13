@@ -15,7 +15,8 @@
 \usepackage{float}
 \usepackage{multirow}
 \usepackage{colortbl}
-\usepackage{showlabels}
+% \usepackage{showlabels}
+\usepackage{amsthm}
 
 %counters
 \newcounter{stddefctr}
@@ -40,7 +41,7 @@
 \renewcommand{\mod}[1]{\hspace{-7pt} \oldmod \, #1}
 
 % Define the note command
-\newcommand{\note}[1]{\textcolor{purple}{#1}}
+\newcommand{\note}[1]{\small\textcolor{purple}{#1}\normalsize}
 
 % Define a concat command
 \newcommand*\concat{\mathbin{\|}}

@@ -8,132 +8,37 @@
 \IEEEauthorblockA{\textit{TMW Center for Early Learning + Public Health}\\
 \textit{University of Chicago}\\
 Chicago, Illinois, United States\\
-ORCID: 0009-0004-2296-7033}
-\and
-\IEEEauthorblockN{Dan Rowe}
-\IEEEauthorblockA{\textit{Department of Math and Computer Science}\\
-Northern Michigan University\\
-Marquette, Michigan, United States\\
-Email: darowe@nmu.edu}
-}
+ORCID: 0009-0004-2296-7033}}
 
 \maketitle
 
 \begin{abstract}
-In this paper, we discuss various ways to extend the \TMS \cite{OEIS-TMS} when used as a fair-share sequence. Included are \TotalOriginals definitions of the original sequence, \TotalExtensions extensions to n players, for a total of \TotalDefs definitions. Also included are proofs of equality for all definitions. In the appendix are several complexity analyses for both time and space of each definition.
+In this paper, we discuss various ways to extend the \TMS \cite{OEIS-TMS} when used as a fair-share sequence. Included are \TotalOriginals definitions of the original sequence, \TotalExtensions extensions to n players, for a total of \TotalDefs definitions. Also included are proofs of equality for all definitions, as well as an examination of several properties of the \TMS and their presence in the \ETMS. In the appendix are several complexity analyses for both time and space of each definition.
 \end{abstract}
 
 \begin{IEEEkeywords}
-TBA
+Combinatorics, Generating Functions, Thue-Morse, Prouhet-Thue-Morse, Formal Languages, Number Theory, Periodicity, Aperiodicity, Rotation, Concatenation
 \end{IEEEkeywords}
 
 \section{Introduction}
 
-\note{Make sure to add that while this paper does not deal with negative or fractional bases, many of the definitions are trivially extendable to that domain, and at least one of them already has been in another paper.}
+The \TMS is a fundamental object in combinatorics and theoretical computer science, widely studied for its remarkable properties and diverse applications. It is often presented as an infinite sequence starting with 0, as shown below: \begin{equation*}
+T\!\!=\!\!\tuple{0,\!1,\!1,\!0,\!1,\!0,\!0,\!1,\!1,\!0,\!0,\!1,\!0,\!1,\!1,\!0,\!1,\!0,\!0,\!1,\!0,\!1,\!1,\!0,\!0,\!1,\!1,\!0,\!\ldots}
+\end{equation*}
 
-\note{All definitions are tested, though due to resource limitations, to different extents.}
+This sequence arises in various fields, including automata theory, formal languages, number theory, and signal processing, due to its connection to binary operations, periodicity, and complexity. Its structure has been examined in relation to notions of minimality and non-repetitiveness, making it a natural object of study in mathematical logic and computational theory.
 
+Over the past two centuries, the \TMS has garnered attention for its role in constructing infinite words with specific properties (such as non-repetition over large substrings) and for its use in the design of error-correcting codes, pseudorandom number generators, and tiling problems. More recently, its applications have extended to the analysis of dynamical systems, coding theory, and the study of complexity within algorithms.
 
-\renewcommand{\arraystretch}{1.25}
-\begin{table}[H]
-\label{tab:testing_b2}
-\caption{Extent of Testing in Base 2}
-\centering
-\begin{tabular}{|l|r|}
-\hline
-\textbf{Definition} & \textbf{Entries Tested}      \\ \hline
-$T_{2,1}$  &\multirow{2}{*}{$2^{35}=34,359,738,368$}\\ \cline{1-1}
-$T_{2,2}$  &                              \\ \hline
-$T_{2,3}$  & $2^{33} = 8,589,934,592$     \\ \hline
-$T_{2,4}$  &\multirow{3}{*}{$2^{32}=4,294,967,296$}\\ \cline{1-1}
-$T_{2,5}$  &                              \\ \cline{1-1}
-$T_{2,6}$  &                              \\ \hline
-$T_{2,7}$  & $2^{35} = 34,359,738,368$    \\ \hline
-$T_{2,8}$  & $2^{26} = 67,108,864$        \\ \hline
-$T_{2,9}$  &\multirow{4}{*}{$2^{35}=34,359,738,368$}\\ \cline{1-1}
-$T_{2,10}$ &                              \\ \cline{1-1}
-$T_{2,11}$ &                              \\ \cline{1-1}
-$T_{2,12}$ &                              \\ \hline
-$T_{2,13}$ & $2^{15} = 32,768$            \\ \hline
-$T_{2,14}$ & $2^{29} = 536,870,912$       \\ \hline
-$T_{2,15}$ & $2^{15} = 32,768$            \\ \hline
-$T_{n,1}$  &\multirow{2}{*}{$2^{33}=8,589,934,592$}\\ \cline{1-1}
-$T_{n,2}$  &                              \\ \hline
-$T_{n,3}$  &\multirow{2}{*}{$2^{32}=4,294,967,296$}\\ \cline{1-1}
-$T_{n,4}$  &                              \\ \hline
-$T_{n,5}$  & $2^{29} = 536,870,912$       \\ \hline
-$T_{n,6}$  & $2^{32} = 4,294,967,296$     \\ \hline
-$T_{n,7}$  & $2^{31} = 2,147,483,648$     \\ \hline
-\end{tabular}
-\end{table}
+This survey primarily aims to explore the various definitions of the \TMS found in the literature, with an emphasis on identifying distinct formulations and categorizing them. Additionally, this work seeks to extend these definitions from the binary alphabet $\{0,1\}$ to larger alphabets $\{0,1,\dots,n\!\!-\!\!1\}$, often referred to as ``integer bases.'' This work aims to explore how properties such as non-repetition, periodicity, and complexity are preserved under these extensions. By systematically analyzing these extensions and their associated properties, this overview hopes to present a deeper understanding of the \TMS's generalizations and their potential applications in broader contexts.
 
-\begin{table}[H]
-\label{tab:testing_bn}
-\caption{Extent of Testing in Each Base}
-\centering
-\begin{tabular}{|l|c|r|}
-\hline
-\textbf{Definition}       & \textbf{Bases}         & \textbf{Entries Tested}            \\\hline
-$T_{n,1}$                 &\multirow{2}{*}{3 - 256}& $2^{26} = 67,108,864$              \\\cline{1-1}\cline{3-3}
-$T_{n,2}$                 &                        &\multirow{2}{*}{$2^{25}=33,554,432$}\\\cline{1-2}
-\multirow{2}{*}{$T_{n,3}$}& 3 - 192                &                                    \\\cline{2-3} 
-                          & 193 - 256              & $2^{24} = 16,777,216$              \\\hline
-$T_{n,4}$                 & 3 - 256                & $2^{25} = 33,554,432$              \\\hline
-\multirow{2}{*}{$T_{n,5}$}& 3 - 192                & $2^{24} = 16,777,216$              \\\cline{2-3} 
-                          & 193 - 256              & $2^{23} = 8,388,608$               \\\hline
-$T_{n,6}$                 &\multirow{2}{*}{3 - 256}&\multirow{2}{*}{$2^{26}=67,108,864$}\\\cline{1-1}
-$T_{n,7}$                 &                        &                                    \\\hline
-\end{tabular}
-\end{table}
-
-\begin{table}[H]
-\label{tab:comparison-b2}
-\centering
-\caption{Comparison Matrix of the Standard Definitions}
-\note{X = done, O = target} \\
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
-\cline{1-1}
-\!\!\!\!$T_{2,1}$\!\!\!\!\\ \cline{1-2}
-    O    &\!\!\!\!$T_{2,2}$\!\!\!\!\\ \cline{1-3}
-         &         &\!\!\!\!$T_{2,3}$\!\!\!\!\\ \cline{1-4}
-         &         &         &\!\!\!\!$T_{2,4}$\!\!\!\!\\ \cline{1-5}
-         &         &         &    O    &\!\!\!\!$T_{2,5}$\!\!\!\!\\ \cline{1-6}
-    X    &         &         &         &         &\!\!\!\!$T_{2,6}$\!\!\!\!\\ \cline{1-7}
-         &         &         &         &         &         &\!\!\!\!$T_{2,7}$\!\!\!\!\\ \cline{1-8}
-         &         &         &         &         &         &      O  &\!\!\!\!$T_{2,8}$\!\!\!\!\\ \cline{1-9}
-         &         &         &         &         &         &         &         &\!\!\!\!$T_{2,9}$\!\!\!\!\\ \cline{1-10}
-         &         &         &         &         &         &         &         &     O   &\!\!\!\!$T_{2,10}$\!\!\!\!\\ \cline{1-11}
-    O    &         &         &         &         &         &         &         &         &    O    &\!\!\!\!$T_{2,11}$\!\!\!\!\\ \cline{1-12}
-         &         &         &         &         &         &         &         &         &         &         &\!\!\!\!$T_{2,12}$\!\!\!\!\\ \cline{1-13}
-         &         &         &         &         &         &         &         &         &         &         &         &\!\!\!\!$T_{2,13}$\!\!\!\!\\ \cline{1-14}
-         &         &         &         &         &         &         &         &         &         &         &         &     &\!\!\!\!$T_{2,14}$\!\!\!\!\\ \hline
-\end{tabular}
-\end{table}
-
-\begin{table}[H]
-\label{tab:comparison-bn}
-\centering
-\caption{Comparison Matrix of the Extended Definitions}
-\note{X = done, O = target} \\
-\begin{tabular}{|c|c|c|c|c|c|c|}
-\cline{1-1}
-\!\!\!\!$T_{n,1}$\!\!\!\!\\ \cline{1-2}
-    O    &\!\!\!\!$T_{n,2}$\!\!\!\!\\ \cline{1-3}
-         &    O    &\!\!\!\!$T_{n,3}$\!\!\!\!\\ \cline{1-4}
-         &         &    O     &\!\!\!\!$T_{n,4}$\!\!\!\!\\ \cline{1-5}
-         &         &         &     O   &\!\!\!\!$T_{n,5}$\!\!\!\!\\ \cline{1-6}
-    O    &         &         &         &         &\!\!\!\!$T_{n,6}$\!\!\!\!\\ \cline{1-7}
-         &         &         &         &         &\!\!\!\!&      $T_{n,7}$\!\!\!\!\\ \hline
-\end{tabular}
-\end{table}
-
-\renewcommand{\arraystretch}{1}
+This paper is divided into 8 sections. In Section 1, we introduce the concepts built upon in this paper. In Section 2 we present each of the \TotalOriginals definitions of the standard \TMS as seen in the literature today. In Section 3 we prove their equivalence with each other in the standard base-2 domain. In Section 4 we present \TotalExtensions definitions that extend into larger domains. Most of these can only construct sequences with integer value elements, though a select few can be extended into even broader domains, such as rational bases. In Section 5 we prove that the extensions are equivalent to each other in the domain of positive integer bases. In Section 6 we examine the preservation (or failure) of properties for the standard \TMS when extended to larger bases. Sections 7 and 8 are acknowledgments and the appendix respectively. The appendix contains complexity analyses (both time and space) for the different definitions. These show which may be the most computationally efficient ways to calculate the \TMS or \ETMS, given your available resources.
 
 \section{The Original Sequence}
 
-\subsection{Definition \arabic{stddefctr} of \TotalOriginals\xspace -- Parity of Hamming Weight}
+\subsection{Definition \arabic{stddefctr} of \TotalOriginals\xspace --- Parity of Hamming Weight}
 
-\note{This definition appears in \cite{Spiegelhofer_2020, Allouche-Shallit_1999, OEIS-TMS}}
+This definition appears in \cite{Spiegelhofer_2020, Allouche-Shallit_1999, OEIS-TMS}.
 
 The Hamming Weight, as typically defined, is the digit sum of a binary number. In other words, it is a count of the high bits in a given number. A common way to generate the \TMS is to take the parity\footnote{Whether a number is odd or even} of the Hamming Weight\footnote{The count of $1$s in the binary representation of a number} for each natural number. We can define that as follows:
 
@@ -150,9 +55,9 @@ T_{2,\arabic{stddefctr}}(n) &= p(n)
 The subscript indicates that we are using $2$ players (writing in base $2$) and that we are using the first definition laid out in this paper. Note that when we extend to n players, the $T$ function will get a second parameter for the number of players, so it will look like $T_{n,d}(x, s)$, where $s$ is the size of the player pool, and therefore the base we use to define the sequence.
 
 \stepcounter{stddefctr}
-\subsection{Definition \arabic{stddefctr} of \TotalOriginals\xspace -- Root of Unity}
+\subsection{Definition \arabic{stddefctr} of \TotalOriginals\xspace --- Root of Unity}
 
-\note{This appears in \cite{OEIS-TMS-inv}}
+This appears in \cite{OEIS-TMS-inv}.
 
 \begin{equation}
     \edef\tempLabel{eq:p2_d\arabic{stddefctr}}
@@ -163,19 +68,19 @@ T_{2,\arabic{stddefctr}}(n) &= \dfrac{1 - (-1)^{p(n)}}{2}
 \end{equation}
 
 \stepcounter{stddefctr}
-\subsection{Definition \arabic{stddefctr} of \TotalOriginals\xspace -- Invert and Extend}
+\subsection{Definition \arabic{stddefctr} of \TotalOriginals\xspace --- Invert and Extend}
 
-\note{Appears in \cite{OEIS-TMS}}
+This definition appears in \cite{OEIS-TMS}.
 
 This definition is more natural to think about as extending a tuple that contains the sequence. We will give a recurrence relation below, but to build an intuition we will work in this framework first.
 
-Let $t(n)$ be the first $2^n$ elements of the \TMS. Given this, we can define:
+Let $t(n)$ be the first $2^n$ elements of the \TMS. Given this, we can define\footnote{Using $\concat$ to mean concatenation, so $\tuple{0} \concat \tuple{1} = \tuple{0, 1}$}:
 
 \begin{equation}
 \begin{aligned}
 \text{inv}(\mathbf{x}) &= \begin{cases}
-        0, & \text{if } x_i = 1 \\
-        1, & \text{if } x_i = 0
+        0, &\text{if } x_i = 1 \\
+        1, &\text{if } x_i = 0
     \end{cases} \\
     &\quad\quad\text{for } \mathbf{x} = \tuple{x_0, x_1, \ldots, x_{n-1}} \\
                   t(0) &= \tuple{0} \\
@@ -197,17 +102,17 @@ T_{2,\arabic{stddefctr}}(n) &= T_{2,\arabic{stddefctr}}\left(n - 2^{\floor{\log_
 \end{equation}
 
 \stepcounter{stddefctr}
-\subsection{Definition \arabic{stddefctr} of \TotalOriginals\xspace -- Substitute and Flatten}
+\subsection{Definition \arabic{stddefctr} of \TotalOriginals\xspace --- Substitute and Flatten}
 
-\note{This definition appears in \cite{Spiegelhofer_2020, Kolář-Nori_1991, OEIS-TMS}}
+This definition appears in \cite{Spiegelhofer_2020, Kolář-Nori_1991, OEIS-TMS}.
 
 \begin{equation}
     \edef\tempLabel{eq:p2_d\arabic{stddefctr}}
     \label{\tempLabel}
     \begin{aligned}
       s(n) &= \begin{cases}
-          \tuple{0, 1}, & \text{if } n = 0 \\
-          \tuple{1, 0}, & \text{if } n = 1
+          \tuple{0, 1}, &\text{if } n = 0 \\
+          \tuple{1, 0}, &\text{if } n = 1
       \end{cases} \\
       t(0) &= \tuple{0} \\
       t(n) &= \bigparallel_{i=0}^{2^{n-1}-1} s(t(n-1)_i)  \\
@@ -230,9 +135,9 @@ T_{2,\arabic{stddefctr}}(3) &= t(\ceil{\log_2(3 + 1)})_3 \\
 \end{equation}
 
 \stepcounter{stddefctr}
-\subsection{Definition \arabic{stddefctr} of \TotalOriginals\xspace -- Recursive Rotation}
+\subsection{Definition \arabic{stddefctr} of \TotalOriginals\xspace --- Recursive Rotation}
 
-Another way to phrase the above definition is as recursive rotation. If we decompose $s$, we can instead represent it as:
+Another way to phrase the above definition is as recursive rotation. To the best of our knowledge, this definition is original to this paper. If we decompose $s$, we can instead represent it as:
 
 \begin{equation}
     \edef\tempLabel{eq:p2_d\arabic{stddefctr}}
@@ -250,9 +155,9 @@ r(\mathbf{x}, i) &= \begin{aligned}[c]
 \end{equation}
 
 \stepcounter{stddefctr}
-\subsection{Definition \arabic{stddefctr} of \TotalOriginals\xspace -- Recursion}
+\subsection{Definition \arabic{stddefctr} of \TotalOriginals\xspace --- Recursion}
 
-\note{This definition appears in \cite{Kolář-Nori_1991, OEIS-TMS}}
+This definition appears in \cite{Kolář-Nori_1991, OEIS-TMS}.
 
 \begin{equation}
     \edef\tempLabel{eq:p2_d\arabic{stddefctr}}
@@ -260,16 +165,16 @@ r(\mathbf{x}, i) &= \begin{aligned}[c]
     \begin{aligned}
    T_{2,\arabic{stddefctr}}(0) &= 0 \\
   T_{2,\arabic{stddefctr}}(2n) &= T_{2,\arabic{stddefctr}}(n) \\
-T_{2,\arabic{stddefctr}}(2n+1) &= 1 - T_{2,\arabic{stddefctr}}(n) \pmod{2}
+T_{2,\arabic{stddefctr}}(2n+1) &= 1 - T_{2,\arabic{stddefctr}}(n)
     \end{aligned}
 \end{equation}
 
 \stepcounter{stddefctr}
-\subsection{Definition \arabic{stddefctr} of \TotalOriginals\xspace -- Highest Bit Difference}
+\subsection{Definition \arabic{stddefctr} of \TotalOriginals\xspace --- Highest Bit Difference}
 
-\note{This definition appears in \cite{Arndt_2010}}
+This definition appears in \cite{Arndt_2010}.
 
-\note{The text below is from Wiki and needs to be entirely rewritten. I was able to derive the formula on my own from translating their code. This method leads to a fast method for computing the Thue–Morse sequence: start with t0 = 0, and then, for each n, find the highest-order bit in the binary representation of n that is different from the same bit in the representation of n - 1. If this bit is at an even index, tn differs from tn - 1, and otherwise it is the same as tn - 1.}
+\note{The text below is from Wiki and needs to be entirely rewritten. I was able to derive the formula on my own from translating their code. This method leads to a fast method for computing the \TMS: start with t0 = 0, and then, for each n, find the highest-order bit in the binary representation of n that is different from the same bit in the representation of n - 1. If this bit is at an even index, tn differs from tn - 1, and otherwise it is the same as tn - 1.}
 
 \noindent\begin{minipage}[H]{0.48\textwidth}\begin{lstlisting}[style=pythonstyle]
 from itertools import count
@@ -300,17 +205,17 @@ T_{2,\arabic{stddefctr}}(n) &= \begin{aligned}[c]
 \end{equation}
 
 \stepcounter{stddefctr}
-\subsection{Definition \arabic{stddefctr} -- Floor-Ceiling Difference}
+\subsection{Definition \arabic{stddefctr} --- Floor-Ceiling Difference}
 
-\note{Appears in \cite{OEIS-TMS}}
+This definition appears in \cite{OEIS-TMS}.
 
 \begin{equation}
     \edef\tempLabel{eq:p2_d\arabic{stddefctr}}
     \label{\tempLabel}
     \begin{aligned}
       b(n) &= \begin{cases}
-          &n \quad \text{if } n \le 1 \\
-          &b\left(\ceil{\dfrac{n}{2}}\right) - b\left(\floor{\dfrac{n}{2}}\right) \quad \text{otherwise}
+          n &\text{if } n \le 1 \\
+          b\left(\ceil{\dfrac{n}{2}}\right) - b\left(\floor{\dfrac{n}{2}}\right) &\text{otherwise}
 \end{cases} \\
 T_{2,\arabic{stddefctr}}(n) &= \dfrac{1 - b(2n)}{2} \pmod{2}
     \end{aligned}
@@ -319,9 +224,9 @@ T_{2,\arabic{stddefctr}}(n) &= \dfrac{1 - b(2n)}{2} \pmod{2}
 \note{This seems very similar to the highest bit difference definition, and I think it may be what that was derived from}
 
 \stepcounter{stddefctr}
-\subsection{Definition \arabic{stddefctr} -- Odious Number Derivation}
+\subsection{Definition \arabic{stddefctr} --- Odious Number Derivation}
 
-\note{Definition appears in \cite{OEIS-TMS}}
+This definition appears in \cite{OEIS-TMS}.
 
 Another way to generate the \TMS is to take the sequence of Odious Numbers \cite{OEIS-Odious} mod $2$. Odious numbers are those with an odd number of $1$s in their binary representation. Note that the player numbers in this derivation are swapped, so when generating this for testing and extension, we add 1 to the result. Some simple generating code \cite{repo} for this is as follows:
 
@@ -334,10 +239,22 @@ def seq_p2_d09():
             yield (i + 1) & 1
 \end{lstlisting}\end{minipage}
 
+In mathematical terms, this can be translated to:
+
 \begin{equation}
 \edef\tempLabel{eq:p2_d\arabic{stddefctr}}
 \label{\tempLabel}
-T_{2,\arabic{stddefctr}}(n) = \text{Odious}(n) + 1 \pmod{2}
+\begin{aligned}
+no(n) &= \begin{cases}
+    n &\text{if } p(n) \mod{2} = 1 \\
+    no(n+1) &\text{otherwise}
+\end{cases} \\
+o(n) &= \begin{cases}
+    1              &\text{if }n = 0 \\
+    no(o(n-1) + 1) &\text{if } n > 0
+\end{cases} \\
+T_{2,\arabic{stddefctr}}(n) &= o(n) + 1 \pmod{2}
+\end{aligned}
 \end{equation}
 
 \note{Aren't Odious Numbers exactly the numbers where the parity of the hamming weight is 1? So doesn't that mean that the Thue-Morse Sequence selects which numbers are Odious? From cursory testing, it seems to. There's something to be had there.}
@@ -354,9 +271,9 @@ T_{2,\arabic{stddefctr}}(n) = \text{Odious}(n) + 1 \pmod{2}
 }
 
 \stepcounter{stddefctr}
-\subsection{Definition \arabic{stddefctr} -- Evil Numbers Derivation 1}
+\subsection{Definition \arabic{stddefctr} --- Evil Numbers Derivation 1}
 
-\note{Appears in \cite{OEIS-TMS}}
+This definition appears in \cite{OEIS-TMS}.
 
 The Evil Numbers \cite{OEIS-Evil} are those who have an even number of $1$s in their binary representation. Note that this is the opposite of the Odious Numbers referenced above.
 
@@ -373,16 +290,28 @@ def p2_d10():
         yield (i - 2 * n) & 1
 \end{lstlisting}\end{minipage}
 
+In mathematical terms, this can be translated to:
+
 \begin{equation}
 \edef\tempLabel{eq:p2_d\arabic{stddefctr}}
 \label{\tempLabel}
-T_{2,\arabic{stddefctr}}(n) = \text{Evil}(n) - 2n \pmod{2}
+\begin{aligned}
+ne(n) &= \begin{cases}
+    n &\text{if } p(n) \mod{2} = 1 \\
+    ne(n+1) &\text{otherwise}
+\end{cases} \\
+e(n) &= \begin{cases}
+    1              &\text{if }n = 0 \\
+    ne(e(n-1) + 1) &\text{if } n > 0
+\end{cases} \\
+T_{2,\arabic{stddefctr}}(n) &= e(n) - 2n \pmod{2}
+\end{aligned}
 \end{equation}
 
 \stepcounter{stddefctr}
-\subsection{Definition \arabic{stddefctr} -- Evil Numbers Derivation 2}
+\subsection{Definition \arabic{stddefctr} --- Evil Numbers Derivation 2}
 
-\note{Appears in \cite{OEIS-TMS-inv}}
+This definition ppears in \cite{OEIS-TMS-inv}.
 
 A second, more-efficient derivation from the Evil Numbers is as follows, where $ce()$ is the count of Evil Numbers less than $n$ \cite{OEIS-A159481}, and $p()$ is the function defined in Equation \ref{eq:p2_d1}.
 
@@ -396,9 +325,9 @@ T_{2,\arabic{stddefctr}}(n) &= 1 - ce(n + 1) + ce(n)
 \end{equation}
 
 \stepcounter{stddefctr}
-\subsection{Definition \arabic{stddefctr} -- Odious \& Evil Numbers Derivation}
+\subsection{Definition \arabic{stddefctr} --- Odious \& Evil Numbers Derivation}
 
-\note{Appears in \cite{OEIS-TMS-inv}}
+This definition appears in \cite{OEIS-TMS-inv}.
 
 A second, more-efficient derivation from the Evil Numbers is as follows, where $ce()$ is the count of Evil Numbers less than $n$ \cite{OEIS-A159481}, and $p()$ is the function defined in Equation \ref{eq:p2_d1}.
 
@@ -407,21 +336,21 @@ A second, more-efficient derivation from the Evil Numbers is as follows, where $
     \label{\tempLabel}
     \begin{aligned}
      oe(n) &= \begin{cases}
-         &\text{Odious}\left(\floor{\dfrac{n}{2}}\right) \quad \text{if } n \mod{2} = 0 \\
-         &\text{Evil}\left(\floor{\dfrac{n}{2}}\right) \quad\quad\; \text{if } n \mod{2} = 1
+         o\left(\floor{\dfrac{n}{2}}\right) &\text{if } n \mod{2} = 0 \\
+         e\left(\floor{\dfrac{n}{2}}\right) &\text{if } n \mod{2} = 1
      \end{cases} \\
 T_{2,\arabic{stddefctr}}(n) &= 1 - oe(n) \pmod{2}
     \end{aligned}
 \end{equation}
 
 \stepcounter{stddefctr}
-\subsection{Definition \arabic{stddefctr} -- Gould's Sequence Derivation}
+\subsection{Definition \arabic{stddefctr} --- Gould's Sequence Derivation}
 
-\note{Appears in \cite{OEIS-TMS}}
+This definition appears in \cite{OEIS-TMS}.
 
-Gould's Sequence \cite{OEIS-Gould} are the number of odd entries in a given row of Pascal's Triangle. Note that this is by far the least computationally efficient definition in this paper (see Tables \ref{tab:time_p2_d12} \& \ref{tab:space_p2_d12}).
+Gould's Sequence \cite{OEIS-Gould} are the number of odd entries in a given row of Pascal's Triangle. Note that this is by far one of the least computationally efficient definition in this paper (see Tables \ref{tab:time_p2_d13} \& \ref{tab:space_p2_d13}).
 
-\note{Why mod 3? Everything else is mod 2. This definition is unlikely to be extendable, unless you interpret this as the hamming weight of a given row, and extend the idea of hamming weight to those other bases. If so, I predict that the final mod is mod $(n + 1)$}
+\note{Why mod 3? Everything else is mod 2. This definition is unlikely to be extendable, and the obvious routes fail}
 
 \begin{equation}
     \edef\tempLabel{eq:p2_d\arabic{stddefctr}}
@@ -433,36 +362,35 @@ T_{2,\arabic{stddefctr}}(n) &= \text{Gould}(n) - 1 \mod{3} \\
 \end{equation}
 
 \stepcounter{stddefctr}
-\subsection{Definition \arabic{stddefctr} -- Derivation from Blue Code}
+\subsection{Definition \arabic{stddefctr} --- Derivation from Blue Code}
 
-\note{Appears in \cite{OEIS-TMS}}
+This definition appears in \cite{OEIS-TMS}.
 
-In the OEIS, this sequence \cite{OEIS-A193231} is defined as the "binary coding of a polynomial over GF(2), substitute x+1 for x". There are a number of ways to generate it. One of the more computationally-accessible ones is:
-
-\note{I strongly suspect I have translated this incorrectly. See code for canonical version}
+In the OEIS, this sequence \cite{OEIS-A193231} is defined as the ``binary coding of a polynomial over GF(2), substitute x+1 for x''. There are a number of ways to generate it. One of the more computationally-accessible ones is:
 
 \begin{equation}
     \edef\tempLabel{eq:p2_d\arabic{stddefctr}}
     \label{\tempLabel}
     \begin{aligned}
 \text{A001317}(n) &= \sum_{k=0}^n \left(\binom{n}{k} \mod{2} \right) \cdot 2^k \\
-\text{A193231}(n) &= \bigoplus_{i=0}^{\ceil{\log_2(n)}} \hspace{-5pt} \text{A001317}\left(i \cdot \floor{\dfrac{n \mod{2}}{2^i}}\right) \\
+          f(n, i) &= \floor{\dfrac{n}{2^i} \mod{2}} \\
+\text{A193231}(n) &= \bigoplus_{i=0}^{\ceil{\log_2(n)}} \hspace{-5pt} (\text{A001317}(i \cdot f(n, i)) \cdot f(n, i)) \\
       T_{2,\arabic{stddefctr}}(n) &= \text{A193231}(n) \pmod{2}
     \end{aligned}
 \end{equation}
 
-Translated into words, this function computes the value of Sierpiński's triangle for the index of each high bit, then takes the bitwise exclusive or of all such resulting values. Note that since $\text{A001317}(0) = 0$, each low bit can be simplified out when calculating.
+Translated into words, this function computes the value of Sierpiński's triangle for the index of each high bit, then takes the bitwise exclusive or\footnote{Represented in this paper as $\oplus$} of all such resulting values. Note that since $f(n, i) = 0$ if and only if the $i$th bit of $n$ is low, each low bit can be simplified out when calculating.
 
-\note{It seems to me that this might be extendable by using GF(n) instead of GF(2), though I don't know of a way to efficient compute or prove such a result}
+\note{It seems to me that this might be extendable by using GF(n) instead of GF(2), though I don't know of a way to efficiently compute or prove such a result}
 
 \stepcounter{stddefctr}
-\subsection{Definition \arabic{stddefctr} -- Generating Function}
+\subsection{Definition \arabic{stddefctr} --- Generating Function}
 
-\note{Appears in \cite{OEIS-TMS}}
+This definition appears in \cite{OEIS-TMS}.
 
 \begin{equation}
-    T_{2,\arabic{stddefctr}} = \mathcal{G.F.} \;\; \begin{aligned}[c]
-        \dfrac{\displaystyle\dfrac{1}{1 - x} - \prod^{\infty}_{k \ge 0} (1 - x^{2^k})}{2}
+    T_{2,\arabic{stddefctr}} = \mathcal{G.F.} \;\; \lim_{k_{\text{max}} \to \infty} \begin{aligned}[c]
+        \dfrac{\displaystyle\dfrac{1}{1 - x} - \prod^{k_\text{max}}_{k \ge 0} (1 - x^{2^k})}{2}
     \end{aligned}
 \end{equation}
 
@@ -472,9 +400,131 @@ This means that it is equivalent to $T_{2,1}$ \note{(prove it)}.
 
 In practice, to get the coefficients up to the $n$th term, one needs to only expand the product to $k_\text{max} = \floor{\log_2(n + 1)} - 1$.
 
+Note that this is by far one of the least computationally efficient definition in this paper (see Tables \ref{tab:time_p2_d15} \& \ref{tab:space_p2_d15}).
+
 \subsection{Summary}
 
+Of the \TotalOriginals we discussed above:
+\begin{itemize}
+    % discovery source
+    \item 13 were found on the OEIS \cite{OEIS-TMS, OEIS-TMS-inv, OEIS-TMS-pos-neg, OEIS-TMS-3-2, OEIS-TMS-inv-plus1} (defs. 1-4, 6, 8-15)
+    \item 1 was found in a textbook \cite{Arndt_2010} (def. 7)
+    \item 1 is original to this paper (def. 5)
+    \\% generating method
+    \item 7 utilize recursion (defs. 1-7)
+    \item 6 reference other integer sequences (defs. 9-14)
+    \item 5 utilize floor-division (defs. 1-2, 8, 11-12, 14)
+    \item \note{4 would be so good to include, but I don't know how}
+    \item 3 use operations on strings, not integers (defs. 3-5)
+    \item 2 use combinatoric functions (defs. 13-14)
+    \item 1 utilizes a generating function (def. 15)
+    \item 0 have closed form solutions
+\end{itemize}
+
 \section{Proving Equivalence Between Standard Definitions}
+
+All definitions are tested computationally, though due to resource limitations, to different extents.
+
+\renewcommand{\arraystretch}{1.25}
+\begin{table}[H]
+\label{tab:testing_b2}
+\caption{Extent of Testing in Base 2}
+\centering
+\begin{tabular}{|l|r|}
+\hline
+\textbf{Definition} & \textbf{Entries Tested}      \\ \hline
+$T_{2,1}$  &\multirow{2}{*}{$2^{35}=34,359,738,368$}\\ \cline{1-1}
+$T_{2,2}$  &                              \\ \hline
+$T_{2,3}$  & $2^{34} = 17,179,869,184$    \\ \hline
+$T_{2,4}$  &\multirow{2}{*}{$2^{33}=8,589,934,592$}\\ \cline{1-1}
+$T_{2,5}$  &                              \\ \hline
+$T_{2,6}$  & $2^{32} = 4,294,967,296$     \\ \hline
+$T_{2,7}$  & $2^{34} = 17,179,869,184$    \\ \hline
+$T_{2,8}$  & $2^{26} = 67,108,864$        \\ \hline
+$T_{2,9}$  &\multirow{4}{*}{$2^{34}=17,179,869,184$}\\ \cline{1-1}
+$T_{2,10}$ &                              \\ \cline{1-1}
+$T_{2,11}$ &                              \\ \cline{1-1}
+$T_{2,12}$ &                              \\ \hline
+$T_{2,13}$ & $2^{15} = 32,768$            \\ \hline
+$T_{2,14}$ & $2^{29} = 536,870,912$       \\ \hline
+$T_{2,15}$ & $2^{12} - 1 = 4,095$         \\ \hline
+$T_{n,1}$  &\multirow{2}{*}{$2^{32}=4,294,967,296$}\\ \cline{1-1}
+$T_{n,2}$  &                              \\ \hline
+$T_{n,3}$  & $2^{34} = 17,179,869,184$    \\ \hline
+$T_{n,4}$  & $2^{33} = 8,589,934,592$     \\ \hline
+$T_{n,5}$  &\multirow{2}{*}{$2^{32}=4,294,967,296$}\\ \cline{1-1}
+$T_{n,6}$  &                              \\ \hline
+$T_{n,7}$  & $2^{31} = 2,147,483,648$     \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\label{tab:comparison-b2}
+\centering
+\caption{Comparison Matrix of the Standard Definitions}
+\note{X = done, S = started, O = target} \\
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\cline{1-1}
+\!1\!\\ \cline{1-2}
+\!X\!&\!2\!\\ \cline{1-3}
+\!X\!&     &\!3\!\\ \cline{1-4}
+     &     &\!O\!&\!4\!\\ \cline{1-5}
+     &     &     &\!S\!&\!5\!\\ \cline{1-6}
+\!X\!&     &     &     &     &\!6\!\\ \cline{1-7}
+     &     &     &     &     &     &\!7\!\\ \cline{1-8}
+     &     &     &     &     &     &\!O\!&\!8\!\\ \cline{1-9}
+\!O\!&     &     &     &     &     &     &     &\!9\!\\ \cline{1-10}
+\!O\!&     &     &     &     &     &     &     &\!O\!&\!\!10\!\!\\ \cline{1-11}
+\!O\!&     &     &     &     &     &     &\!O\!&     &\!O\! &\!\!11\!\!\\ \cline{1-12}
+\!O\!&     &     &     &     &     &     &     &     &      &      &\!\!12\!\!\\ \cline{1-13}
+     &     &     &     &     &     &     &     &     &      &      &      &\!\!13\!\!\\ \cline{1-14}
+     &     &     &     &     &     &     &     &     &      &      &      &\!O\! &\!\!14\!\!\\ \cline{1-15}
+\!O\!&     &     &     &     &     &     &     &     &      &      &      &      &\!O\! &\!\!15\!\!\\ \hline
+\end{tabular}
+\end{table}
+\renewcommand{\arraystretch}{1}
+
+\subsection{Correlating Definition 1 and Definition 2}
+
+\begin{proof}
+\par\noindent\par
+    \textbf{Observation 1}: For all integers $n$, $(-1)^n \in \{1, -1\}$
+
+    \textbf{Observation 2}: For $n = \{1, -1\}$, $\dfrac{1 - n}{2} = \{0, 1\}$
+
+    \textbf{Observation 3}: For all $n = 2k$, $(-1)^n = 1$
+
+    \textbf{Observation 4}: For all $n = 2k + 1$, $(-1)^n = -1$
+
+    \textbf{Inference 1}: $\dfrac{1 - (-1)^n}{2} = n \;\; \mod{2}$
+
+    \textbf{Conclusion}: \begin{equation}
+        T_{2,2}(n) = \dfrac{1 - (-1)^{p(n)}}{2} = p(n) \mod{2} = T_{2,1}(n)
+    \end{equation}
+\end{proof}
+
+\subsection{Correlating Definition 1 and Definition 3}
+
+\begin{proof}
+\par\noindent\par
+    \textbf{Observation 1}: $0 \le n < 2^k \implies t(k+1)_{2^k + n} \equiv t(k)_n + 1$
+    This is because at each step in the process, you are inverting and extending. Inversion is equivalent to $x + 1 \; \mod{2}$, and each entry keeps a relative position by adding a power of 2.
+
+    \textbf{Inference 1}: \begin{equation}
+        \begin{aligned}
+            T_{2,3}(0) &= 0 \\
+            T_{2,3}(n) &= T_{2,3}(n - 2^{\floor{\log_2(n)}}) + 1 \mod{2}
+        \end{aligned}
+    \end{equation}
+
+    \textbf{Observation 2}: By subtracting a power of 2, you reduce the Hamming Weight by 1
+
+    \textbf{Inference 2}: Since you are adding 1 for each time you reduce the Hamming Weight by 1, this means $T_{2,3}$ is recursively computing the parity of the Hamming Weight.
+
+    \textbf{Observation 3}: $T_{2,1} = p(n)$, and $p(n)$ computes the parity of the Hamming Weight of $n$.
+
+    \textbf{Conclusion}: $T_{2,1}(n) = T_{2,3}(n)$
+\end{proof}
 
 \subsection{Correlating Definition 1 and Definition 6}
 
@@ -490,11 +540,30 @@ T_{2,6}(n) &= n + T_{2,6}\left(\floor{\dfrac{n}{2}}\right) \pmod{2}
 
 This is identical to Equation \ref{eq:p2_d1}, where we define $T_{2,1}$.
 
+\subsection{Correlating Definition 4 and Definition 5}
+
+\begin{proof}
+\par\noindent\par
+    \textbf{Observation 1}: $r(\textbf{x}, i) = r(\textbf{x}, i + k \cdot |\textbf{x}|)$
+
+    \textbf{Inference 1}: $r(\textbf{x}, i) = r(\textbf{x}, i \;\; \mod{|\textbf{x}|})$
+
+    \textbf{Observation 2}: $s(0) = \tuple{0, 1} = r(s(0), 0)$
+
+    \textbf{Observation 3}: $s(1) = \tuple{1, 0} = r(s(0), 1)$
+
+    \textbf{Inference 2}: $s(n) = r(s(0), n)$
+
+    \note{This is where I run into trouble. I know I can keep going from here, but I'm not quite sure how.}
+
+    \textbf{Conclusion}: $T_{2,4}(n) = T_{2,5}(n)$
+\end{proof}
+
 \section{The Extensions}
 
-\subsection{Extension \arabic{extdefctr} of \TotalExtensions\xspace -- Modular Digit Sums}
+\subsection{Extension \arabic{extdefctr} of \TotalExtensions\xspace --- Modular Digit Sums}
 
-\note{Definition appears in \cite{Astudillo_2003, Dekking_2023, OEIS-TMS-3-2}}
+This definition appears in \cite{Astudillo_2003, Dekking_2023, OEIS-TMS-3-2}.
 
 To extend definition 1 from $2$ to $n$ players, we must first map our concept of parity to base n. We can do this by taking the parity equation defined above and replacing the $2$s with $n$, for $n \in \Integers_{\ge 2}$.
 
@@ -513,10 +582,11 @@ Under this definition, you can construct the \TMS using the following, starting 
     T_{n,\arabic{extdefctr}}(x, s) = p_s(x)
 \end{equation}
 
-Note that this definition is trivially extensible to non-integer bases, though that is beyond the scope of this paper.
+Note that this definition is trivially extensible to non-integer bases, though that is beyond the scope of this paper. This has been done in \cite{Dekking_2023, OEIS-TMS-3-2}.
 
 \subsubsection{Proof of Equivalence with Original Definition \arabic{extdefctr}}
 
+\begin{proof}
 It is clear from visual inspection that $p_2$ is identical to our original definition of $p$.
 
 \begin{equation}
@@ -527,23 +597,36 @@ x + \floor{\dfrac{x}{2}} + p_2\left(\floor{\dfrac{x}{2^2}}\right) &= x + \floor{
        x + \floor{\dfrac{x}{2}} + \floor{\dfrac{x}{2^2}} + \ldots &= x + \floor{\dfrac{x}{2}} + \floor{\dfrac{x}{2^2}} + \ldots
     \end{aligned}
 \end{equation}
+\end{proof}
 
 \stepcounter{extdefctr}
-\subsection{Extended Definition \arabic{extdefctr} of \TotalExtensions\xspace -- Roots of Unity}
+\subsection{Extended Definition \arabic{extdefctr} of \TotalExtensions\xspace --- Roots of Unity}
 
 \begin{equation}
     \edef\tempLabel{eq:pn_d\arabic{extdefctr}}
     \label{\tempLabel}
-    \begin{aligned}
-    f(x) &= k \text{ where } \omega^k = x \text{ and } \omega^s = 1 \\
-T_{n,\arabic{extdefctr}}(n) &= f\left(\omega^{p(n)}\right)
-    \end{aligned}
+T_{n,\arabic{extdefctr}}(x,s) = \dfrac{\log\left(\omega_s^{p_s(x)}\right)}{\log\left(\omega_s\right)}
 \end{equation}
 
 \subsubsection{Proof of Equivalence with Original Definition \arabic{extdefctr}}
 
+\begin{proof}
+    Let's start by substituting $s$ for $2$:
+    \begin{equation}
+    \begin{aligned}
+        T_{n,2}(x, 2) &= \dfrac{\log\left(\omega_2^{p_2(x)}\right)}{\log(\omega_2)} \\
+                      &= \dfrac{\log\left((-1)^{p_2(x)}\right)}{\log(-1)} \\
+                      &= \dfrac{(p_2(x) \mod{2}) \cdot \log(-1)}{\log(-1)} \\
+                      &= \dfrac{(p_2(x) \mod{2}) \cdot i\pi}{i\pi} \\
+                      &= p_2(x) \mod{2}
+    \end{aligned}
+    \end{equation}
+
+    This is identical to $T_{2,1}$, which we earlier proved is equivalent to $T_{2,2}$.
+\end{proof}
+
 \stepcounter{extdefctr}
-\subsection{Extended Definition \arabic{extdefctr} of \TotalExtensions\xspace -- Increment and Extend}
+\subsection{Extended Definition \arabic{extdefctr} of \TotalExtensions\xspace --- Increment and Extend}
 
 In the original version of this definition, we inverted the elements. In base $2$, this is the same thing as adding $1$ (mod $2$). Given that, let $t(x, n)$ be the first $n^x$ elements of the \ETMS, for $n \in \Integers_{\ge 2}$.
 
@@ -573,10 +656,10 @@ T_{n,\arabic{extdefctr}}(x, s) &= T_{n,\arabic{extdefctr}}\left(x - s^{\floor{\l
     \end{aligned}
 \end{equation}
 
-\subsubsection{Proof of Equivalence with Original Definition 2}
+\subsubsection{Proof of Equivalence with Original Definition \arabic{extdefctr}} ...
 
 \stepcounter{extdefctr}
-\subsection{Extended Definition \arabic{extdefctr} of \TotalExtensions\xspace -- Substitute and Flatten}
+\subsection{Extended Definition \arabic{extdefctr} of \TotalExtensions\xspace --- Substitute and Flatten}
 
 \note{There's a bit of a leap here, since we have to explain why the rotation is equivalent to the binary choice presented in the original. There also might be a better syntax to define the rotation, perhaps using the format used in inv and inc.}
 
@@ -596,10 +679,10 @@ r(\mathbf{x}, i) &= \begin{aligned}[c]
     \end{aligned}
 \end{equation}
 
-\subsubsection{Proof of Equivalence with Original Definition \arabic{extdefctr}}
+\subsubsection{Proof of Equivalence with Original Definition \arabic{extdefctr}} ...
 
 \stepcounter{extdefctr}
-\subsection{Extended Definition \arabic{extdefctr} of \TotalExtensions\xspace -- Recursive Rotation}
+\subsection{Extended Definition \arabic{extdefctr} of \TotalExtensions\xspace --- Recursive Rotation}
 
 \begin{equation}
     \edef\tempLabel{eq:pn_d\arabic{extdefctr}}
@@ -616,17 +699,46 @@ r(\mathbf{x}, i) &= \begin{aligned}[c]
     \end{aligned}
 \end{equation}
 
-\subsubsection{Proof of Equivalence with Original Definition \arabic{extdefctr}}
+\subsubsection{Proof of Equivalence with Original Definition \arabic{extdefctr}} ...
 
 \stepcounter{extdefctr}
-\subsection{Extended Definition \arabic{extdefctr} of \TotalExtensions\xspace -- Recursion}
+\subsection{Extended Definition \arabic{extdefctr} of \TotalExtensions\xspace --- Recursion}
 
-\note{Need to reference eq \ref{eq:p2d06s} in definition}
+\begin{equation}
+\begin{aligned}
+            T_{n,6}(0, s) &= 0 \\
+    T_{n,6}(s \cdot x, s) &= T_{n,6}(x, s) \\
+T_{n,6}(s \cdot x + k, s) &= k + T_{n,6}(x, s) \pmod{s}
+\end{aligned}
+\end{equation}
 
 \subsubsection{Proof of Equivalence with Original Definition \arabic{extdefctr}}
 
+\begin{proof}
+    Let's begin by substituting $s$ for $2$:
+\begin{equation}
+\begin{aligned}
+            T_{n,6}(0, 2) &= 0 \\
+    T_{n,6}(2 \cdot x, 2) &= T_{n,6}(x, 2) \\
+T_{n,6}(2 \cdot x + k, 2) &= k + T_{n,6}(x, 2) \pmod{2}
+\end{aligned}
+\end{equation}
+
+Note that that only values for $k$ that fit in this definition are $0$ and $1$. This means we can further simplify to:
+\begin{equation}
+T_{n,6}(2 \cdot x + 1, 2) = 1 + T_{n,6}(x, 2) \pmod{2}
+\end{equation}
+
+This is very similar to the definition found in equation \ref{eq:p2_d6}, except that one is adding and the other subtracting. Fortunately, we know that the only values that $T_{2,6}$ will return are $0$ and $1$, which means that these operations will be completely equivalent.
+
+\begin{align*}
+1 - 0 \mod{2} &= 1 + 0 \mod{2} \\
+1 - 1 \mod{2} &= 1 + 1 \mod{2}
+\end{align*}
+\end{proof}
+
 \stepcounter{extdefctr}
-\subsection{Extended Definition \arabic{extdefctr} of \TotalExtensions\xspace -- Highest Digit Difference}
+\subsection{Extended Definition \arabic{extdefctr} of \TotalExtensions\xspace --- Highest Digit Difference}
 
 \begin{equation}
     \edef\tempLabel{eq:pn_d\arabic{extdefctr}}
@@ -647,7 +759,78 @@ r(\mathbf{x}, i) &= \begin{aligned}[c]
 
 \subsection{Summary}
 
+Of the \TotalExtensions we discussed above:
+\begin{itemize}
+    % discovery source
+    \item 1 was found on the OEIS ($T_{n,1}$)
+    \item 6 are original to this paper ($T_{n,2\dots7}$)
+    \\% generating method
+    \item 7 utilize recursion ($T_{n,1\dots7}$)
+    \item 4 utilize floor-division ($T_{n,1\dots2}, T_{n,6\dots7}$)
+    \item 3 use operations on strings, not integers ($T_{2,3\dots5}$)
+    \item 0 have closed form solutions
+\end{itemize}
+
 \section{Proving Equivalence Between Extended Definitions}
+
+All definitions are tested computationally, though due to resource limitations, to different extents.
+
+\renewcommand{\arraystretch}{1.25}
+\begin{table}[H]
+\label{tab:testing_bn}
+\caption{Extent of Testing in Integer Bases $> 2$}
+\centering
+\begin{tabular}{|l|c|r|}
+\hline
+\textbf{Definition}       & \textbf{Bases}         & \textbf{Entries Tested}            \\\hline
+$T_{n,1}$                 &\multirow{2}{*}{3 - 256}& $2^{26} = 67,108,864$              \\\cline{1-1}\cline{3-3}
+$T_{n,2}$                 &                        &\multirow{2}{*}{$2^{25}=33,554,432$}\\\cline{1-2}
+\multirow{2}{*}{$T_{n,3}$}& 3 - 192                &                                    \\\cline{2-3} 
+                          & 193 - 256              & $2^{24} = 16,777,216$              \\\hline
+$T_{n,4}$                 & 3 - 256                & $2^{25} = 33,554,432$              \\\hline
+\multirow{2}{*}{$T_{n,5}$}& 3 - 192                & $2^{24} = 16,777,216$              \\\cline{2-3} 
+                          & 193 - 256              & $2^{23} = 8,388,608$               \\\hline
+$T_{n,6}$                 &\multirow{2}{*}{3 - 256}&\multirow{2}{*}{$2^{26}=67,108,864$}\\\cline{1-1}
+$T_{n,7}$                 &                        &                                    \\\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\label{tab:comparison-bn}
+\centering
+\caption{Comparison Matrix of the Extended Definitions}
+\note{X = done, O = target} \\
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\cline{1-1}
+\!1\!\\ \cline{1-2}
+\!X\!&\!2\!\\ \cline{1-3}
+\!O\!&     &\!3\!\\ \cline{1-4}
+     &     &\!O\!&\!4\!\\ \cline{1-5}
+     &     &     &\!O\!&\!5\!\\ \cline{1-6}
+\!O\!&     &     &     &     &\!6\!\\ \cline{1-7}
+\!O\!&     &     &     &     &     &\!7\!\\ \hline
+\end{tabular}
+\end{table}
+\renewcommand{\arraystretch}{1}
+
+\subsection{Correlating Definition 1 and Definition 2}
+
+\begin{proof}
+\par\noindent\par
+    \textbf{Observation 1}: For all integers $n$, $\omega_s^n = \omega_s^{n \; \mod{s}}$
+
+    \textbf{Inference 1}: $\dfrac{\log(\omega_s^n)}{\log(\omega_s)} = n \; \mod{s}$
+
+    \textbf{Conclusion}: \begin{equation}
+        \begin{aligned}
+            T_{n,2}(x, s) &= \dfrac{\log(\omega_s^{p_s(x)})}{\log(\omega_s)} \\
+                          &= \dfrac{(p_s(x) \; \mod{s}) \cdot \log(\omega_s)}{\log(\omega_s)} \\
+                          &= \dfrac{(p_s(x) \; \mod{s}) \cdot 2i\pi s^{-1}}{2i\pi s^{-1}} \\
+                          &= p_s(x) \; \mod{s} \\
+                          &= T_{n,1}(x, s)
+        \end{aligned}
+    \end{equation}
+\end{proof}
 
 \subsection{Summary}
 
@@ -655,20 +838,41 @@ r(\mathbf{x}, i) &= \begin{aligned}[c]
 
 \subsection{Use as a Fair-Share Sequence}
 
+\note{Goal: show that for a variety of value functions, greedy algorithms given this turn order will always minimize inequality. They should at least do so more than the standard turn order. This is going to look like setting up an equation to show}
+
+\begin{equation}
+\begin{aligned}
+              e(x, y) &= \begin{cases}
+                     1& \text{if } x = y \\
+                     0& \text{if } x \ne y
+              \end{cases} \\
+           f(v, p, s) &= \lim_{n \to \infty} \sum_{i=0}^n v(i) \cdot e(T_n(i, s), p) \\
+        \forall p : p &\in \{1, \dots, s-1\}\\
+f(v, 0, s) + \epsilon &< f(v, p, s) < f(v, 0, s) - \epsilon
+\end{aligned}
+\end{equation}
+
+\note{This is for $v(i)$ being a value function and $\epsilon$ being an arbitrarily small number. $f()$ is therefore the sum of total value that they will be receiving. For example, one could model a board game as $v(i) = \tfrac{1}{2^i}$, where $v()$ models the amount each turn contributes to your probability of victory. Note that this may be very hard to show for versions of $v()$ which shrink too quickly, such as $v(i) = \tfrac{1}{i!}$, so for those cases we must show that it's better than the standard turn order}
+
 \subsection{Aperiodicity}
+
+\note{Not totally sure how this should go, but I think a good approximation would be to show that the distance between the nearest two appearances of a substring grows to infinity much faster than the length of those substrings grows}
 
 \subsection{Palindrome}
 
+This seems trivially violated for $n > 2$. Example: $t_3(2) = \tuple{0, 1, 2, 1, 2, 0, 2, 0, 1}$
+
+This doesn't even work for power-of-2 bases, like $t_4(2) = \tuple{0, 1, 2, 3, 1, 2, 3, 0, 2, 3, 0, 1, 3, 0, 1, 2}$
+
+\note{I am unable to think of any base other than 2 where this property could even conceivably hold true}
+
 \subsection{Uniform Recurrence}
 
-\note{The Thue–Morse sequence is a uniformly recurrent word: given any finite string X in the sequence, there is some length nX (often much longer than the length of X) such that X appears in every block of length nX}
+\note{The \TMS is a uniformly recurrent word: given any finite string X in the sequence, there is some length nX (often much longer than the length of X) such that X appears in every block of length nX}
 
 \section{Acknowledgment}
 
-The preferred spelling of the word ``acknowledgment'' in America is without 
-an ``e'' after the ``g''. Avoid the stilted expression ``one of us (R. B. 
-G.) thanks $\ldots$''. Instead, try ``R. B. G. thanks$\ldots$''. Put sponsor 
-acknowledgments in the unnumbered footnote on the first page.
+We thank Dan Rowe for helping with the initial work on this paper, as well as Randy Appleton and Lydia Crocker who helped greatly with proofreading and editing.
 
 \section{Appendix}
 
@@ -1299,6 +1503,47 @@ The other is to take advantage of the relation $\binom{n}{k} = \binom{n}{k-1} \c
      \expandafter\label\expandafter\tempLabel
 \end{table}
 
+\stepcounter{stddefctr}
+\subsection{Complexity of Original Definition \arabic{stddefctr}}
+\edef\tempLabel{ca:p2_d\arabic{stddefctr}}
+ \expandafter\label\expandafter\tempLabel
+
+\subsubsection{Time Complexity}
+
+\begin{table}[H]
+    \centering
+    \caption{Time Complexity Summary of Standard Definition \arabic{stddefctr}}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} &  &  \\
+        \hline
+        \textbf{In Total} &  &  \\
+        \hline
+    \end{tabular}
+    \edef\tempLabel{tab:time_p2_d\arabic{stddefctr}}
+     \expandafter\label\expandafter\tempLabel
+\end{table}
+
+\subsubsection{Space Complexity}
+
+\begin{table}[H]
+    \centering
+    \caption{Space Complexity Summary of Standard Definition \arabic{stddefctr}}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
+        \hline
+        \textbf{Per Element} &  &  \\
+        \hline
+        \textbf{In Total} &  &  \\
+        \hline
+    \end{tabular}
+    \edef\tempLabel{tab:space_p2_d\arabic{stddefctr}}
+     \expandafter\label\expandafter\tempLabel
+\end{table}
+
 \subsection{Complexity of Extension Definition \arabic{extdefctr}}
 \edef\tempLabel{ca:pn_d\arabic{extdefctr}}
  \expandafter\label\expandafter\tempLabel
@@ -1609,7 +1854,8 @@ This is one of the more space-efficient implementations. Each element takes at m
 \bibliography{references}     % without the .bib extension
 
 \onecolumn
-
+\section{Notes}
+\small
 \lstset{basicstyle=\ttfamily, breaklines=true}
 \lstinputlisting{notes/definitions_to_add.txt}
 

@@ -47,7 +47,17 @@ jobs:
       run: python -O -m pip install -r requirements.txt
 
     - name: Run Z3 Tests
-      run: python -O -m pytest -s -k "z3"
+      run: python -O -m pytest -k "z3" -n auto --dist=worksteal
+
+    - name: Create tar archive
+      run: |
+        tar -czf prover.tar.gz prover
+
+    - name: Upload tar artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: prover-artifact
+        path: prover.tar.gz
 
   base_2:
     strategy:

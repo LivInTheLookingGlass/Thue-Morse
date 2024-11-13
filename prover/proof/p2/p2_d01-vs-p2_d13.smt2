@@ -1,85 +1,201 @@
-proof-trail(assumption(mp(mp~(mp(asserted(ForAll(n,
-                                        Implies(n >= 0,
-                                        T2_01(n) == T2_13(n)))),
-                                 quant-intro(proof-bind(Lambda(n,
-                                        rewrite(Implies(n >=
-                                        0,
-                                        T2_01(n) == T2_13(n)) ==
-                                        Or(Not(n >= 0),
-                                        T2_01(n) == T2_13(n))))),
-                                        (ForAll(n,
-                                        Implies(n >= 0,
-                                        T2_01(n) == T2_13(n)))) ==
-                                        (ForAll(n,
-                                        Or(Not(n >= 0),
-                                        T2_01(n) == T2_13(n))))),
-                                 ForAll(n,
-                                        Or(Not(n >= 0),
-                                        T2_01(n) == T2_13(n)))),
-                              nnf-pos(proof-bind(Lambda(n,
-                                        refl(~(Or(Not(n >= 0),
-                                        T2_01(n) == T2_13(n)),
-                                        Or(Not(n >= 0),
-                                        T2_01(n) == T2_13(n)))))),
-                                      ~(ForAll(n,
-                                        Or(Not(n >= 0),
-                                        T2_01(n) == T2_13(n))),
-                                        ForAll(n,
-                                        Or(Not(n >= 0),
-                                        T2_01(n) == T2_13(n))))),
-                              ForAll(n,
-                                     Or(Not(n >= 0),
-                                        T2_01(n) == T2_13(n)))),
-                          quant-intro(proof-bind(Lambda(n,
-                                        refl(Or(Not(n >= 0),
-                                        T2_01(n) == T2_13(n)) ==
-                                        Or(Not(n >= 0),
-                                        T2_01(n) == T2_13(n))))),
-                                      (ForAll(n,
-                                        Or(Not(n >= 0),
-                                        T2_01(n) == T2_13(n)))) ==
-                                      (ForAll(n,
-                                        Or(Not(n >= 0),
-                                        T2_01(n) == T2_13(n))))),
-                          ForAll(n,
-                                 Or(Not(n >= 0),
-                                    T2_01(n) == T2_13(n)))),
-                       ForAll(n,
-                              Or(Not(n >= 0),
-                                 T2_01(n) == T2_13(n)))),
-            assumption(asserted(recfun-num-rounds),
-                       recfun-num-rounds),
-            assumption(asserted(seq.max_unfolding),
-                       seq.max_unfolding),
-            assumption(mp(quant-inst(Or(Not(ForAll(n,
-                                        Or(Not(n >= 0),
-                                        T2_01(n) == T2_13(n)))),
-                                        Or(Not(0 >= 0),
-                                        T2_01(0) == T2_13(0)))),
-                          rewrite(Or(Not(ForAll(n,
-                                        Or(Not(n >= 0),
-                                        T2_01(n) == T2_13(n)))),
-                                     Or(Not(0 >= 0),
-                                        T2_01(0) == T2_13(0))) ==
-                                  Or(Not(ForAll(n,
-                                        Or(Not(n >= 0),
-                                        T2_01(n) == T2_13(n)))),
-                                     Not(0 >= 0),
-                                     T2_01(0) == T2_13(0))),
-                          Or(Not(ForAll(n,
-                                        Or(Not(n >= 0),
-                                        T2_01(n) == T2_13(n)))),
-                             Not(0 >= 0),
-                             T2_01(0) == T2_13(0))),
-                       Or(Not(ForAll(n,
-                                     Or(Not(n >= 0),
-                                        T2_01(n) == T2_13(n)))),
-                          Not(0 >= 0),
-                          T2_01(0) == T2_13(0))),
-            assumption(assumption,
-                       Or(Not(0 >= 0),
-                          T2_01(0) == T2_13(0),
-                          Not(ForAll(n,
-                                     Or(Not(n >= 0),
-                                        T2_01(n) == T2_13(n)))))),
-            clause-trail-end)
+unit-resolution(unit-resolution(th-lemma(Or(1 ==
+                                        binomial_coeff2_13(s,
+                                        1)%
+                                        2,
+                                        Not(binomial_coeff2_13(s,
+                                        1)%
+                                        2 <=
+                                        1),
+                                        Not(binomial_coeff2_13(s,
+                                        1)%
+                                        2 >=
+                                        1))),
+                                unit-resolution(th-lemma(Or(Not(binomial_coeff2_13(s,
+                                        1)%
+                                        2 +
+                                        -1*(s%2) >=
+                                        0),
+                                        Not((1 + s)%2 >= 0),
+                                        Not((1 + s)/2 >= 1),
+                                        Not(1 +
+                                        s +
+                                        -1*
+                                        (2*((1 + s)/2) +
+                                        (1 + s)%2) >=
+                                        0),
+                                        Not(s/2 <= 0),
+                                        Not(s +
+                                        -1*(2*(s/2) + s%2) <=
+                                        0),
+                                        binomial_coeff2_13(s,
+                                        1)%
+                                        2 >=
+                                        1)),
+                                        unit-resolution(th-lemma(Or(Not(case-def(s,
+                                        1)),
+                                        (1 + s)/2 >= 1)),
+                                        unit-resolution(lemma(unit-resolution(unit-resolution(th-lemma(Or(Not(0 ==
+                                        (s/2)/2),
+                                        (s/2)/2 >= 0)),
+                                        unit-resolution(lemma(mp(trans*(symm(trans*(symm(th-lemma(T2_01(s) ==
+                                        p2_01(s)%2),
+                                        p2_01(s)%2 ==
+                                        T2_01(s)),
+                                        asserted(T2_01(s) ==
+                                        1),
+                                        p2_01(s)%2 == 1),
+                                        1 == p2_01(s)%2),
+                                        monotonicity(trans*(symm(unit-resolution(lemma(unit-resolution(hypothesis(Not(... ==
+                                        ...)),
+                                        mp(trans*(unit-resolution(...,
+                                        ...,
+                                        ...),
+                                        symm(..., ...),
+                                        ... == ...),
+                                        symm(monotonicity(...,
+                                        ...),
+                                        (...) == (...)),
+                                        ... + ... ==
+                                        p2_01(...)),
+                                        False),
+                                        Or(Not(0 == ...%...),
+                                        s + p2_01(...) ==
+                                        p2_01(s),
+                                        Not(.../... == 0))),
+                                        hypothesis(0 == s%2),
+                                        mp(unit-resolution(th-lemma(Or(... ==
+                                        ...,
+                                        Not(...),
+                                        Not(...))),
+                                        hypothesis(.../... <=
+                                        0),
+                                        unit-resolution(th-lemma(Or(...,
+                                        ...,
+                                        ...,
+                                        ...)),
+                                        hypothesis(... >=
+                                        ...),
+                                        unit-resolution(th-lemma(...),
+                                        true-axiom(...),
+                                        ... >= ...),
+                                        unit-resolution(th-lemma(...),
+                                        unit-resolution(...,
+                                        ...,
+                                        ...),
+                                        ... >= ...),
+                                        .../... >= 0),
+                                        0 == s/2),
+                                        commutativity((0 ==
+                                        .../...) ==
+                                        (.../... == 0)),
+                                        s/2 == 0),
+                                        s + p2_01(s/2) ==
+                                        p2_01(s)),
+                                        p2_01(s) ==
+                                        s + p2_01(s/2)),
+                                        th-lemma(unit-resolution(th-lemma(Or(Not(0 ==
+                                        p2_01(...)),
+                                        p2_01(.../...) >= 0)),
+                                        unit-resolution(th-lemma(Or(Not(... ==
+                                        ...),
+                                        0 == p2_01(...))),
+                                        mp(unit-resolution(th-lemma(Or(...,
+                                        ...,
+                                        ...)),
+                                        hypothesis(... <=
+                                        ...),
+                                        unit-resolution(th-lemma(...),
+                                        hypothesis(...),
+                                        unit-resolution(...,
+                                        ...,
+                                        ...),
+                                        unit-resolution(...,
+                                        ...,
+                                        ...),
+                                        ... >= ...),
+                                        0 == .../...),
+                                        commutativity((... ==
+                                        ...) ==
+                                        (... == ...)),
+                                        s/2 == 0),
+                                        0 == p2_01(s/2)),
+                                        p2_01(s/2) >= 0),
+                                        hypothesis(s/2 <= 0),
+                                        unit-resolution(th-lemma(Or(Not(s ==
+                                        ... + ...),
+                                        s + ...*(...) <= 0)),
+                                        unit-resolution(th-lemma(Or(False,
+                                        s == ... + ...)),
+                                        true-axiom(True),
+                                        s ==
+                                        2*(.../...) + s%2),
+                                        s +
+                                        -1*
+                                        (...*(...) + ...%...) <=
+                                        0),
+                                        unit-resolution(th-lemma(Or(Not(s ==
+                                        ... + ...),
+                                        s + ...*(...) >= 0)),
+                                        unit-resolution(th-lemma(Or(False,
+                                        s == ... + ...)),
+                                        true-axiom(True),
+                                        s ==
+                                        2*(.../...) + s%2),
+                                        s +
+                                        -1*
+                                        (...*(...) + ...%...) >=
+                                        0),
+                                        unit-resolution(th-lemma(Or(Not(1 ==
+                                        binomial_coeff2_13(...,
+                                        ...)),
+                                        binomial_coeff2_13(s,
+                                        0) <=
+                                        1)),
+                                        th-lemma(1 ==
+                                        binomial_coeff2_13(s,
+                                        0)),
+                                        binomial_coeff2_13(s,
+                                        0) <=
+                                        1),
+                                        unit-resolution(th-lemma(Or(Not(... +
+                                        ... ==
+                                        binomial_coeff2_13(...,
+                                        ...)),
+                                        ...*(...) +
+                                        ...%... +
+                                        ...*... <=
+                                        0)),
+                                        unit-resolution(th-lemma(Or(False,
+                                        ... + ... ==
+                                        binomial_coeff2_13(...,
+                                        ...))),
+                                        true-axiom(True),
+                                        2*(.../...) +
+                                        binomial_coeff2_13(...,
+                                        ...)%
+                                        2 ==
+                                        binomial_coeff2_13(s,
+                                        1)),
+                                        2*
+                                        (binomial_coeff2_13(...,
+                                        ...)/
+                                        2) +
+                                        binomial_coeff2_13(s,
+                                        1)%
+                                        2 +
+                                        -1*
+                                        binomial_coeff2_13(s,
+                                        1) <=
+                                        0),
+                                        unit-resolution(th-lemma(Or(Not(1 ==
+                                        binomial_coeff2_13(...,
+                                        ...)),
+                                        binomial_coeff2_13(s,
+                                        0) >=
+                                        1)),
+                                        th-lemma(1 ==
+                                        binomial_coeff2_13(s,
+                                        0)),
+                                        binomial_coeff2_13(s,
+                                        0) >=
+...

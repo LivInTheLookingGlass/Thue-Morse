@@ -1,4 +1,4 @@
-gould2_13 = [else ->
+s = 1gould2_13 = [else ->
  If(Var(0)%2 == 0,
     partial_sum2_13(Var(0), 0)*2 +
     binomial_coeff2_13(Var(0), Var(0)/2)%2,

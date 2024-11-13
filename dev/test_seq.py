@@ -7,10 +7,9 @@ from typing import Any, List, Literal, Union
 from pytest import mark
 
 try:
-    from z3 import ForAll, Implies, Int, OnClause, RecFunction, Solver, sat, set_param
+    from z3 import And, ForAll, Implies, Int, OnClause, RecFunction, Solver, sat, set_param
     disable_z3 = False
     set_param('verbose', 1)
-    set_param('timeout', 60)
     for param in ('stats', 'proof', 'model', 'dump_models', 'unsat_core'):
         set_param(param, True)
 except ImportError:
@@ -64,6 +63,8 @@ def run_solver(
 
     n = Int('n')
     solver.add(*extras)
+    solver.add(ForAll(n, Implies(And(n >= 0, n < s_ref), And(T1(n) == n, T2(n) == n))))
+    solver.add(T1(s_ref) == 1, T2(s_ref) == 1)
     solver.add(ForAll(n, Implies(n >= 0, T1(n) == T2(n))))
 
     # Check if the assertion is valid

@@ -1,5 +1,6 @@
 ; benchmark generated from python API
 (set-info :status unknown)
+(declare-fun s () Int)
 (define-funs-rec ( ( T2_07 ((x!1 Int)) Int)
                    ( p2_07 ((x!1 Int)) Int)
                    ( ilog2_2_07 ((x!1 Int)) Int)
@@ -34,9 +35,26 @@
                    (ite (<= x!1 1) 0 (+ 1 ((_ ilog2_2_04 0) (div x!1 2))))))
 (assert
  (forall ((n Int) )(let ((?x406 ((_ T2_07 0) n)))
-(let ((?x370 ((_ T2_04 0) n)))
-(let (($x379 (= ?x370 ?x406)))
-(let (($x407 (>= n 0)))
-(=> $x407 $x379))))))
+ (let (($x407 (= ?x406 n)))
+ (let ((?x408 ((_ T2_04 0) n)))
+ (let (($x409 (= ?x408 n)))
+ (let (($x410 (and $x409 $x407)))
+ (let (($x387 (< n s)))
+ (let (($x411 (>= n 0)))
+ (let (($x412 (and $x411 $x387)))
+ (=> $x412 $x410))))))))))
+ )
+(assert
+ (let ((?x370 ((_ T2_04 0) s)))
+ (= ?x370 1)))
+(assert
+ (let ((?x322 ((_ T2_07 0) s)))
+ (= ?x322 1)))
+(assert
+ (forall ((n Int) )(let ((?x406 ((_ T2_07 0) n)))
+(let ((?x408 ((_ T2_04 0) n)))
+(let (($x440 (= ?x408 ?x406)))
+(let (($x411 (>= n 0)))
+(=> $x411 $x440))))))
 )
 (check-sat)

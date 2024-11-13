@@ -37,8 +37,8 @@ def to_z3(s: Union[int, 'Int'] = 2) -> 'RecFunction':
     n = Int('n')
     x = Int('x')
     y = Int('y')
-    ilogn = RecFunction('ilog2', IntSort(), IntSort(), IntSort())
-    xorn = RecFunction('xorn', IntSort(), IntSort(), IntSort(), IntSort())
+    ilogn = RecFunction('ilog2n_07', IntSort(), IntSort(), IntSort())
+    xorn = RecFunction('xornn_07', IntSort(), IntSort(), IntSort(), IntSort())
     p = RecFunction('pn_07', IntSort(), IntSort())
     Tn_07 = RecFunction('Tn_07', IntSort(), IntSort())
     RecAddDefinition(xorn, [x, y, n],

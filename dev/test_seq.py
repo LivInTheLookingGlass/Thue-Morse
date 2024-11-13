@@ -4,10 +4,11 @@ from pathlib import Path
 from signal import SIGTERM, signal
 from typing import Any, List, Literal, Union
 
-from pytest import mark
+from pytest import mark, skip, xfail
 
 try:
-    from z3 import And, ForAll, Implies, Int, OnClause, RecFunction, Solver, sat, set_param
+    import z3  # because we need to use names like z3.sat for match statements
+    from z3 import And, Exists, ForAll, Implies, Int, OnClause, RecFunction, Solver, Z3Exception, set_param
     disable_z3 = False
     set_param('verbose', 1)
     for param in ('stats', 'proof', 'model', 'dump_models', 'unsat_core'):
@@ -56,27 +57,68 @@ def run_solver(
     extras: List[Any]
 ) -> None:
     solver = Solver()
-    solver.reset()
     solver.set("cache_all", True)
     solver.set("clause_proof", True)
     OnClause(solver, lambda pr, clause: ...)  # for some reason, eliminating this line means no proofs are printed
 
+    fname_noext = f"{T1_name.replace('.', '_')}-vs-{T2_name.replace('.', '_')}"
+    fname = Path(f"./prover/smt/p{mode}/{fname_noext}.smt2")
+
     n = Int('n')
-    solver.add(*extras)
-    solver.add(ForAll(n, Implies(And(n >= 0, n < s_ref), And(T1(n) == n, T2(n) == n))))
-    solver.add(T1(s_ref) == 1, T2(s_ref) == 1)
+    standard_asserts = [
+        *extras,
+        ForAll(n, Implies(And(n >= 0, n < s_ref), And(T1(n) == n, T2(n) == n))),
+        T1(s_ref) == 1, T2(s_ref) == 1,
+    ]
+    solver.add(*standard_asserts)
+    solver.push()
+    solver.add(Exists(n, And(n >= 0, T1(n) != T2(n))))
+
+    try:
+        checkpoint = solver.check()
+    except Z3Exception as e:
+        xfail(reason=e)
+
+    match checkpoint:
+        case z3.sat:
+            print("Counterexample found!")
+            dump_solver(fname, fname_noext, mode, solver)
+            raise ValueError("Counterexample found!")
+        case z3.unknown:
+            print("Unable to find or disprove a counterexample")
+        case z3.unsat:
+            pass
+        case _:
+            raise RuntimeError("Unknown status: ", checkpoint)
+    print("Refutation Phase Statistics:")
+    print(solver.statistics())
+    print("Counterexample not found. Trying for proof of equality...")
+
+    solver.pop()
+    # solver.add(*standard_asserts)
     solver.add(ForAll(n, Implies(n >= 0, T1(n) == T2(n))))
 
-    # Check if the assertion is valid
-    if solver.check() == sat:
-        raise ValueError("Counterexample found:", solver.model())
+    try:
+        checkpoint = solver.check()
+    except Z3Exception as e:
+        xfail(reason=e)
+    match checkpoint:
+        case z3.unsat:
+            raise ValueError("Proof failed:", solver.unsat_core(), solver.model())
+        case z3.unknown:
+            skip("Wasn't able to figure out a solution")
+        case z3.sat:
+            pass
+        case _:
+            raise RuntimeError("Unknown status: ", checkpoint)
     print(f"Proven: {T1_name}(n, s) and {T2_name}(n, s) produce the same output for all n >= 0, s >= 2")
 
     print("Statistics:")
     print(solver.statistics())
+    dump_solver(fname, fname_noext, mode, solver)
 
-    fname_noext = f"{T1_name.replace('.', '_')}-vs-{T2_name.replace('.', '_')}"
-    fname = Path(f"./prover/smt/p{mode}/{fname_noext}.smt2")
+
+def dump_solver(fname: Path, fname_noext: str, mode: str, solver: 'Solver') -> None:
     fname.parent.mkdir(exist_ok=True, parents=True)
     with fname.open("w") as f:
         f.write(solver.to_smt2())

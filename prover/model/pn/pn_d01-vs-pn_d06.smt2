@@ -7,7 +7,12 @@ s = 2div0 = [else -> 0]mod0 = [else -> 0]gould2_13 = [else ->
     0,
     If(binomial_coeff2_13(Var(0), Var(1))%2 == 1,
        1 + partial_sum2_13(Var(0), Var(1) + 1),
-       partial_sum2_13(Var(0), Var(1) + 1)))]ilog2_2_03 = [else -> If(Var(0) <= 1, 0, 1 + ilog2_2_03(Var(0)/2))]b2_08 = [else ->
+       partial_sum2_13(Var(0), Var(1) + 1)))]t2_05 = [0 -> "0",
+ 1 -> "01",
+ else ->
+ Concat(t2_05(Var(0) - 1),
+        rot2_05(t2_05(Var(0) - 1),
+                Length(t2_05(Var(0) - 1))/2))]ilog2_2_03 = [else -> If(Var(0) <= 1, 0, 1 + ilog2_2_03(Var(0)/2))]b2_08 = [else ->
  If(Var(0) < 2,
     Var(0),
     b2_08(Var(0)/2 + Var(0)%2) - b2_08(Var(0)/2))]e2_12 = [0 -> 0, else -> fe2_12(e2_12(Var(0) - 1) + 1)]T2_02 = [else -> ToInt((1 - -1**p2_02(Var(0)))/2)]f2_10 = [else -> If(p2_10(Var(0))%2 == 0, Var(0), f2_10(Var(0) + 1))]T2_11 = [else -> 1 - p2_11(Var(0) + 1) + p2_11(Var(0))]xorn = [else ->
@@ -16,15 +21,19 @@ s = 2div0 = [else -> 0]mod0 = [else -> 0]gould2_13 = [else ->
     If(Var(1) == 0,
        Var(0),
        (Var(0)%Var(2) + Var(1)%Var(2))%Var(2) +
-       Var(2)*xorn(Var(0)/Var(2), Var(1)/Var(2), Var(2))))]T2_04 = [else ->
- If(str.substr(t2_04(ilog2_2_04(Var(0)) + 1), Var(0), 1) ==
-    "0",
-    0,
-    1)]T2_07 = [0 -> 0,
+       Var(2)*xorn(Var(0)/Var(2), Var(1)/Var(2), Var(2))))]T2_07 = [0 -> 0,
  else ->
  If(p2_07(Var(0))%2 == 0,
     1 - T2_07(Var(0) - 1),
-    T2_07(Var(0) - 1))]T2_01 = [else -> p2_01(Var(0))%2]o2_12 = [0 -> 1, else -> fo2_12(o2_12(Var(0) - 1) + 1)]Tn_06 = [else -> pn_06(Var(0))]Tn_07 = [else ->
+    T2_07(Var(0) - 1))]T2_04 = [else ->
+ If(str.substr(t2_04(ilog2_2_04(Var(0)) + 1), Var(0), 1) ==
+    "0",
+    0,
+    1)]T2_01 = [else -> p2_01(Var(0))%2]o2_12 = [0 -> 1, else -> fo2_12(o2_12(Var(0) - 1) + 1)]T2_05 = [else ->
+ If(str.substr(t2_05(ilog2_2_05(Var(0)) + 1), Var(0), 1) ==
+    "0",
+    0,
+    1)]Tn_06 = [else -> pn_06(Var(0))]Tn_07 = [else ->
  If(Var(0) < s,
     Var(0),
     (ilog2(xorn(Var(0), Var(0) - 1, s), s) +
@@ -44,17 +53,19 @@ s = 2div0 = [else -> 0]mod0 = [else -> 0]gould2_13 = [else ->
     If(Var(1) == 0,
        Var(0),
        (Var(0)%2 + Var(1)%2)%2 +
-       2*xor_2_07(Var(0)/2, Var(1)/2)))]p2_06 = [0 -> 0, else -> (Var(0) - p2_06(Var(0)/2))%2]T2_06 = [else -> p2_06(Var(0))]T2_03 = [else ->
+       2*xor_2_07(Var(0)/2, Var(1)/2)))]p2_06 = [0 -> 0, else -> (Var(0) - p2_06(Var(0)/2))%2]rot2_05 = [else ->
+ Concat(str.substr(Var(0), Var(1), Length(Var(0)) - Var(1)),
+        str.substr(Var(0), 0, Var(1)))]T2_03 = [else ->
  If(str.substr(t2_03(ilog2_2_03(Var(0)) + 1), Var(0), 1) ==
     "0",
     0,
-    1)]fo2_12 = [else ->
- If(p2_12(Var(0))%2 == 1, Var(0), fo2_12(Var(0) + 1))]ilog2_2_07 = [else -> If(Var(0) <= 1, 0, 1 + ilog2_2_07(Var(0)/2))]p2_07 = [else -> ilog2_2_07(xor_2_07(Var(0), Var(0) - 1)) + 1]binomial_coeff2_13 = [else ->
+    1)]T2_06 = [else -> p2_06(Var(0))]ilog2_2_07 = [else -> If(Var(0) <= 1, 0, 1 + ilog2_2_07(Var(0)/2))]p2_07 = [else -> ilog2_2_07(xor_2_07(Var(0), Var(0) - 1)) + 1]fo2_12 = [else ->
+ If(p2_12(Var(0))%2 == 1, Var(0), fo2_12(Var(0) + 1))]binomial_coeff2_13 = [else ->
  If(Var(1) == 0,
     1,
     (binomial_coeff2_13(Var(0), Var(1) - 1)*
      (Var(0) - (Var(1) - 1)))/
-    Var(1))]p2_02 = [0 -> 0, else -> p2_02(Var(0)/2) + Var(0)%2]pn_06 = [0 -> 0, else -> (Var(0) - pn_06(Var(0)/s))%s]p2_09 = [0 -> 0, else -> p2_09(Var(0)/2) + Var(0)]t2_04 = [0 -> "0", else -> sub2_04("", t2_04(Var(0) - 1))]T2_08 = [else -> b2_08(Var(0))%2]fe2_12 = [else ->
+    Var(1))]p2_02 = [0 -> 0, else -> p2_02(Var(0)/2) + Var(0)%2]pn_06 = [0 -> 0, else -> (Var(0) - pn_06(Var(0)/s))%s]p2_09 = [0 -> 0, else -> p2_09(Var(0)/2) + Var(0)]t2_04 = [0 -> "0", else -> sub2_04("", t2_04(Var(0) - 1))]ilog2_2_05 = [else -> If(Var(0) <= 1, 0, 1 + ilog2_2_05(Var(0)/2))]T2_08 = [else -> b2_08(Var(0))%2]fe2_12 = [else ->
  If(p2_12(Var(0))%2 == 0, Var(0), fe2_12(Var(0) + 1))]sub2_04 = [else ->
  If(Length(Var(1)) == 0,
     Var(0),

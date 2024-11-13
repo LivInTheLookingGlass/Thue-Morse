@@ -44,7 +44,8 @@ def to_z3(_: Union[int, 'Int'] = 2) -> 'RecFunction':
     T2_05 = RecFunction('T2_05', IntSort(), IntSort())
     RecAddDefinition(rot, [s, n], Concat(SubString(s, n, Length(s) - n), SubString(s, 0, n)))
     RecAddDefinition(t, [n], If(n == 0, StringVal('0'),
-                                Concat(t(n - 1), rot(t(n - 1), Length(t(n - 1)) / 2))))
+                                If(n == 1, StringVal('01'),
+                                   Concat(t(n - 1), rot(t(n - 1), Length(t(n - 1)) / 2)))))
     RecAddDefinition(ilog2, [n], If(n <= 1, 0,
                                     1 + ilog2(n / 2)))
     RecAddDefinition(T2_05, [n], If(SubString(t(ilog2(n) + 1), n, 1) == StringVal("0"), 0, 1))

@@ -182,3 +182,11 @@ def test_compare_n_1_to_n(c: int, s: int, n: int = test_len):
         if idx >= n:
             break
     print(f"All definitions agree for {s} players up to {n} iterations")
+
+
+@mark.parametrize("n", [100, 1000, 10000])
+@mark.parametrize("c", ['2_01'] + [f'2_{n:02}' for n in base_2_tests] + ['n_01'] + [f'n_{n:02}' for n in base_n_tests])
+def test_benchmark(benchmark, c: str, n: int):
+    cs = 'p{}.d{}'.format(*c.split('_'))
+    iterator = get_iters(True, True)[cs]
+    benchmark(lambda: [x for x, _ in zip(iterator, range(n))])

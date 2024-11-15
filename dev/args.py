@@ -2,7 +2,7 @@ from argparse import ArgumentParser
 from typing import Callable, Iterable
 
 try:
-    from butarray import bitarray
+    from bitarray import bitarray
 except ImportError:
     bitarray = bytearray  # type: ignore
 

@@ -1,8 +1,10 @@
+bitarray
+numba
+pytest-benchmark
 pytest-flake8
 pytest-isort
 pytest-mypy
 pytest-timeout
 pytest-xdist
-bitarray
 sympy
 z3-solver

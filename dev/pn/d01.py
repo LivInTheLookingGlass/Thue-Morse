@@ -1,6 +1,8 @@
 from itertools import count
 from typing import Iterator, Union
 
+from numba import jit
+
 try:
     from z3 import If, Int, IntSort, RecAddDefinition, RecFunction
 except ImportError:
@@ -9,6 +11,7 @@ except ImportError:
 from ..args import run
 
 
+@jit(nopython=False)
 def p(x: int, n: int) -> int:
     digit_sum = 0
     while x:
@@ -18,8 +21,7 @@ def p(x: int, n: int) -> int:
 
 
 def pn_d01(n: int = 2) -> Iterator[int]:
-    for x in count():
-        yield p(x, n)
+    return (p(x, n) for x in count())
 
 
 def to_z3(s: Union[int, 'Int'] = 2) -> 'RecFunction':

@@ -10,8 +10,7 @@ from ..args import run
 
 
 def p2_d02(_: int = 2) -> Iterator[int]:
-    for x in count():
-        yield (1 - (-1)**(x.bit_count())) >> 1
+    return ((1 - (-1)**(x.bit_count())) >> 1 for x in count())
 
 
 def to_z3(_: Union[int, 'Int'] = 2) -> 'RecFunction':

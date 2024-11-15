@@ -1,11 +1,13 @@
 from functools import reduce
-from itertools import count
 from operator import xor
 from typing import Iterator
+
+from numba import jit
 
 from ..args import run
 
 
+@jit(nopython=False)
 def A001317(n: int) -> int:
     exp_2_k = 1
     binomial_coeff = 1
@@ -20,12 +22,14 @@ def A001317(n: int) -> int:
 
 
 def p2_d14(_: int = 2) -> Iterator[int]:
-    for i in count():
+    i = 0
+    while True:
         yield reduce(
             xor,
             (A001317(idx) for idx, value in enumerate(bin(i)[2:]) if value == '1'),
             0
         ) & 1
+        i += 1
 
 
 if __name__ == '__main__':

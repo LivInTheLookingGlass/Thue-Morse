@@ -1,5 +1,6 @@
-from itertools import count
 from typing import Iterator, Union
+
+from numba import jit
 
 try:
     from z3 import If, Int, IntSort, RecAddDefinition, RecFunction
@@ -9,14 +10,17 @@ except ImportError:
 from ..args import run
 
 
-def A1510481(n):
+@jit(nopython=False)
+def A1510481(n: int, bc: int):
     n1 = n + 1
-    return (n1 >> 1) + ((n1.bit_count() & 1) * (n1 & 1))
+    return (n1 >> 1) + ((bc & 1) * (n1 & 1))
 
 
 def p2_d11(_: int = 2) -> Iterator[int]:
-    for i in count():
-        yield 1 - A1510481(i) + A1510481(i - 1)
+    i, j, k = (-1, 0, 1)
+    while True:
+        yield 1 - A1510481(j, k.bit_count()) + A1510481(i, j.bit_count())
+        i, j, k = (j, k, k + 1)
 
 
 def to_z3(_: Union[int, 'Int'] = 2) -> 'RecFunction':

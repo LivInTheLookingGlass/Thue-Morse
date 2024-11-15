@@ -1,8 +1,9 @@
 from collections import deque
-from itertools import count
 from multiprocessing import Pool, cpu_count
 from multiprocessing.pool import ApplyResult
 from typing import Deque, Iterator, Union
+
+from numba import jit
 
 try:
     from z3 import If, Int, IntSort, RecAddDefinition, RecFunction
@@ -14,6 +15,7 @@ from ..args import run
 max_size = 4 * cpu_count()
 
 
+@jit(nopython=False)
 def gould(n: int) -> int:
     binomial_coeff = 1
     partial_sum = 0
@@ -31,10 +33,12 @@ def gould(n: int) -> int:
 def p2_d13(_: int = 2) -> Iterator[int]:
     queue: Deque[ApplyResult[int]] = deque(maxlen=max_size)
     with Pool() as pool:
-        for i in count():
+        i = 0
+        while True:
             queue.append(pool.apply_async(gould, (i,)))
             if len(queue) >= max_size:
                 yield (queue.popleft().get() - 1) % 3  # Blocking call to get the result
+            i += 1
 
 
 def to_z3(_: Union[int, 'Int'] = 2) -> 'RecFunction':

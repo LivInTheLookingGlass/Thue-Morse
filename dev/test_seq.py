@@ -184,7 +184,7 @@ def test_compare_n_1_to_n(c: int, s: int, n: int = test_len):
     print(f"All definitions agree for {s} players up to {n} iterations")
 
 
-@mark.parametrize("n", [100, 1000, 10000])
+@mark.parametrize("n", [1 << x for x in range(8, 12)])
 @mark.parametrize("c", ['2_01'] + [f'2_{n:02}' for n in base_2_tests] + ['n_01'] + [f'n_{n:02}' for n in base_n_tests])
 def test_benchmark(benchmark, c: str, n: int):
     cs = 'p{}.d{}'.format(*c.split('_'))

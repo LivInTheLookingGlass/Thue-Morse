@@ -1,6 +1,7 @@
-from itertools import count
 from math import log
 from typing import Iterator, Union
+
+from numba import jit
 
 try:
     from z3 import If, Int, IntSort, RecAddDefinition, RecFunction
@@ -10,6 +11,7 @@ except ImportError:
 from ..args import run
 
 
+@jit(nopython=False)
 def xor_in_n(a, b, n):
     if min(a, b) < 1:
         return max(a, b)
@@ -28,9 +30,11 @@ def xor_in_n(a, b, n):
 def pn_d07(n: int = 2) -> Iterator[int]:
     yield from (0, 1)
     value = 1
-    for x in count(2):
+    x = 2
+    while True:
         value = int(log(xor_in_n(x, (x - 1), n), n) + value + 1) % n
         yield value
+        x += 1
 
 
 def to_z3(s: Union[int, 'Int'] = 2) -> 'RecFunction':

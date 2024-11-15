@@ -1,5 +1,6 @@
-from itertools import count
 from typing import Iterator, Union
+
+from numba import jit
 
 try:
     from z3 import If, Int, IntSort, RecAddDefinition, RecFunction
@@ -9,6 +10,7 @@ except ImportError:
 from ..args import run
 
 
+@jit(nopython=False)
 def T(x: int, n: int) -> int:
     if x == 0:
         return 0
@@ -16,8 +18,10 @@ def T(x: int, n: int) -> int:
 
 
 def pn_d06(n: int = 2) -> Iterator[int]:
-    for i in count():
+    i = 0
+    while True:
         yield T(i, n)
+        i += 1
 
 
 def to_z3(s: Union[int, 'Int'] = 2) -> 'RecFunction':

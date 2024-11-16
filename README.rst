@@ -56,6 +56,30 @@ Z3Py ``IntSort``, representing the base of the generated sequence. As above, if 
 ignored. It will always return the Z3Py function representation of this definition, allowing for easy comparisons in
 the test suite. Artifacts generated from this are stored in the ``prover/`` directory, as shown above.
 
+Required Dependencies
+---------------------
+
+The following are required for some implementations. In the case of sympy this is because it is
+too difficult to implement its features without other libraries. For numpy, while it isn't strictly necessary it does significantly speed up vector operations
+
+- numpy
+- sympy
+
+Optional Dependencies
+---------------------
+
+- bitarray (for more memory efficient arrays)
+- fluidpythran (just-in-time compilation of general functions)
+- numba (just-in-time compilation of math functions)
+- gmpy2 (more efficient arbitrary-precision integers)
+- z3-solver (formal verification of equality, where possible)
+- pytest-benchmark (profiling code)
+- pytest-flake8 (style)
+- pytest-isort (style)
+- pytest-mypy (typing)
+- pytest-timeout (so long tests don't hang)
+- pytest-xdist (run tests in parallel)
+
 Usage
 ~~~~~
 

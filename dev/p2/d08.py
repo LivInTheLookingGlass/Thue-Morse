@@ -6,7 +6,8 @@ try:
 except ImportError:
     pass
 
-from ..args import bitarray, run
+from ..args import run
+from ..compat.bitarray import bitarray
 
 
 def b(n: int, memo: bitarray) -> int:

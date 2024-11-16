@@ -40,7 +40,7 @@ def signal_handler(*args, **kwargs):
 @mark.parametrize("c", ['2_01'] + [f'2_{n:02}' for n in base_2_tests] + ['n_01'] + [f'n_{n:02}' for n in base_n_tests])
 def test_benchmark(benchmark, c: str, n: int):
     cs = 'p{}.d{}'.format(*c.split('_'))
-    iterator = get_iters(True, True)[cs]
+    iterator = get_iters(cs)
     benchmark(lambda: [x for x, _ in zip(iterator, range(n))])
 
 
@@ -159,12 +159,8 @@ def dump_solver(fname: Path, fname_noext: str, mode: str, solver: 'Solver') -> N
 
 @mark.parametrize("c", [f'2_{n:02}' for n in base_2_tests] + ['n_01'] + [f'n_{n:02}' for n in base_n_tests])
 def test_compare_2_1_to_(c: str, n: int = test_len):
-    iters = get_iters(True, True)
     cs = 'p{}.d{}'.format(*c.split('_'))
-    iters = {
-        k: d for k, d in iters.items()
-        if k in (cs, "p2.d01")
-    }
+    iters = get_iters("p2.d01", cs, s=2)
     assert len(iters) == 2
     for idx, tup in enumerate(zip(*iters.values())):
         if len(set(tup)) != 1:
@@ -177,12 +173,8 @@ def test_compare_2_1_to_(c: str, n: int = test_len):
 @mark.parametrize("s, c", product(bases_tested, base_n_tests),
                   ids=(f'{c:01}-base_{s:03}' for s, c in product(bases_tested, base_n_tests)))
 def test_compare_n_1_to_n(c: int, s: int, n: int = test_len):
-    iters = get_iters(False, True, s)
     cs = str(c).zfill(2)
-    iters = {
-        k: d for k, d in iters.items()
-        if cs in k or "01" in k
-    }
+    iters = get_iters("pn.d01", cs, s=s)
     assert len(iters) == 2
     for idx, tup in enumerate(zip(*iters.values())):
         if len(set(tup)) != 1:

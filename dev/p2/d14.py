@@ -1,9 +1,8 @@
 from itertools import count
 from typing import Iterator
 
-from numba import jit
-
 from ..args import run
+from ..compat.numba import jit
 
 
 @jit

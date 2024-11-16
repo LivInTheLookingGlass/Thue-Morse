@@ -7,7 +7,8 @@ try:
 except ImportError:
     pass
 
-from ..args import bitarray, run
+from ..args import run
+from ..compat.bitarray import bitarray
 
 
 def p2_d04(_: int = 2) -> Iterator[int]:

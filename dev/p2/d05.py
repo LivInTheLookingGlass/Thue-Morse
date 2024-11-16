@@ -9,13 +9,19 @@ try:
 except ImportError:
     pass
 
-from ..args import bitarray, run
+from ..args import run
+from ..compat.bitarray import bitarray
 
 T = TypeVar("T")
 
 
 @overload
 def rotate(t: Sequence[T], n: int) -> Sequence[T]:
+    ...
+
+
+@overload
+def rotate(t: np.ndarray[T], n: int) -> np.ndarray[T]:
     ...
 
 

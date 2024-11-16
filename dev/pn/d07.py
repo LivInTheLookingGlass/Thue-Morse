@@ -1,14 +1,13 @@
 from itertools import count
 from typing import Iterator, Union
 
-from numba import jit
-
 try:
     from z3 import If, Int, IntSort, RecAddDefinition, RecFunction
 except ImportError:
     pass
 
 from ..args import run
+from ..compat.numba import jit
 
 
 @jit

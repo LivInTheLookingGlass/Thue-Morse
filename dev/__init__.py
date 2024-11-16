@@ -19,17 +19,17 @@ def get_modules(p2: bool = True, pn: bool = False, s: int = 2) -> Dict[str, Modu
     return iters
 
 
-def get_iters(p2: bool = True, pn: bool = False, s: int = 2) -> Dict[str, Iterable[int]]:
+def get_iters(*names: str, s: int = 2) -> Dict[str, Iterable[int]]:
     return {
         key: getattr(value, f'{key.replace(".", "_")}')(s)
-        for key, value in get_modules(p2, pn).items()
-        if ('p2' in key and p2) or ('pn' in key and pn)
+        for key, value in get_modules(True, True).items()
+        if key in names
     }
 
 
 def get_z3s(p2: bool = True, pn: bool = False, s: int = 2) -> Dict[str, Dict[str, Any]]:
     ret: Dict[str, Dict[str, Any]] = {}
-    for key, value in get_modules(p2, pn).items():
+    for key, value in get_modules(True, True).items():
         if hasattr(value, 'to_z3') and (('p2' in key and p2) or ('pn' in key and pn)):
             try:
                 ret[key] = value.to_z3(s)

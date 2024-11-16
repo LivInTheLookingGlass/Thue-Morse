@@ -4,15 +4,14 @@ from multiprocessing import Pool, cpu_count
 from multiprocessing.pool import ApplyResult
 from typing import Deque, Iterator, Union
 
-from fluidpythran import boost
-from gmpy2 import mpz
-
 try:
     from z3 import If, Int, IntSort, RecAddDefinition, RecFunction
 except ImportError:
     pass
 
 from ..args import run
+from ..compat.fluidpythran import boost
+from ..compat.gmpy2 import mpz
 
 max_size = 4 * cpu_count()
 

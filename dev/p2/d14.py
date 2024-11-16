@@ -1,5 +1,4 @@
-from functools import reduce
-from operator import xor
+from itertools import count
 from typing import Iterator
 
 from numba import jit
@@ -7,7 +6,7 @@ from numba import jit
 from ..args import run
 
 
-@jit(nopython=False)
+@jit
 def A001317(n: int) -> int:
     exp_2_k = 1
     binomial_coeff = 1
@@ -21,15 +20,20 @@ def A001317(n: int) -> int:
     return partial_sum
 
 
+@jit
+def A193231(i: int) -> int:
+    ret = 0
+    idx = 0
+    while i:
+        if i & 1:
+            ret ^= A001317(idx)
+        i >>= 1
+        idx += 1
+    return ret & 1
+
+
 def p2_d14(_: int = 2) -> Iterator[int]:
-    i = 0
-    while True:
-        yield reduce(
-            xor,
-            (A001317(idx) for idx, value in enumerate(bin(i)[2:]) if value == '1'),
-            0
-        ) & 1
-        i += 1
+    return (A193231(i) for i in count())
 
 
 if __name__ == '__main__':

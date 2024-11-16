@@ -1,4 +1,6 @@
 bitarray
+fluidpythran
+gmpy2
 numba
 pytest-benchmark
 pytest-flake8

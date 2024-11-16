@@ -14,7 +14,7 @@ def p2_d07(_: int = 2) -> Iterator[int]:
     for n in count():
         # Note: assumes that (-1).bit_length() gives 1
         x = (n ^ (n - 1)).bit_length() + 1
-        if x & 1 == 0:
+        if not (x & 1):
             value = 1 - value  # Bit index is even, so toggle value
         yield value
 

@@ -10,14 +10,11 @@ from ..args import run
 
 
 def evil(_: int = 2) -> Iterator[int]:
-    for i in count():
-        if i.bit_count() & 1 == 0:
-            yield i
+    return (i for i in count() if not (i.bit_count() & 1))
 
 
 def p2_d10(_: int = 2) -> Iterator[int]:
-    for n, i in enumerate(evil()):
-        yield (i - (n << 1)) & 1
+    return ((i - (n << 1)) & 1 for n, i in enumerate(evil()))
 
 
 def to_z3(_: Union[int, 'Int'] = 2) -> 'RecFunction':

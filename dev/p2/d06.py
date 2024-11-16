@@ -11,7 +11,7 @@ except ImportError:
 from ..args import run
 
 
-@jit(nopython=False)
+@jit
 def T(n: int) -> int:
     if n == 0:
         return 0

@@ -1,6 +1,8 @@
 from itertools import count
 from typing import Iterator, Union
 
+from numba import jit
+
 try:
     from z3 import If, Int, IntSort, RecAddDefinition, RecFunction, ToInt
 except ImportError:
@@ -9,8 +11,13 @@ except ImportError:
 from ..args import run
 
 
+@jit
+def compute(bc: int) -> int:
+    return (1 - (-1)**bc) >> 1
+
+
 def p2_d02(_: int = 2) -> Iterator[int]:
-    return ((1 - (-1)**(x.bit_count())) >> 1 for x in count())
+    return (compute(x.bit_count()) for x in count())
 
 
 def to_z3(_: Union[int, 'Int'] = 2) -> 'RecFunction':

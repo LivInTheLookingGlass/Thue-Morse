@@ -11,20 +11,18 @@ from ..args import bitarray, run
 
 def b(n: int, memo: bitarray) -> int:
     nr1 = n << 1
-    if (nr1) < len(memo):
-        res = tuple(memo[nr1:(n + 1) << 1])
-        match res:
-            case (1, x):
-                return -x
-            case (0, 1):
-                return 1
+    nr1p1 = nr1 + 1
+    lmemo = len(memo)
+    if nr1p1 < lmemo:
+        if memo[nr1] == 1:
+            return -memo[nr1p1]
+        elif memo[nr1p1] == 1:
+            return 1
     n2 = n >> 1
     result = b(n2 + (n & 1), memo) - b(n2, memo)
-    if nr1 < len(memo):
-        if result == 1:
-            memo[nr1:(n + 1) << 1] = bitarray((0, 1))
-        else:
-            memo[nr1:(n + 1) << 1] = bitarray((1, abs(result)))
+    if nr1p1 < lmemo:
+        memo[nr1] = (result < 1)
+        memo[nr1p1] = abs(result)
     return result
 
 

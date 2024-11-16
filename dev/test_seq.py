@@ -31,9 +31,17 @@ z3_tests_bn = [x + y for x, y in combinations(get_z3s(False, True, s_ref).items(
 
 
 @partial(signal, SIGTERM)
-def signal_handler(sig, frame):
+def signal_handler(*args, **kwargs):
     print("Received SIGTERM. Raising exception for pytest.")
     raise RuntimeError()
+
+
+@mark.parametrize("n", [1 << x for x in range(8, 12)])
+@mark.parametrize("c", ['2_01'] + [f'2_{n:02}' for n in base_2_tests] + ['n_01'] + [f'n_{n:02}' for n in base_n_tests])
+def test_benchmark(benchmark, c: str, n: int):
+    cs = 'p{}.d{}'.format(*c.split('_'))
+    iterator = get_iters(True, True)[cs]
+    benchmark(lambda: [x for x, _ in zip(iterator, range(n))])
 
 
 @mark.skipif(disable_z3, reason="Requires z3-solver")
@@ -182,11 +190,3 @@ def test_compare_n_1_to_n(c: int, s: int, n: int = test_len):
         if idx >= n:
             break
     print(f"All definitions agree for {s} players up to {n} iterations")
-
-
-@mark.parametrize("n", [1 << x for x in range(8, 12)])
-@mark.parametrize("c", ['2_01'] + [f'2_{n:02}' for n in base_2_tests] + ['n_01'] + [f'n_{n:02}' for n in base_n_tests])
-def test_benchmark(benchmark, c: str, n: int):
-    cs = 'p{}.d{}'.format(*c.split('_'))
-    iterator = get_iters(True, True)[cs]
-    benchmark(lambda: [x for x, _ in zip(iterator, range(n))])

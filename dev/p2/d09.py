@@ -10,14 +10,11 @@ from ..args import run
 
 
 def odious() -> Iterator[int]:
-    for i in count():
-        if i.bit_count() & 1:
-            yield i
+    return (i for i in count() if i.bit_count() & 1)
 
 
 def p2_d09(_: int = 2) -> Iterator[int]:
-    for i in odious():
-        yield (i + 1) & 1
+    return ((i + 1) & 1 for i in odious())
 
 
 def to_z3(_: Union[int, 'Int'] = 2) -> 'RecFunction':

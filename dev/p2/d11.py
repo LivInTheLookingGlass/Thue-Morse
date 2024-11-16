@@ -10,17 +10,23 @@ except ImportError:
 from ..args import run
 
 
-@jit(nopython=False)
+@jit
 def A1510481(n: int, bc: int):
     n1 = n + 1
     return (n1 >> 1) + ((bc & 1) * (n1 & 1))
 
 
 def p2_d11(_: int = 2) -> Iterator[int]:
-    i, j, k = (-1, 0, 1)
+    i = -1
+    j = jbc = 0
+    k = kbc = 1
     while True:
-        yield 1 - A1510481(j, k.bit_count()) + A1510481(i, j.bit_count())
-        i, j, k = (j, k, k + 1)
+        yield 1 - A1510481(j, kbc) + A1510481(i, jbc)
+        i = j
+        j = k
+        k += 1
+        jbc = kbc
+        kbc = k.bit_count()
 
 
 def to_z3(_: Union[int, 'Int'] = 2) -> 'RecFunction':

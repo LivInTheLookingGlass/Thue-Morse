@@ -1,18 +1,24 @@
-from itertools import chain, islice
+from itertools import islice
 from typing import Iterator
 
+import numpy as np
+
 from ..args import run
+from .d03 import np_select_type
 
 
 def pn_d04(n: int = 2) -> Iterator[int]:
-    if n < 2 or n > 256:
-        raise ValueError("Due to memory use optimizations, this iterator only supports bases 2 thru 256")
-    seq = bytearray(range(n))
+    dtype = np_select_type(n)
+    seq = np.arange(n, dtype=dtype)
     prev_len = 0
     while True:
         yield from islice(seq, prev_len, None)
         prev_len = len(seq)
-        seq = bytearray(chain.from_iterable((*range(x, n), *range(0, x)) for x in seq))
+        new_seq = []
+        for x in seq:
+            new_seq.append(np.arange(x, n, dtype=dtype))
+            new_seq.append(np.arange(0, x, dtype=dtype))
+        seq = np.concatenate(new_seq)
 
 
 if __name__ == '__main__':

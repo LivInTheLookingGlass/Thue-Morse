@@ -1,6 +1,8 @@
 from itertools import islice
 from typing import Iterator, Sequence, TypeVar, Union, overload
 
+import numpy as np
+
 try:
     from z3 import (Concat, If, Int, IntSort, Length, RecAddDefinition, RecFunction, String, StringSort, StringVal,
                     SubString)
@@ -23,7 +25,11 @@ def rotate(t: bitarray, n: int) -> bitarray:
 
 
 def rotate(t, n: int):
-    return n and (t[n:] + t[:n]) or t
+    if n:
+        if isinstance(t, np.ndarray):
+            return np.concat((t[n:], t[:n]))
+        return t[n:] + t[:n]
+    return t
 
 
 def p2_d05(_: int = 2) -> Iterator[int]:

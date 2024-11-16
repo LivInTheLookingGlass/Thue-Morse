@@ -11,13 +11,14 @@ except ImportError:
 from ..args import run
 
 
-@jit(nopython=False)
+@jit
 def p(x: int, n: int) -> int:
     digit_sum = 0
     while x:
-        digit_sum += x % n
+        digit_sum += x
+        digit_sum %= n
         x //= n
-    return digit_sum % n
+    return digit_sum
 
 
 def pn_d01(n: int = 2) -> Iterator[int]:

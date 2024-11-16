@@ -1,4 +1,4 @@
-from math import log
+from itertools import count
 from typing import Iterator, Union
 
 from numba import jit
@@ -11,10 +11,12 @@ except ImportError:
 from ..args import run
 
 
-@jit(nopython=False)
+@jit
 def xor_in_n(a, b, n):
-    if min(a, b) < 1:
-        return max(a, b)
+    if a < 1:
+        return b
+    if b < 1:
+        return a
     res = 0
     ni = 1
     while a > 0 or b > 0:
@@ -27,14 +29,22 @@ def xor_in_n(a, b, n):
     return res
 
 
+@jit
+def xor_wrapper(x: int, n: int, value: int) -> int:
+    xored = xor_in_n(x, (x - 1), n)
+    lx = -1
+    while xored:  # manually implement log
+        lx += 1
+        xored //= n
+    return (lx + value + 1) % n
+
+
 def pn_d07(n: int = 2) -> Iterator[int]:
     yield from (0, 1)
     value = 1
-    x = 2
-    while True:
-        value = int(log(xor_in_n(x, (x - 1), n), n) + value + 1) % n
+    for x in count(2):
+        value = xor_wrapper(x, n, value)
         yield value
-        x += 1
 
 
 def to_z3(s: Union[int, 'Int'] = 2) -> 'RecFunction':

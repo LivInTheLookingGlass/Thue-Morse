@@ -1,5 +1,7 @@
-from itertools import chain, islice
+from itertools import islice
 from typing import Iterator, Union
+
+import numpy as np
 
 try:
     from z3 import (Concat, If, Int, IntSort, Length, RecAddDefinition, RecFunction, String, StringSort, StringVal,
@@ -9,17 +11,17 @@ except ImportError:
 
 from ..args import run
 from ..p2.d05 import rotate
+from .d03 import np_select_type
 
 
 def pn_d05(n: int = 2) -> Iterator[int]:
-    if n < 2 or n > 256:
-        raise ValueError("Due to memory use optimizations, this iterator only supports bases 2 thru 256")
-    seq = bytearray(range(n))
+    dtype = np_select_type(n)
+    seq = np.arange(n, dtype=dtype)
     prev_len = 0
     while True:
         yield from islice(seq, prev_len, None)
         prev_len = len(seq)
-        seq = bytearray(chain.from_iterable(rotate(seq, prev_len // n * i) for i in range(n)))
+        seq = np.concatenate([rotate(seq, prev_len // n * i) for i in range(n)])
 
 
 def to_z3(s: Union[int, 'Int'] = 2) -> 'RecFunction':

@@ -46,8 +46,8 @@ jobs:
     - name: Fetch test dependencies
       run: python -O -m pip install -r requirements.txt
 
-    - name: Run Linters
-      run: python -O -m pytest -k "benchmark" --benchmark-min-time=0.05 --benchmark-sort=fullname --benchmark-group-by="param:c" --benchmark-min-rounds=1 --benchmark-cprofile=ncalls_recursion --benchmark-cprofile=ncalls --benchmark-cprofile=tottime --benchmark-cprofile=tottime_per --benchmark-cprofile=cumtime --benchmark-cprofile=cumtime_per
+    - name: Run Benchmarks
+      run: python -O -m pytest -k "benchmark" --benchmark-enable --benchmark-verbose --benchmark-sort=fullname --benchmark-group-by="param:c" --benchmark-cprofile=ncalls_recursion --benchmark-cprofile=ncalls --benchmark-cprofile=tottime --benchmark-cprofile=tottime_per --benchmark-cprofile=cumtime --benchmark-cprofile=cumtime_per
 
   satisfiable:
     runs-on: ubuntu-latest

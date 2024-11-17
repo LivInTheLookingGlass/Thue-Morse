@@ -6,18 +6,8 @@ from typing import Any, List, Literal, Union
 
 from pytest import mark, skip, xfail
 
-try:
-    import z3  # because we need to use names like z3.sat for match statements
-    from z3 import And, Exists, ForAll, Implies, Int, OnClause, RecFunction, Solver, Z3Exception, set_param
-    disable_z3 = False
-    set_param('verbose', 1)
-    for param in ('stats', 'proof', 'model', 'dump_models', 'unsat_core'):
-        set_param(param, True)
-except ImportError:
-    Int = str  # type: ignore
-    disable_z3 = True
-
 from . import get_iters, get_z3s
+from .compat.z3 import And, Exists, ForAll, Implies, Int, OnClause, RecFunction, Solver, Z3Exception, disable_z3, z3
 
 s_ref = Int('s')
 test_len = 2**15

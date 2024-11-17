@@ -1,10 +1,9 @@
 try:
-    from bitarray import *
-except ImportError:
-    from warnings import ImportWarning, warn
+    from bitarray import *  # noqa: F401, F403
+except (ImportError, ModuleNotFoundError):
+    from warnings import warn
 
     warn("Unable to load the bitarray library. Doing our best to substitute", category=ImportWarning)
-
 
     class bitarray(bytearray):
         def invert(self):

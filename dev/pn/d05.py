@@ -1,4 +1,4 @@
-from itertools import islice
+from itertools import chain, islice
 from typing import Iterator, Union
 
 import numpy as np
@@ -21,7 +21,7 @@ def pn_d05(n: int = 2) -> Iterator[int]:
     while True:
         yield from islice(seq, prev_len, None)
         prev_len = len(seq)
-        seq = np.concatenate([rotate(seq, prev_len // n * i) for i in range(n)])
+        seq = np.fromiter(chain.from_iterable(rotate(seq, prev_len // n * i) for i in range(n)), dtype=dtype)
 
 
 def to_z3(s: Union[int, 'Int'] = 2) -> 'RecFunction':

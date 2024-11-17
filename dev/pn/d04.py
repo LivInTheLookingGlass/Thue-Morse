@@ -1,4 +1,4 @@
-from itertools import islice
+from itertools import chain, islice
 from typing import Iterator
 
 import numpy as np
@@ -14,11 +14,10 @@ def pn_d04(n: int = 2) -> Iterator[int]:
     while True:
         yield from islice(seq, prev_len, None)
         prev_len = len(seq)
-        new_seq = []
-        for x in seq:
-            new_seq.append(np.arange(x, n, dtype=dtype))
-            new_seq.append(np.arange(0, x, dtype=dtype))
-        seq = np.concatenate(new_seq)
+        seq = np.fromiter(chain.from_iterable(
+            (*range(x, n), *range(0, x))
+            for x in seq
+        ), dtype=dtype)
 
 
 if __name__ == '__main__':

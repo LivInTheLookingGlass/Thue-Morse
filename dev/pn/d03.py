@@ -1,4 +1,4 @@
-from itertools import islice
+from itertools import chain, islice
 from typing import Iterator
 
 import numpy as np
@@ -31,11 +31,12 @@ def np_select_type(n: int):
 
 
 def pn_d03(n: int = 2) -> Iterator[int]:
-    seq = np.arange(n, dtype=np_select_type(n))
+    dtype = np_select_type(n)
+    seq = np.arange(n, dtype=dtype)
     yield from seq
     prev_len = len(seq)
     while True:
-        seq = np.concatenate([seq, *((seq + i) % n for i in range(1, n))])
+        seq = np.concatenate([seq, np.fromiter(chain.from_iterable((seq + i) % n for i in range(1, n)), dtype=dtype)])
         yield from islice(seq, prev_len, None)
         prev_len = len(seq)
 

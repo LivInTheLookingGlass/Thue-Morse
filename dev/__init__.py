@@ -14,8 +14,8 @@ def get_modules(p2: bool = True, pn: bool = False, s: int = 2) -> Dict[str, Modu
                 iters[name] = import_module(f'{parent_name}.{name}', __name__)
             except ImportError:
                 continue
-            except Exception as e:
-                print(e)
+#            except Exception as e:
+#                print(e)
     return iters
 
 

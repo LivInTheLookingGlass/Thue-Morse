@@ -3,9 +3,10 @@ from traceback import print_exc
 from types import ModuleType
 from typing import Any, Dict, Iterable
 
+parent_name = '.'.join(__name__.split('.')[:-1])
+
 
 def get_modules(p2: bool = True, pn: bool = False, s: int = 2) -> Dict[str, ModuleType]:
-    parent_name = '.'.join(__name__.split('.')[:-1])
     iters = {}
     for kind in "2" * p2 + "n" * pn:
         for d in range(1, 100):
@@ -14,16 +15,16 @@ def get_modules(p2: bool = True, pn: bool = False, s: int = 2) -> Dict[str, Modu
                 iters[name] = import_module(f'{parent_name}.{name}', __name__)
             except ImportError:
                 continue
-#            except Exception as e:
-#                print(e)
     return iters
 
 
 def get_iters(*names: str, s: int = 2) -> Dict[str, Iterable[int]]:
     return {
-        key: getattr(value, f'{key.replace(".", "_")}')(s)
-        for key, value in get_modules(True, True).items()
-        if key in names
+        key: getattr(
+            import_module(f'{parent_name}.{key}', __name__),
+            f'{key.replace(".", "_")}'
+        )(s)
+        for key in names
     }
 
 

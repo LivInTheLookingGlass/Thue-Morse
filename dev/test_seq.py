@@ -173,7 +173,7 @@ def test_compare_2_1_to_(c: str, n: int = test_len):
 @mark.parametrize("s, c", product(bases_tested, base_n_tests),
                   ids=(f'{c:01}-base_{s:03}' for s, c in product(bases_tested, base_n_tests)))
 def test_compare_n_1_to_n(c: int, s: int, n: int = test_len):
-    cs = str(c).zfill(2)
+    cs = f"pn.d{c:02}"
     iters = get_iters("pn.d01", cs, s=s)
     assert len(iters) == 2
     for idx, tup in enumerate(zip(*iters.values())):

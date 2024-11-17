@@ -9,7 +9,7 @@ except ImportError:
 
 def run(num: int, func: Callable[[int], Iterable[int]], kind: str = '2') -> None:
     parser = ArgumentParser()
-    parser.add_argument('n', type=int, help='The number of values to print')
+    parser.add_argument('n', type=int, help='The number of values to print', default=16, nargs='?')
     parser.add_argument('p', type=int, help='The number of players', default=2, nargs='?')
     args = parser.parse_args()
     if kind == '2':

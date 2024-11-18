@@ -21,7 +21,7 @@ def rotate(t: Sequence[T], n: int) -> Sequence[T]:
 
 
 @overload
-def rotate(t: np.ndarray[T], n: int) -> np.ndarray[T]:
+def rotate(t: np.typing.NDArray[T], n: int) -> np.typing.NDArray[T]:
     ...
 
 

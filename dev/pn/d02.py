@@ -9,7 +9,7 @@ from .d01 import p
 
 
 @jit
-def closest_root(target: complex, roots: np.ndarray[complex]) -> int:
+def closest_root(target: complex, roots: np.typing.NDArray[complex]) -> int:
     distances = np.abs(roots - target)  # vectorized
     return np.argmin(distances)
 

@@ -5,10 +5,10 @@ except (ImportError, ModuleNotFoundError):
 
     warn("Unable to load the bitarray library. Doing our best to substitute", category=ImportWarning)
 
-    class bitarray(bytearray):
+    class bitarray(bytearray):  # type: ignore
         def invert(self):
             for i in range(len(self)):
                 self[i] = not self[i]
 
-        def copy(self) -> 'bitarray':
+        def copy(self) -> 'bitarray':  # type: ignore
             return bitarray(self)

@@ -51,6 +51,9 @@ jobs:
 
   satisfiable:
     runs-on: ubuntu-latest
+    env:
+      swap_size: 12  # in GiB
+      max_mem: 15
     steps:
     - uses: actions/checkout@v4
 
@@ -63,6 +66,14 @@ jobs:
 
     - name: Fetch test dependencies
       run: python -O -m pip install -r requirements.txt
+
+    - name: Create and enable swapfile
+      run: |
+        sudo fallocate -l ${{env.swap_size}}G /swapfile
+        sudo chmod 600 /swapfile
+        sudo mkswap /swapfile
+        sudo swapon /swapfile
+        sudo swapon --show
 
     - name: Run Z3 Tests
       run: python -O -m pytest -k "z3" -n auto --dist=worksteal

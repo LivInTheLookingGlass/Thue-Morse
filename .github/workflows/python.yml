@@ -47,7 +47,7 @@ jobs:
       run: python -O -m pip install -r requirements.txt
 
     - name: Run Benchmarks
-      run: python -O -m pytest -k "benchmark" --benchmark-enable --benchmark-verbose --benchmark-sort=fullname --benchmark-group-by="param:c" --benchmark-cprofile=ncalls_recursion --benchmark-cprofile=ncalls --benchmark-cprofile=tottime --benchmark-cprofile=tottime_per --benchmark-cprofile=cumtime --benchmark-cprofile=cumtime_per
+      run: python -O -m pytest -k "benchmark" --benchmark-enable --benchmark-sort=fullname --benchmark-group-by="param:c" --benchmark-cprofile=ncalls_recursion --benchmark-cprofile=ncalls --benchmark-cprofile=tottime --benchmark-cprofile=tottime_per --benchmark-cprofile=cumtime --benchmark-cprofile=cumtime_per --benchmark-verbose --benchmark-min-rounds=1
 
   satisfiable:
     runs-on: ubuntu-latest
@@ -76,7 +76,7 @@ jobs:
         sudo swapon --show
 
     - name: Run Z3 Tests
-      run: python -O -m pytest -k "z3" -n auto --dist=worksteal
+      run: python -O -m pytest -k "z3"
 
     - name: Create tar archive
       run: |
@@ -145,7 +145,7 @@ jobs:
       run: |
         ulimit -S -v $(( (4 + max_mem + swap_size) * 1024 * 1024)); ulimit -H -v; ulimit -S -v
         case ${{matrix.def}} in
-          2_0[279]|2_1[012]|n_03)
+          2_0[279]|2_1[0124]|n_03)
             test_len=34
             ;;
           n_04|2_0[345])
@@ -156,9 +156,6 @@ jobs:
             ;;
           n_07)
             test_len=31
-            ;;
-          2_14)
-            test_len=29
             ;;
           2_08)
             test_len=26

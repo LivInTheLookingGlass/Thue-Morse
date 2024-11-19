@@ -27,13 +27,17 @@ def signal_handler(*args, **kwargs):
     raise RuntimeError()
 
 
-@mark.parametrize("n", [1 << x for x in range(8, 12)])
+@mark.parametrize("n", [1 << x for x in range(4, 7)])
 @mark.parametrize("c", ['2_01'] + [f'2_{n:02}' for n in base_2_tests] + ['n_01'] + [f'n_{n:02}' for n in base_n_tests])
 @boost
 def test_benchmark(benchmark, c: str, n: int):
     cs = 'p{}.d{}'.format(*c.split('_'))
-    iterator = get_iters(cs)
-    benchmark(lambda: [x for x, _ in zip(iterator, range(n))])
+    iterator = get_iters(cs)[0]
+    results = benchmark(lambda: [x for x, _ in zip(iterator(2), range(n))])
+    comparison = "p2.d01" if cs != "p2.d01" else "p2.d02"
+    iterator = get_iters(comparison)[0]
+    if results != [x for x, _ in zip(iterator(2), range(n))]:
+        raise ValueError()
 
 
 @mark.skipif(disable_z3, reason="Requires z3-solver")
@@ -153,11 +157,11 @@ def dump_solver(fname: Path, fname_noext: str, mode: str, solver: 'Solver') -> N
 @boost
 def test_compare_2_1_to_(c: str, n: int = test_len):
     cs = 'p{}.d{}'.format(*c.split('_'))
-    iters = get_iters("p2.d01", cs, s=2)
+    iters = get_iters("p2.d01", cs)
     assert len(iters) == 2
-    for idx, tup in enumerate(zip(*iters.values())):
+    for idx, tup in enumerate(zip(*(iterator(2) for iterator in iters))):
         if len(set(tup)) != 1:
-            raise ValueError(f"Failed at idx {idx}: {dict((f, x) for f, x in zip(iters.keys(), tup))}")
+            raise ValueError(f"Failed at idx {idx}: {dict((repr(f), x) for f, x in zip(iters, tup))}")
         if idx >= n:
             break
     print(f"All definitions agree for 2 players up to {n} iterations")
@@ -168,11 +172,11 @@ def test_compare_2_1_to_(c: str, n: int = test_len):
 @boost
 def test_compare_n_1_to_n(c: int, s: int, n: int = test_len):
     cs = f"pn.d{c:02}"
-    iters = get_iters("pn.d01", cs, s=s)
+    iters = get_iters("pn.d01", cs)
     assert len(iters) == 2
-    for idx, tup in enumerate(zip(*iters.values())):
+    for idx, tup in enumerate(zip(*(iterator(s) for iterator in iters))):
         if len(set(tup)) != 1:
-            raise ValueError(f"Failed at idx {idx}: {dict((f, x) for f, x in zip(iters.keys(), tup))}")
+            raise ValueError(f"Failed at idx {idx}: {dict((repr(f), x) for f, x in zip(iters, tup))}")
         if idx >= n:
             break
     print(f"All definitions agree for {s} players up to {n} iterations")

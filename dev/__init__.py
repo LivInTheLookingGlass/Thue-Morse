@@ -1,7 +1,7 @@
 from importlib import import_module
 from traceback import print_exc
 from types import ModuleType
-from typing import Any, Dict, Iterable
+from typing import Any, Callable, Dict, Iterable, Sequence
 
 parent_name = '.'.join(__name__.split('.')[:-1])
 
@@ -18,14 +18,14 @@ def get_modules(p2: bool = True, pn: bool = False, s: int = 2) -> Dict[str, Modu
     return iters
 
 
-def get_iters(*names: str, s: int = 2) -> Dict[str, Iterable[int]]:
-    return {
-        key: getattr(
+def get_iters(*names: str) -> Sequence[Callable[[int], Iterable[int]]]:
+    return [
+        getattr(
             import_module(f'{parent_name}.{key}', __name__),
             f'{key.replace(".", "_")}'
-        )(s)
+        )
         for key in names
-    }
+    ]
 
 
 def get_z3s(p2: bool = True, pn: bool = False, s: int = 2) -> Dict[str, Dict[str, Any]]:

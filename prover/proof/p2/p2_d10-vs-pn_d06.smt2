@@ -1,1 +1,0 @@
-proof-trail(clause-trail-end)

@@ -1,4 +1,3 @@
-from fractions import Fraction
 from itertools import count
 from typing import Callable, Iterator, Union
 
@@ -13,7 +12,7 @@ from ..compat.numba import jit
 
 
 @boost
-def get_p(n: Union[int, Fraction]) -> Callable[[int, Union[int, Fraction]], int]:
+def get_p(n: int) -> Callable[[int, int], int]:
     if isinstance(n, int):
         if n > 1:
             return pip
@@ -47,7 +46,7 @@ def pin(x: int, n: int):
 
 
 @boost
-def pn_d01(n: Union[int, Fraction] = 2) -> Iterator[int]:
+def pn_d01(n: int = 2) -> Iterator[int]:
     p = get_p(n)
     return (p(x, n) for x in count())
 

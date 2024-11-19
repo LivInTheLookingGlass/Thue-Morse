@@ -7,9 +7,9 @@ except ImportError:
     pass
 
 from ..args import run
+from ..compat.fluidpythran import boost
 from .d09 import odious
 from .d10 import evil
-from ..compat.fluidpythran import boost
 
 
 @boost

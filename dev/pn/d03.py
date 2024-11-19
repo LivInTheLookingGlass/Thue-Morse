@@ -8,7 +8,7 @@ from ..compat.fluidpythran import boost
 
 
 @boost
-def np_select_type(n: int):
+def np_select_type(n: int) -> np.typing.DTypeLike:
     if n < 2:
         raise ValueError("Doesn't support unary or negative bases")
     if n < (1 << 7):

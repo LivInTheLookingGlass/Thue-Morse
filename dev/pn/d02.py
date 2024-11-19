@@ -1,6 +1,5 @@
-from fractions import Fraction
 from itertools import count
-from typing import Iterator, Union
+from typing import Iterator
 
 import numpy as np
 
@@ -11,15 +10,15 @@ from .d01 import get_p
 
 
 @jit
-def closest_root(target: complex, roots: np.typing.NDArray[complex]) -> int:
+def closest_root(target: complex, roots: np.typing.NDArray[np.complex64]) -> int:
     distances = np.abs(roots - target)  # vectorized
-    return np.argmin(distances)
+    return int(np.argmin(distances))
 
 
 @boost
-def pn_d02(n: Union[int, Fraction] = 2) -> Iterator[int]:
+def pn_d02(n: int = 2) -> Iterator[int]:
     p = get_p(n)
-    roots = np.exp(1j * np.linspace(0, 2 * np.pi, abs(n), endpoint=False))  # vectorized
+    roots = np.exp(1j * np.linspace(0, 2 * np.pi, abs(n), endpoint=False, dtype=np.complex64))  # vectorized
     primitive_root = roots[1]
     for x in count():
         yield closest_root(primitive_root**p(x, n), roots)

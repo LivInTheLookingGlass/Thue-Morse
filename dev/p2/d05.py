@@ -14,6 +14,7 @@ from ..compat.bitarray import bitarray
 from ..compat.fluidpythran import boost
 
 T = TypeVar("T")
+DT = TypeVar("DT", bound=np.generic)
 
 
 @overload
@@ -22,7 +23,7 @@ def rotate(t: Sequence[T], n: int) -> Sequence[T]:
 
 
 @overload
-def rotate(t: np.typing.NDArray[T], n: int) -> np.typing.NDArray[T]:
+def rotate(t: np.typing.NDArray[DT], n: int) -> np.typing.NDArray[DT]:
     ...
 
 

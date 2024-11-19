@@ -6,8 +6,8 @@ except ImportError:
     pass
 
 from ..args import run
-from ..compat.numba import jit
 from ..compat.fluidpythran import boost
+from ..compat.numba import jit
 
 
 @jit

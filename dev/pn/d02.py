@@ -1,11 +1,13 @@
+from fractions import Fraction
 from itertools import count
-from typing import Iterator
+from typing import Iterator, Union
 
 import numpy as np
 
 from ..args import run
+from ..compat.fluidpythran import boost
 from ..compat.numba import jit
-from .d01 import p
+from .d01 import get_p
 
 
 @jit
@@ -14,8 +16,10 @@ def closest_root(target: complex, roots: np.typing.NDArray[complex]) -> int:
     return np.argmin(distances)
 
 
-def pn_d02(n: int = 2) -> Iterator[int]:
-    roots = np.exp(1j * np.linspace(0, 2 * np.pi, n, endpoint=False))  # vectorized
+@boost
+def pn_d02(n: Union[int, Fraction] = 2) -> Iterator[int]:
+    p = get_p(n)
+    roots = np.exp(1j * np.linspace(0, 2 * np.pi, abs(n), endpoint=False))  # vectorized
     primitive_root = roots[1]
     for x in count():
         yield closest_root(primitive_root**p(x, n), roots)

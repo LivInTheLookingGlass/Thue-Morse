@@ -4,8 +4,10 @@ from typing import Iterator
 import numpy as np
 
 from ..args import run
+from ..compat.fluidpythran import boost
 
 
+@boost
 def np_select_type(n: int):
     if n < 2:
         raise ValueError("Doesn't support unary or negative bases")
@@ -30,6 +32,7 @@ def np_select_type(n: int):
     raise ValueError(f"Your base is too large to support efficiently (max is {(1 << 255) - 1})")
 
 
+@boost
 def pn_d03(n: int = 2) -> Iterator[int]:
     dtype = np_select_type(n)
     seq = np.arange(n, dtype=dtype)

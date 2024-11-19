@@ -7,8 +7,10 @@ except ImportError:
     pass
 
 from ..args import run
+from ..compat.fluidpythran import boost
 
 
+@boost
 def p2_d07(_: int = 2) -> Iterator[int]:
     value = 1
     for n in count():

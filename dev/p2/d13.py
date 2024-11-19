@@ -31,6 +31,7 @@ def gould(n: int) -> int:
     return int((partial_sum - 1) % 3)  # This isn't part of the gould sequence, but it helps to process this here
 
 
+@boost
 def p2_d13(_: int = 2) -> Iterator[int]:
     queue: Deque[ApplyResult[int]] = deque(maxlen=max_size)
     with Pool() as pool:

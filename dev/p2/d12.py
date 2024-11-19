@@ -9,8 +9,10 @@ except ImportError:
 from ..args import run
 from .d09 import odious
 from .d10 import evil
+from ..compat.fluidpythran import boost
 
 
+@boost
 def p2_d12(_: int = 2) -> Iterator[int]:
     for i in chain.from_iterable(zip(odious(), evil())):
         yield 1 - i & 1

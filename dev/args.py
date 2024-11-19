@@ -1,12 +1,10 @@
 from argparse import ArgumentParser
 from typing import Callable, Iterable
 
-try:
-    from bitarray import bitarray
-except ImportError:
-    bitarray = bytearray  # type: ignore
+from .compat.fluidpythran import boost
 
 
+@boost
 def run(num: int, func: Callable[[int], Iterable[int]], kind: str = '2') -> None:
     parser = ArgumentParser()
     parser.add_argument('n', type=int, help='The number of values to print', default=16, nargs='?')

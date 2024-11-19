@@ -7,6 +7,7 @@ except ImportError:
     pass
 
 from ..args import run
+from ..compat.fluidpythran import boost
 from ..compat.numba import jit
 
 
@@ -15,6 +16,7 @@ def compute(bc: int) -> int:
     return (1 - (-1)**bc) >> 1
 
 
+@boost
 def p2_d02(_: int = 2) -> Iterator[int]:
     return (compute(x.bit_count()) for x in count())
 

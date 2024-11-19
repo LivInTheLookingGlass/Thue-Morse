@@ -8,8 +8,10 @@ except ImportError:
 
 from ..args import run
 from ..compat.bitarray import bitarray
+from ..compat.fluidpythran import boost
 
 
+@boost
 def b(n: int, memo: bitarray) -> int:
     nr1 = n << 1
     nr1p1 = nr1 + 1
@@ -27,6 +29,7 @@ def b(n: int, memo: bitarray) -> int:
     return result
 
 
+@boost
 def p2_d08(_: int = 2) -> Iterator[int]:
     mem_limit = 1 << 20
     memo = bitarray(1024)

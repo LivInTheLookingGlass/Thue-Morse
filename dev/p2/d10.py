@@ -7,12 +7,15 @@ except ImportError:
     pass
 
 from ..args import run
+from ..compat.fluidpythran import boost
 
 
+@boost
 def evil(_: int = 2) -> Iterator[int]:
     return (i for i in count() if not (i.bit_count() & 1))
 
 
+@boost
 def p2_d10(_: int = 2) -> Iterator[int]:
     return ((i - (n << 1)) & 1 for n, i in enumerate(evil()))
 

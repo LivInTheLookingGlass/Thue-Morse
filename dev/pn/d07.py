@@ -7,6 +7,7 @@ except ImportError:
     pass
 
 from ..args import run
+from ..compat.fluidpythran import boost
 from ..compat.numba import jit
 
 
@@ -38,6 +39,7 @@ def xor_wrapper(x: int, n: int, value: int) -> int:
     return (lx + value + 1) % n
 
 
+@boost
 def pn_d07(n: int = 2) -> Iterator[int]:
     yield from (0, 1)
     value = 1

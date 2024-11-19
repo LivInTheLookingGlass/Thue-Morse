@@ -8,26 +8,12 @@ run any given definition, call:
 
   python -m dev.p{2,n}.d[0-9][0-9] <items to generate> [<number of players, if n players>]
 
-2-Player Definitions
-~~~~~~~~~~~~~~~~~~~~
+The 2 player definitions only support base 2
 
-Definition 1: Parity
---------------------
-
-Definition 2: Invert and Extend
--------------------------------
-
-Definition 3: Substitute and Flatten
-------------------------------------
-
-N-Player Definitions
-~~~~~~~~~~~~~~~~~~~~
-
-Definition 1: Modular Digit-Sums
---------------------------------
-
-Definition 2: Increment and Extend
-----------------------------------
-
-Definition 3: Substitute and Flatten
-------------------------------------
+The n player definitions support:
+- positive integer bases >1 (all)
+- negative integer bases <-1
+  - d01
+  - d02
+  - d06 (but currently produces incorrect answers)
+  - d07 (but currently produces incorrect answers)

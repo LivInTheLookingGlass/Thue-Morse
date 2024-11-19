@@ -7,6 +7,7 @@ except ImportError:
     pass
 
 from ..args import run
+from ..compat.fluidpythran import boost
 from ..compat.numba import jit
 
 
@@ -17,6 +18,7 @@ def T(x: int, n: int) -> int:
     return (x + T(x // n, n)) % n
 
 
+@boost
 def pn_d06(n: int = 2) -> Iterator[int]:
     return (T(i, n) for i in count())
 

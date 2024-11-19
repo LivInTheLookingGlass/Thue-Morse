@@ -7,12 +7,15 @@ except ImportError:
     pass
 
 from ..args import run
+from ..compat.fluidpythran import boost
 
 
+@boost
 def odious() -> Iterator[int]:
     return (i for i in count() if i.bit_count() & 1)
 
 
+@boost
 def p2_d09(_: int = 2) -> Iterator[int]:
     return ((i + 1) & 1 for i in odious())
 

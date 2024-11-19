@@ -7,6 +7,7 @@ except ImportError:
 
 from ..args import run
 from ..compat.numba import jit
+from ..compat.fluidpythran import boost
 
 
 @jit
@@ -15,6 +16,7 @@ def A1510481(n: int, bc: int):
     return (n1 >> 1) + ((bc & 1) * (n1 & 1))
 
 
+@boost
 def p2_d11(_: int = 2) -> Iterator[int]:
     i = -1
     j = jbc = 0

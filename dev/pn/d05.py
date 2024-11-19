@@ -10,10 +10,12 @@ except ImportError:
     pass
 
 from ..args import run
+from ..compat.fluidpythran import boost
 from ..p2.d05 import rotate
 from .d03 import np_select_type
 
 
+@boost
 def pn_d05(n: int = 2) -> Iterator[int]:
     dtype = np_select_type(n)
     seq = np.arange(n, dtype=dtype)

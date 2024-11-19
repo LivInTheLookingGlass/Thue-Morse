@@ -8,8 +8,10 @@ except ImportError:
 
 from ..args import run
 from ..compat.bitarray import bitarray
+from ..compat.fluidpythran import boost
 
 
+@boost
 def p2_d03(_: int = 2) -> Iterator[int]:
     seq: bitarray = bitarray((0, 1))
     yield from seq

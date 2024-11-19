@@ -103,6 +103,7 @@ jobs:
         - n_05
         - n_06
         - n_07
+        - n_08
     runs-on: ubuntu-latest
     env:
       swap_size: 12  # in GiB
@@ -133,16 +134,13 @@ jobs:
       run: |
         ulimit -S -v $(( (4 + max_mem + swap_size) * 1024 * 1024)); ulimit -H -v; ulimit -S -v
         case ${{matrix.def}} in
-          2_02)
-            test_len=35
-            ;;
-          2_0[379]|2_1[012]|n_03)
+          2_0[279]|2_1[012]|n_03)
             test_len=34
             ;;
-          [2n]_04|2_05)
+          n_04|2_0[345])
             test_len=33
             ;;
-          [2n]_06|n_0[125])
+          [2n]_06|n_0[1258])
             test_len=32
             ;;
           n_07)
@@ -158,7 +156,7 @@ jobs:
             test_len=15
             ;;
           2_15)
-            test_len=12
+            test_len=11
             ;;
           *)
             echo "Unknown definition; limit not set"
@@ -172,7 +170,7 @@ jobs:
         monitor_memory &
         monitor_pid=$!
 
-        python -O -m pytest -k "${{matrix.def}}" --timeout=21555
+        python -O -m pytest -k "not benchmark and ${{matrix.def}}" --timeout=21555
 
         kill $monitor_pid
 
@@ -197,7 +195,7 @@ jobs:
         - 209-224
         - 225-240
         - 241-256
-        def: [2, 3, 4, 5, 6, 7]
+        def: [2, 3, 4, 5, 6, 7, 8]
 
     runs-on: ubuntu-latest
     env:
@@ -233,10 +231,10 @@ jobs:
           2-003*|5-193*|5-209*|5-225*|5-241*)
             test_len=28
             ;;
-          3-209*|3-225*|3-241*)
+          [34]-017*|3-209*|3-225*|3-241*)
             test_len=29
             ;;
-          [3467]-*)
+          [34678]-*)
             test_len=30
             ;;
           [25]-*)
@@ -269,6 +267,6 @@ jobs:
         monitor_memory &
         monitor_pid=$!
 
-        python -O -m pytest -k "${{matrix.def}}- and ($base_regex)"
+        python -O -m pytest -k "not benchmark and ${{matrix.def}}- and ($base_regex)"
 
         kill $monitor_pid

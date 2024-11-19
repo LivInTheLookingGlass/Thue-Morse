@@ -2,6 +2,7 @@ from itertools import count
 from typing import Iterator
 
 from ..args import run
+from ..compat.fluidpythran import boost
 from ..compat.numba import jit
 
 
@@ -31,6 +32,7 @@ def A193231(i: int) -> int:
     return ret & 1
 
 
+@boost
 def p2_d14(_: int = 2) -> Iterator[int]:
     return (A193231(i) for i in count())
 

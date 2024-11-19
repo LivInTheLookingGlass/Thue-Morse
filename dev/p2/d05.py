@@ -11,6 +11,7 @@ except ImportError:
 
 from ..args import run
 from ..compat.bitarray import bitarray
+from ..compat.fluidpythran import boost
 
 T = TypeVar("T")
 
@@ -30,6 +31,7 @@ def rotate(t: bitarray, n: int) -> bitarray:
     ...
 
 
+@boost
 def rotate(t, n: int):
     if n:
         if isinstance(t, np.ndarray):
@@ -38,6 +40,7 @@ def rotate(t, n: int):
     return t
 
 
+@boost
 def p2_d05(_: int = 2) -> Iterator[int]:
     seq: bitarray = bitarray((0, 1))
     prev_len = 0

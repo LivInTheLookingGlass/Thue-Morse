@@ -7,6 +7,7 @@ from typing import Any, List, Literal, Union
 from pytest import mark, skip, xfail
 
 from . import get_iters, get_z3s
+from .compat.fluidpythran import boost
 from .compat.z3 import And, Exists, ForAll, Implies, Int, OnClause, RecFunction, Solver, Z3Exception, disable_z3, z3
 
 s_ref = Int('s')
@@ -28,6 +29,7 @@ def signal_handler(*args, **kwargs):
 
 @mark.parametrize("n", [1 << x for x in range(8, 12)])
 @mark.parametrize("c", ['2_01'] + [f'2_{n:02}' for n in base_2_tests] + ['n_01'] + [f'n_{n:02}' for n in base_n_tests])
+@boost
 def test_benchmark(benchmark, c: str, n: int):
     cs = 'p{}.d{}'.format(*c.split('_'))
     iterator = get_iters(cs)
@@ -148,6 +150,7 @@ def dump_solver(fname: Path, fname_noext: str, mode: str, solver: 'Solver') -> N
 
 
 @mark.parametrize("c", [f'2_{n:02}' for n in base_2_tests] + ['n_01'] + [f'n_{n:02}' for n in base_n_tests])
+@boost
 def test_compare_2_1_to_(c: str, n: int = test_len):
     cs = 'p{}.d{}'.format(*c.split('_'))
     iters = get_iters("p2.d01", cs, s=2)
@@ -162,6 +165,7 @@ def test_compare_2_1_to_(c: str, n: int = test_len):
 
 @mark.parametrize("s, c", product(bases_tested, base_n_tests),
                   ids=(f'{c:01}-base_{s:03}' for s, c in product(bases_tested, base_n_tests)))
+@boost
 def test_compare_n_1_to_n(c: int, s: int, n: int = test_len):
     cs = f"pn.d{c:02}"
     iters = get_iters("pn.d01", cs, s=s)

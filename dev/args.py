@@ -1,11 +1,11 @@
 from argparse import ArgumentParser
-from typing import Callable, Iterable
+from typing import Callable, Generator
 
 from .compat.fluidpythran import boost
 
 
 @boost
-def run(num: int, func: Callable[[int], Iterable[int]], kind: str = '2') -> None:
+def run(num: int, func: Callable[[int], Generator[int, None, None]], kind: str = '2') -> None:
     parser = ArgumentParser()
     parser.add_argument('n', type=int, help='The number of values to print', default=16, nargs='?')
     parser.add_argument('p', type=int, help='The number of players', default=2, nargs='?')

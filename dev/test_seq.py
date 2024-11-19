@@ -33,7 +33,14 @@ def signal_handler(*args, **kwargs):
 def test_benchmark(benchmark, c: str, n: int):
     cs = 'p{}.d{}'.format(*c.split('_'))
     iterator = get_iters(cs)[0]
-    results = benchmark(lambda: [x for x, _ in zip(iterator(2), range(n))])
+
+    def to_check():
+        it = iterator(2)
+        result = [x for x, _ in zip(it, range(n))]
+        it.close()
+        return result
+
+    results = benchmark(to_check)
     comparison = "p2.d01" if cs != "p2.d01" else "p2.d02"
     iterator = get_iters(comparison)[0]
     if results != [x for x, _ in zip(iterator(2), range(n))]:
@@ -159,12 +166,15 @@ def test_compare_2_1_to_(c: str, n: int = test_len):
     cs = 'p{}.d{}'.format(*c.split('_'))
     iters = get_iters("p2.d01", cs)
     assert len(iters) == 2
-    for idx, tup in enumerate(zip(*(iterator(2) for iterator in iters))):
+    iterators = [iterator(2) for iterator in iters]
+    for idx, tup in enumerate(zip(*iterators)):
         if len(set(tup)) != 1:
             raise ValueError(f"Failed at idx {idx}: {dict((repr(f), x) for f, x in zip(iters, tup))}")
         if idx >= n:
             break
     print(f"All definitions agree for 2 players up to {n} iterations")
+    for it in iterators:
+        it.close()
 
 
 @mark.parametrize("s, c", product(bases_tested, base_n_tests),
@@ -174,9 +184,12 @@ def test_compare_n_1_to_n(c: int, s: int, n: int = test_len):
     cs = f"pn.d{c:02}"
     iters = get_iters("pn.d01", cs)
     assert len(iters) == 2
-    for idx, tup in enumerate(zip(*(iterator(s) for iterator in iters))):
+    iterators = [iterator(s) for iterator in iters]
+    for idx, tup in enumerate(zip(*iterators)):
         if len(set(tup)) != 1:
             raise ValueError(f"Failed at idx {idx}: {dict((repr(f), x) for f, x in zip(iters, tup))}")
         if idx >= n:
             break
     print(f"All definitions agree for {s} players up to {n} iterations")
+    for it in iterators:
+        it.close()

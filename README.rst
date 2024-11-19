@@ -107,14 +107,14 @@ Performance
 Up to Seconds
 -------------
 
-.. image:: ./benchmark/20241119_153541.svg
+.. image:: ./src/figures/benchmark/20241119_153541.svg
 
 Up to Milliseconds
 ------------------
 
-.. image:: ./benchmark/20241119_153943.svg
+.. image:: ./src/figures/benchmark/20241119_153943.svg
 
 Up to Microseconds
 ------------------
 
-.. image:: ./benchmark/20241119_153154.svg
+.. image:: ./src/figures/benchmark/20241119_153154.svg

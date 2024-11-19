@@ -400,7 +400,7 @@ This means that it is equivalent to $T_{2,1}$ \note{(prove it)}.
 
 In practice, to get the coefficients up to the $n$th term, one needs to only expand the product to $k_\text{max} = \floor{\log_2(n + 1)} - 1$.
 
-Note that this is by far one of the least computationally efficient definition in this paper (see Tables \ref{tab:time_p2_d15} \& \ref{tab:space_p2_d15}).
+Note that this is by far the least computationally efficient definition in this paper (see Figure \ref{fig:benchmark_in_s} and Tables \ref{tab:time_p2_d15}, \ref{tab:space_p2_d15}).\footnote{Our implementation \cite{repo} heavily utilizes \cite{sympy} for these calculations}
 
 \subsection{Summary}
 
@@ -992,6 +992,29 @@ This doesn't even work for power-of-2 bases, like $t_4(2) = \tuple{0, 1, 2, 3, 1
 We thank Dan Rowe for helping with the initial work on this paper, as well as Randy Appleton and Lydia Crocker who helped greatly with proofreading and editing.
 
 \section{Appendix}
+
+\subsection{General Performance Results}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{figures/benchmark/20241119_153943.pdf}
+    \caption{Benchmark results up to seconds.}
+    \label{fig:benchmark_in_s}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{figures/benchmark/20241119_153943.pdf}
+    \caption{Benchmark results up to milliseconds.}
+    \label{fig:benchmark_in_ms}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{figures/benchmark/20241119_153154.pdf}
+    \caption{Benchmark results up to microseconds.}
+    \label{fig:benchmark_in_us}
+\end{figure}
 
 \setcounter{stddefctr}{1}
 \setcounter{extdefctr}{1}

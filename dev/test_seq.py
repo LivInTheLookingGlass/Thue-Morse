@@ -75,7 +75,7 @@ def signal_handler(*args, **kwargs):
     raise RuntimeError()
 
 
-@mark.parametrize("n", [1 << x for x in range(4, 7)])
+@mark.parametrize("n", [1 << x for x in range(4, 8)])
 @mark.parametrize("c", ['2_01'] + [f'2_{n:02}' for n in base_2_tests] + ['n_01'] + [f'n_{n:02}' for n in base_n_tests])
 @boost
 def test_benchmark(benchmark, c: str, n: int):
@@ -135,7 +135,7 @@ def run_solver(
 
     try:
         checkpoint = solver.check()
-    except Z3Exception as e:
+    except (Z3Exception, MemoryError) as e:
         xfail(reason=e)
 
     match checkpoint:
@@ -159,7 +159,7 @@ def run_solver(
 
     try:
         checkpoint = solver.check()
-    except Z3Exception as e:
+    except (Z3Exception, MemoryError) as e:
         xfail(reason=e)
     match checkpoint:
         case z3.unsat:

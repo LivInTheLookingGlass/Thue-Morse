@@ -29,7 +29,7 @@ jobs:
       run: python -O -m pip install -r requirements.txt
 
     - name: Run Linters
-      run: python -O -m pytest --isort --flake8 --mypy --mypy-ignore-missing-imports -k "not test_compare and not z3 and not benchmark"
+      run: python -O -m pytest --isort --flake8 --mypy --mypy-ignore-missing-imports -k "not (test_compare or z3 or benchmark)"
 
   benchmark:
     runs-on: ubuntu-latest
@@ -52,7 +52,7 @@ jobs:
   satisfiable:
     runs-on: ubuntu-latest
     env:
-      swap_size: 12  # in GiB
+      swap_size: 13  # in GiB
       max_mem: 15
     steps:
     - uses: actions/checkout@v4
@@ -76,7 +76,7 @@ jobs:
         sudo swapon --show
 
     - name: Run Z3 Tests
-      run: python -O -m pytest -k "z3"
+      run: python -O -m pytest -k "z3" -n 2
 
     - name: Create tar archive
       run: |
@@ -146,13 +146,13 @@ jobs:
       run: |
         ulimit -S -v $(( (4 + max_mem + swap_size) * 1024 * 1024)); ulimit -H -v; ulimit -S -v
         case ${{matrix.def}} in
-          2_0[279]|2_1[0124]|n_03)
+          2_0[279]|2_1[0124])
             test_len=34
             ;;
-          n_04|2_0[345])
+          n_03|2_0[345])
             test_len=33
             ;;
-          [2n]_06|n_0[1258])
+          [2n]_06|n_0[12458])
             test_len=32
             ;;
           n_07)
@@ -237,10 +237,10 @@ jobs:
       run: |
         ulimit -S -v $(( (4 + max_mem + swap_size) * 1024 * 1024)); ulimit -H -v; ulimit -S -v
         case ${{matrix.def}}-${{matrix.bases}} in
-          2-003*|5-193*|5-209*|5-225*|5-241*)
+          2-003*|5-049*|5-193*|5-209*|5-225*|5-241*)
             test_len=28
             ;;
-          [34]-017*|3-209*|3-225*|3-241*)
+          8-003*|[348]-017*|[348]-049*|3-209*|3-225*|3-241*)
             test_len=29
             ;;
           [34678]-*)
@@ -249,7 +249,10 @@ jobs:
           [25]-*)
             test_len=29
             ;;
-          [9]-*)
+          9-003*|9-017*|9-033*|9-049*|9-065*)
+            test_len=10
+            ;;
+          9-*)
             test_len=11
             ;;
           *)

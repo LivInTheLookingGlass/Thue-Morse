@@ -98,7 +98,9 @@ def run(num: int, func: Callable[[int], Generator[int, None, None]], kind: str =
                 if not args.quiet:
                     for x in batch:
                         print(x, "", end='')
-                    stdout.flush()
+                else:
+                    print(f"{batch[-1][0]} of {args.n}...\r")
+                stdout.flush()
 
                 to_write = reduce(
                     lambda x, y: (x << bits_per_entry) + y,

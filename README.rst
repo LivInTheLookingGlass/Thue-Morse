@@ -57,12 +57,12 @@ the test suite. Artifacts generated from this will be stored in the ``prover/`` 
 Required Dependencies
 ---------------------
 
-The following are required for some implementations. In the case of sympy this is because it is too difficult to
+The following are required for some implementations. In the case of symengine this is because it is too difficult to
 implement its features without other libraries. For numpy, while it isn't strictly necessary it does significantly
 speed up vector operations
 
 - numpy
-- sympy
+- symengine
 
 Optional Dependencies
 ---------------------

@@ -8,5 +8,5 @@ pytest-isort
 pytest-mypy
 pytest-timeout
 pytest-xdist
-sympy
+symengine
 z3-solver

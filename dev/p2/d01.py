@@ -12,7 +12,8 @@ from ..compat.fluidpythran import boost
 
 @boost
 def p2_d01(_: int = 2) -> Iterator[int]:
-    return (x.bit_count() & 1 for x in count())
+    for x in count():
+        yield x.bit_count() & 1
 
 
 def to_z3(_: Union[int, 'Int'] = 2) -> 'RecFunction':

@@ -34,7 +34,8 @@ def A193231(i: int) -> int:
 
 @boost
 def p2_d14(_: int = 2) -> Iterator[int]:
-    return (A193231(i) for i in count())
+    for i in count():
+        yield A193231(i)
 
 
 if __name__ == '__main__':

@@ -20,7 +20,8 @@ def pn_d05(n: int = 2) -> Iterator[int]:
     seq = np.arange(n, dtype=dtype)
     prev_len = 0
     while True:
-        yield from islice(seq, prev_len, None)
+        for i in islice(seq, prev_len, None):
+            yield int(i)
         prev_len = len(seq)
         seq = np.fromiter(chain.from_iterable(rotate(seq, prev_len // n * i) for i in range(n)), dtype=dtype)
 

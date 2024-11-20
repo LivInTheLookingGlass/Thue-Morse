@@ -13,7 +13,8 @@ def pn_d04(n: int = 2) -> Iterator[int]:
     seq = np.arange(n, dtype=dtype)
     prev_len = 0
     while True:
-        yield from islice(seq, prev_len, None)
+        for i in islice(seq, prev_len, None):
+            yield int(i)
         prev_len = len(seq)
         seq = np.fromiter(chain.from_iterable(
             (*range(x, n), *range(0, x))

@@ -18,7 +18,8 @@ def compute(bc: int) -> int:
 
 @boost
 def p2_d02(_: int = 2) -> Iterator[int]:
-    return (compute(x.bit_count()) for x in count())
+    for x in count():
+        yield compute(x.bit_count())
 
 
 def to_z3(_: Union[int, 'Int'] = 2) -> 'RecFunction':

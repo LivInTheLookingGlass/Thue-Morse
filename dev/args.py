@@ -12,7 +12,7 @@ from .compat.fluidpythran import boost
 
 
 @boost
-def np_select_type(n: int) -> np.typing.DTypeLike:
+def np_select_type(n: int) -> 'np.typing.DTypeLike':
     if n < 2:
         raise ValueError("Doesn't support unary or negative bases")
     if n < (1 << 7):
@@ -99,7 +99,7 @@ def run(num: int, func: Callable[[int], Generator[int, None, None]], kind: str =
                     for x in batch:
                         print(x, "", end='')
                 else:
-                    print(f"{batch[-1][0]} of {args.n}...\r")
+                    print(f"{group[-1][0] + 1} of {args.n}...\r")
                 stdout.flush()
 
                 to_write = reduce(

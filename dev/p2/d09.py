@@ -12,12 +12,15 @@ from ..compat.fluidpythran import boost
 
 @boost
 def odious() -> Iterator[int]:
-    return (i for i in count() if i.bit_count() & 1)
+    for i in count():
+        if i.bit_count() & 1:
+            yield i
 
 
 @boost
 def p2_d09(_: int = 2) -> Iterator[int]:
-    return ((i + 1) & 1 for i in odious())
+    for i in odious():
+        yield (i + 1) & 1
 
 
 def to_z3(_: Union[int, 'Int'] = 2) -> 'RecFunction':

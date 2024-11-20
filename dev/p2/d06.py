@@ -20,7 +20,8 @@ def T(n: int) -> int:
 
 @boost
 def p2_d06(_: int = 2) -> Iterator[int]:
-    return (T(i) for i in count())
+    for i in count():
+        yield T(i)
 
 
 def to_z3(_: Union[int, 'Int'] = 2) -> 'RecFunction':

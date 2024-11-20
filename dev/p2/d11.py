@@ -11,7 +11,7 @@ from ..compat.numba import jit
 
 
 @jit
-def A1510481(n: int, bc: int):
+def A1510481(n: int, bc: int) -> int:
     n1 = n + 1
     return (n1 >> 1) + ((bc & 1) * (n1 & 1))
 

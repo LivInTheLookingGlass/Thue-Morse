@@ -10,7 +10,7 @@ from ..compat.fluidpythran import boost
 
 @boost
 def p2_d15(_: int = 2) -> Iterator[int]:
-    start = 8
+    start = 3
     n = 1 << start
     nr1 = 0
     k = start

@@ -47,18 +47,19 @@ Code Structure
 In each file, there are two representations of each definition. The first is always formatted as
 ``p{2,n}_d[0-9][0-9]``. It will always take in an (optional) argument that represents the base of the generated
 sequence. If it is a `p2` function, then this argument will be ignored. The function will then return an
-``Iterator[int]`` that generates the sequence.
+``Generator[int, None, None]`` that generates the sequence.
 
 The second representation is always named ``to_z3()``. It takes in a single argument that is either an integer or a
 Z3Py ``IntSort``, representing the base of the generated sequence. As above, if it is a ``p2`` file, this argument is
 ignored. It will always return the Z3Py function representation of this definition, allowing for easy comparisons in
-the test suite. Artifacts generated from this are stored in the ``prover/`` directory, as shown above.
+the test suite. Artifacts generated from this will be stored in the ``prover/`` directory.
 
 Required Dependencies
 ---------------------
 
-The following are required for some implementations. In the case of sympy this is because it is
-too difficult to implement its features without other libraries. For numpy, while it isn't strictly necessary it does significantly speed up vector operations
+The following are required for some implementations. In the case of sympy this is because it is too difficult to
+implement its features without other libraries. For numpy, while it isn't strictly necessary it does significantly
+speed up vector operations
 
 - numpy
 - sympy
@@ -107,14 +108,14 @@ Performance
 Up to Seconds
 -------------
 
-.. image:: ./src/figures/benchmark/20241119_153541.svg
+.. image:: ./src/figures/benchmark/20241119_211228.svg
 
 Up to Milliseconds
 ------------------
 
-.. image:: ./src/figures/benchmark/20241119_153943.svg
+.. image:: ./src/figures/benchmark/20241119_211111.svg
 
 Up to Microseconds
 ------------------
 
-.. image:: ./src/figures/benchmark/20241119_153154.svg
+.. image:: ./src/figures/benchmark/20241119_210152.svg

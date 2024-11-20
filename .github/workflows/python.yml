@@ -115,6 +115,7 @@ jobs:
         - n_06
         - n_07
         - n_08
+        - n_09
     runs-on: ubuntu-latest
     env:
       swap_size: 12  # in GiB
@@ -163,7 +164,7 @@ jobs:
           2_13)
             test_len=15
             ;;
-          2_15)
+          2_15|n_09)
             test_len=11
             ;;
           *)
@@ -203,7 +204,7 @@ jobs:
         - 209-224
         - 225-240
         - 241-256
-        def: [2, 3, 4, 5, 6, 7, 8]
+        def: [2, 3, 4, 5, 6, 7, 8, 9]
 
     runs-on: ubuntu-latest
     env:
@@ -247,6 +248,9 @@ jobs:
             ;;
           [25]-*)
             test_len=29
+            ;;
+          [9]-*)
+            test_len=11
             ;;
           *)
             echo "Unknown definition; limit not set"

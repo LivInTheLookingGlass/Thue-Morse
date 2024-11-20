@@ -1,6 +1,6 @@
 from argparse import ArgumentParser
 from functools import reduce
-from itertools import batched, count
+from itertools import count
 from math import ceil, floor, log, log2
 from pathlib import Path
 from sys import stdout
@@ -9,6 +9,7 @@ from typing import Callable, Generator, Tuple
 import numpy as np
 
 from .compat.fluidpythran import boost
+from .compat.itertools import batched
 
 
 @boost

@@ -88,6 +88,15 @@ To generate each definition of the Thue-Morse Sequence and its extensions, call:
 
   python -m dev.p{2,n}.d[0-9][0-9] <items to generate> [<number of players, if n players>]
 
+Additionally, you can dump it to a binary file as follows:
+
+.. code-block::
+
+  python -m dev.p{2,n}.d[0-9][0-9] <items to generate> [<number of players, if n players>] --to-file="filename" [-q]
+
+Note that the output is NOT human readable, and is compacting to as small a file as easily possible. This means that
+each entry is ``base.bit_length()`` long, with some optional padding at the end.
+
 To run the update script, provide the zip file and the PDF file as arguments:
 
 .. code-block:: bash

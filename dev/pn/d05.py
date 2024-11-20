@@ -9,10 +9,9 @@ try:
 except ImportError:
     pass
 
-from ..args import run
+from ..args import np_select_type, run
 from ..compat.fluidpythran import boost
 from ..p2.d05 import rotate
-from .d03 import np_select_type
 
 
 @boost

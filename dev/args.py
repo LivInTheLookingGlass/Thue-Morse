@@ -100,7 +100,7 @@ def run(num: int, func: Callable[[int], Generator[int, None, None]], kind: str =
                     for x in batch:
                         print(x, "", end='')
                 else:
-                    print(f"{group[-1][0] + 1} of {args.n}...\r")
+                    print(f"{group[-1][0] + 1} of {args.n}...", end="\r")
                 stdout.flush()
 
                 to_write = reduce(

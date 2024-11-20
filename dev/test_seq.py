@@ -2,7 +2,7 @@ from functools import partial
 from itertools import combinations, product
 from pathlib import Path
 from signal import SIGTERM, signal
-from typing import Any, List, Literal, Union
+from typing import Any, List, Literal, Set, Tuple, Union
 
 from pytest import mark, skip, xfail
 
@@ -20,8 +20,53 @@ base_2_tests = [int(p.name[1:-3]) for p in Path(__file__).parent.glob('p2/d*.py'
 base_n_tests = [int(p.name[1:-3]) for p in Path(__file__).parent.glob('pn/d*.py')]
 base_2_tests.remove(1)
 base_n_tests.remove(1)
-z3_tests_b2 = [x + y for x, y in combinations(get_z3s(True, True).items(), 2)]
-z3_tests_bn = [x + y for x, y in combinations(get_z3s(False, True, s_ref).items(), 2)]
+
+already_proven_b2 = {
+    ('p2.d01', 'p2.d02'),
+    ('p2.d01', 'p2.d03'),
+    ('p2.d01', 'p2.d06'),
+    ('p2.d04', 'pn.d08'),
+    ('p2.d15', 'pn.d09'),
+} | {
+    (f'p2.d{n:02}', f'pn.d{n:02}') for n in range(1, 8)
+}
+
+already_proven_bn = {
+    ('pn.d01', 'pn.d02'),
+    ('pn.d03', 'pn.d08'),
+}
+
+
+def make_set_commutative(s: Set[Tuple[str, str]]):
+    length = 0
+    while length != len(s):
+        to_add = set()
+        for x, y in s:
+            for w, z in s:
+                if x == w and y != z:
+                    to_add.add((y, z))
+                if x == z and y != w:
+                    to_add.add((y, w))
+                if y == w and x != z:
+                    to_add.add((x, z))
+                if y == z and x != w:
+                    to_add.add((x, w))
+        length = len(s)
+        s.update(to_add)
+
+
+make_set_commutative(already_proven_b2)
+make_set_commutative(already_proven_bn)
+z3_tests_b2 = [
+    x + y
+    for x, y in combinations(get_z3s(True, True).items(), 2)
+    if (x[0], y[0]) not in already_proven_b2
+]
+z3_tests_bn = [
+    x + y
+    for x, y in combinations(get_z3s(False, True, s_ref).items(), 2)
+    if (x[0], y[0]) not in already_proven_bn
+]
 
 
 @partial(signal, SIGTERM)

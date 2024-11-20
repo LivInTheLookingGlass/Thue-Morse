@@ -11,7 +11,7 @@ from ..compat.fluidpythran import boost
 @boost
 def pn_d09(s: int = 2) -> Iterator[int]:
     start = 3
-    n = s ** start
+    n = s**start
     nts = 0  # usually <previous n> * s, except at first
     k = start
     x = symbols('x')
@@ -19,10 +19,10 @@ def pn_d09(s: int = 2) -> Iterator[int]:
     log_omega_s = 2 * pi * I / s
     omega_s = exp(log_omega_s)
     gen_func = simplify(reduce(mul, (
-        (summation(omega_s**i * x**(s**k * i), (i, 0, s-1))) for k in range(start)
+        (summation(omega_s**i * x**(s**k * i), (i, 0, s - 1))) for k in range(start)
     )))
     while True:
-        gen_func *= simplify(summation(omega_s**i * x**(s**k * i), (i, 0, s-1)))
+        gen_func *= simplify(summation(omega_s**i * x**(s**k * i), (i, 0, s - 1)))
         series_expansion = expand(gen_func.series(x, 0, n).removeO())
         for index in range(nts, n):
             coeff = series_expansion.coeff(x, index)

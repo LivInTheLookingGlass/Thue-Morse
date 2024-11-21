@@ -26,6 +26,7 @@ Repository Structure
      ├─ README.rst               # Readme for associated code
      ├─ __init__.py              # Utilities that let you collect different definitions
      ├─ args.py                  # A utility file that deals with command line argument parsing
+     ├─ from_file.py             # A stub file that lets you print out a binary file
      ├─ test_seq.py              # A test file that allows you to check sequence equality
      ├─ p2/                      # Code representation of definitions in base 2
      │  ├─ __init__.py             # Empty file that allows this folder to be used as a module
@@ -46,8 +47,8 @@ Code Structure
 
 In each file, there are two representations of each definition. The first is always formatted as
 ``p{2,n}_d[0-9][0-9]``. It will always take in an (optional) argument that represents the base of the generated
-sequence. If it is a `p2` function, then this argument will be ignored. The function will then return an
-``Generator[int, None, None]`` that generates the sequence.
+sequence. If it is a `p2` function, this argument will be ignored. The function will then return a
+``Generator[int, None, None]`` that produces the sequence.
 
 The second representation is always named ``to_z3()``. It takes in a single argument that is either an integer or a
 Z3Py ``IntSort``, representing the base of the generated sequence. As above, if it is a ``p2`` file, this argument is
@@ -92,10 +93,20 @@ Additionally, you can dump it to a binary file as follows:
 
 .. code-block::
 
-  python -m dev.p{2,n}.d[0-9][0-9] <items to generate> [<number of players, if n players>] --to-file="filename" [-q]
+  python -m dev.p{2,n}.d[0-9][0-9] [-q] <items to generate> [<number of players>] --to-file="filename"
 
 Note that the output is NOT human readable, and is compacting to as small a file as easily possible. This means that
-each entry is ``base.bit_length()`` long, with some optional padding at the end.
+each entry is ``base.bit_length()`` long, with some optional padding at the end. To read from the file, call:
+
+.. code-block::
+
+  python -m dev.from_file --from-file="filename"
+
+This should give identical output to running the command that generated it without the ``--to-file`` argument. Other
+than some bytes at the header, running for any definition with the same number of players and entries should produce
+identical files. The current storage format supports up to ``2^64`` entries with up to 65537 players, which will take
+about ``2^64 * log2(p) / 8 + 12`` bytes, for a maximum of ~34 EiB = ~36,507,222,016 GiB. This, of course, will likely
+never be reached.
 
 To run the update script, provide the zip file and the PDF file as arguments:
 

@@ -41,16 +41,15 @@ def make_set_commutative(s: Set[Tuple[str, str]]):
     length = 0
     while length != len(s):
         to_add = set()
-        for x, y in s:
-            for w, z in s:
-                if x == w and y != z:
-                    to_add.add((y, z))
-                if x == z and y != w:
-                    to_add.add((y, w))
-                if y == w and x != z:
-                    to_add.add((x, z))
-                if y == z and x != w:
-                    to_add.add((x, w))
+        for (x, y), (w, z) in product(s, repeat=2):
+            if x == w and y != z:
+                to_add.add((y, z))
+            if x == z and y != w:
+                to_add.add((y, w))
+            if y == w and x != z:
+                to_add.add((x, z))
+            if y == z and x != w:
+                to_add.add((x, w))
         length = len(s)
         s.update(to_add)
 

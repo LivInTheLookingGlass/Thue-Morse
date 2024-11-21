@@ -108,6 +108,9 @@ identical files. The current storage format supports up to ``2^64`` entries with
 about ``2^64 * log2(p) / 8 + 12`` bytes, for a maximum of ~34 EiB = ~36,507,222,016 GiB. This, of course, will likely
 never be reached.
 
+If you end the file name in ``.bz``, ``.gz``, or ``.lz``, the program will automatically apply compression to the file
+both on read and write.
+
 To run the update script, provide the zip file and the PDF file as arguments:
 
 .. code-block:: bash

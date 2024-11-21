@@ -1,11 +1,14 @@
 from argparse import ArgumentParser, Namespace
+from bz2 import BZ2File
 from functools import reduce
 from itertools import count, islice
+from gzip import GzipFile
+from lzma import LZMAFile
 from math import ceil, floor, log, log2
 from pathlib import Path
 from struct import pack, unpack
 from sys import stdin, stdout
-from typing import Callable, Generator, Optional, Tuple
+from typing import Callable, Generator, IO, Optional, Tuple, Union
 
 import numpy as np
 
@@ -95,11 +98,23 @@ def run(
 
 
 @boost
+def get_write_obj(fname: str, mode: str) -> Union[BZ2File, GzipFile, LZMAFile, IO[bytes]]:
+    if fname.endswith('.bz'):
+        return BZ2File(Path(fname), mode)
+    elif fname.endswith('.gz'):
+        return GzipFile(Path(fname), mode)
+    elif fname.endswith('.lz'):
+        return LZMAFile(Path(fname), mode)
+    else:
+        return Path(fname).open(mode)
+
+
+@boost
 def process_file_input(args: Namespace):
     if args.file == 'stdin':
         f_obj = stdin.buffer
     else:
-        f_obj = Path(args.file).open('rb')
+        f_obj = get_write_obj(args.file, 'rb')
 
     try:
         _kind, def_, p, entries = unpack(struct_format, f_obj.read(struct_size))
@@ -152,7 +167,7 @@ def process_file_output(
         print(f"Selected p{kind}_d{num:02} for {args.n} entries ({human_readable_bytes(total_bytes)})")
     stdout.flush()
 
-    with Path(args.file).open('wb') as f:
+    with get_write_obj(args.file, 'wb') as f:
         f.write(pack(struct_format, kind == '2', num - 1, args.p - 2, args.n - 1))
         for group in batched(zip(range(args.n), func(args.p)), batch_size):
             batch = [y for _, y in group]
@@ -172,4 +187,4 @@ def process_file_output(
                 reversed(batch)
             ).to_bytes(batch_bytes, 'big')
             f.write(to_write)
-            f.flush()
+            # f.flush()

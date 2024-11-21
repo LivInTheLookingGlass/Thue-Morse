@@ -136,7 +136,7 @@ def run_solver(
     try:
         checkpoint = solver.check()
     except (Z3Exception, MemoryError) as e:
-        xfail(reason=e)
+        xfail(reason=repr(e))
 
     match checkpoint:
         case z3.sat:
@@ -160,7 +160,7 @@ def run_solver(
     try:
         checkpoint = solver.check()
     except (Z3Exception, MemoryError) as e:
-        xfail(reason=e)
+        xfail(reason=repr(e))
     match checkpoint:
         case z3.unsat:
             raise ValueError("Proof failed:", solver.unsat_core(), solver.model())

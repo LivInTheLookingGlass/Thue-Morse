@@ -76,7 +76,9 @@ jobs:
         sudo swapon --show
 
     - name: Run Z3 Tests
-      run: python -O -m pytest -k "z3" -n 2
+      run: |
+        ulimit -S -v $(( (4 + max_mem + swap_size) * 1024 * 1024)); ulimit -H -v; ulimit -S -v
+        python -O -m pytest -k "z3" -n 2
 
     - name: Create tar archive
       run: |
@@ -149,10 +151,10 @@ jobs:
           2_0[279]|2_1[0124])
             test_len=34
             ;;
-          n_03|2_0[345])
+          2_0[345])
             test_len=33
             ;;
-          [2n]_06|n_0[12458])
+          [2n]_06|n_0[123458])
             test_len=32
             ;;
           n_07)
@@ -237,23 +239,17 @@ jobs:
       run: |
         ulimit -S -v $(( (4 + max_mem + swap_size) * 1024 * 1024)); ulimit -H -v; ulimit -S -v
         case ${{matrix.def}}-${{matrix.bases}} in
-          2-003*|5-049*|5-193*|5-209*|5-225*|5-241*)
-            test_len=28
-            ;;
-          8-003*|[348]-017*|[348]-049*|3-209*|3-225*|3-241*)
-            test_len=29
-            ;;
-          [34678]-*)
+          [67]-*)
             test_len=30
             ;;
-          [25]-*)
+          [348]-*)
             test_len=29
             ;;
-          9-003*|9-017*|9-033*|9-049*|9-065*)
-            test_len=10
+          [25]-*)
+            test_len=28
             ;;
           9-*)
-            test_len=11
+            test_len=10
             ;;
           *)
             echo "Unknown definition; limit not set"

@@ -15,7 +15,6 @@ def pn_d09(s: int = 2) -> Iterator[int]:
     nts = 0  # usually <previous n> * s, except at first
     k = start
     x = symbols('x')
-    i = symbols('i')
     log_omega_s = 2 * pi * I / s
     omega_s = exp(log_omega_s)
     gen_func = reduce(mul, (

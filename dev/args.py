@@ -43,6 +43,7 @@ def min_bytes_batch(base: int) -> Tuple[int, int, int]:
         total_bits = bits_per_entry * k
         if total_bits % 8 == 0:
             return int(k), int(bits_per_entry), int(total_bits // 8)
+    return -1, -1, -1
 
 
 def human_readable_bytes(byte_size):
@@ -60,8 +61,10 @@ def run(num: int, func: Callable[[int], Generator[int, None, None]], kind: str =
     parser = ArgumentParser()
     parser.add_argument('n', type=int, help='The number of values to print', default=16, nargs='?')
     parser.add_argument('p', type=int, help='The number of players', default=2, nargs='?')
-    parser.add_argument('--to-file', type=str, dest='file', help='Optionally, the file to dump this sequence to', default='stdout', nargs='?')
-    parser.add_argument('-q', dest='quiet', help='If in file mode, set this to not print progress', default=False, action='store_true')
+    parser.add_argument('--to-file', type=str, dest='file', help='Optionally, the file to dump this sequence to',
+                        default='stdout', nargs='?')
+    parser.add_argument('-q', dest='quiet', help='If in file mode, set this to not print progress', default=False,
+                        action='store_true')
     args = parser.parse_args()
     if kind == '2':
         kind_str = ''

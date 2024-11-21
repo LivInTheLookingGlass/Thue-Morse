@@ -22,6 +22,8 @@ Combinatorics, Generating Functions, Thue-Morse, Prouhet-Thue-Morse, Formal Lang
 
 \section{Introduction}
 
+\note{This section is too fluffy. Probably needs to be rewritten entirely}
+
 The \TMS is a fundamental object in combinatorics and theoretical computer science, widely studied for its remarkable properties and diverse applications. It is often presented as an infinite sequence starting with 0, as shown below: \begin{equation*}
 T\!\!=\!\!\tuple{0,\!1,\!1,\!0,\!1,\!0,\!0,\!1,\!1,\!0,\!0,\!1,\!0,\!1,\!1,\!0,\!1,\!0,\!0,\!1,\!0,\!1,\!1,\!0,\!0,\!1,\!1,\!0,\!\ldots}
 \end{equation*}
@@ -47,8 +49,8 @@ The Hamming Weight, as typically defined, is the digit sum of a binary number. I
     \label{\tempLabel}
     \begin{aligned}
       p(0) &= 0 \\
-      p(n) &= n + p\left(\floor{\dfrac{n}{2}}\right) \pmod{2} \\
-T_{2,\arabic{stddefctr}}(n) &= p(n)
+      p(n) &= (n \; \mod{2}) + p\left(\floor{\dfrac{n}{2}}\right) \\
+T_{2,\arabic{stddefctr}}(n) &= p(n) \; \mod{2}
     \end{aligned}
 \end{equation}
 
@@ -57,13 +59,34 @@ The subscript indicates that we are using $2$ players (writing in base $2$) and 
 \stepcounter{stddefctr}
 \subsection{Definition \arabic{stddefctr} of \TotalOriginals\xspace --- Root of Unity}
 
+\note{Should I split this into 2 definitions? I've done so for others that were this dissimilar while sharing a common root idea. It feels odd that this is the only one with an $a$ and $b$ version.}
+
 This appears in \cite{OEIS-TMS-inv}.
+
+Another way to implement the modularity of the previous definition is to use the appropriate root of unity. In this paper, we use $\omega_s = \exp\left(\tfrac{2i\pi}{s}\right)$ to represent the primitive root of unity in base $s$, such that $(\omega_s)^s = 1$. Because of this, extracting the power of $(\omega_s)^x$ will give you the same value as $x \; \mod{s}$.
+
+There are two ways this can be approached. In the first we work with these output values directly, mapping $\{1, -1\} \to \{0, 1\}$:
 
 \begin{equation}
     \edef\tempLabel{eq:p2_d\arabic{stddefctr}}
     \label{\tempLabel}
     \begin{aligned}
-T_{2,\arabic{stddefctr}}(n) &= \dfrac{1 - (-1)^{p(n)}}{2}
+T_{2,\arabic{stddefctr}a}(n) &= \dfrac{1 - (\omega_2)^{p(n)}}{2} \\
+                             &= \dfrac{1 - (-1)^{p(n)}}{2}
+    \end{aligned}
+\end{equation}
+
+And in the second we extract the exponent:
+
+\begin{equation}
+    \edef\tempLabel{eq:p2_d\arabic{stddefctr}b}
+    \label{\tempLabel}
+    \begin{aligned}
+T_{2,\arabic{stddefctr}b}(n) &= \dfrac{\log\left(\omega_2^{p(n)}\right)}{\log\left(\omega_2\right)} \\
+                             &= \dfrac{\log\left((-1)^{p(n)}\right)}{\log(-1)} \\
+                             &= \dfrac{(p(n) \mod{2}) \cdot \log(-1)}{\log(-1)} \\
+                             &= \dfrac{(p(n) \mod{2}) \cdot i\pi}{i\pi} \\
+                             &= p(n) \mod{2}
     \end{aligned}
 \end{equation}
 
@@ -205,7 +228,7 @@ T_{2,\arabic{stddefctr}}(n) &= \begin{aligned}[c]
 \end{equation}
 
 \stepcounter{stddefctr}
-\subsection{Definition \arabic{stddefctr} --- Floor-Ceiling Difference}
+\subsection{Definition \arabic{stddefctr} of \TotalOriginals\xspace --- Floor-Ceiling Difference}
 
 This definition appears in \cite{OEIS-TMS}.
 
@@ -224,7 +247,7 @@ T_{2,\arabic{stddefctr}}(n) &= \dfrac{1 - b(2n)}{2} \pmod{2}
 \note{This seems very similar to the highest bit difference definition, and I think it may be what that was derived from}
 
 \stepcounter{stddefctr}
-\subsection{Definition \arabic{stddefctr} --- Odious Number Derivation}
+\subsection{Definition \arabic{stddefctr} of \TotalOriginals\xspace --- Odious Number Derivation}
 
 This definition appears in \cite{OEIS-TMS}.
 
@@ -271,7 +294,7 @@ T_{2,\arabic{stddefctr}}(n) &= o(n) + 1 \pmod{2}
 }
 
 \stepcounter{stddefctr}
-\subsection{Definition \arabic{stddefctr} --- Evil Numbers Derivation 1}
+\subsection{Definition \arabic{stddefctr} of \TotalOriginals\xspace --- Evil Numbers Derivation 1}
 
 This definition appears in \cite{OEIS-TMS}.
 
@@ -309,7 +332,7 @@ T_{2,\arabic{stddefctr}}(n) &= e(n) - 2n \pmod{2}
 \end{equation}
 
 \stepcounter{stddefctr}
-\subsection{Definition \arabic{stddefctr} --- Evil Numbers Derivation 2}
+\subsection{Definition \arabic{stddefctr} of \TotalOriginals\xspace --- Evil Numbers Derivation 2}
 
 This definition ppears in \cite{OEIS-TMS-inv}.
 
@@ -325,7 +348,7 @@ T_{2,\arabic{stddefctr}}(n) &= 1 - ce(n + 1) + ce(n)
 \end{equation}
 
 \stepcounter{stddefctr}
-\subsection{Definition \arabic{stddefctr} --- Odious \& Evil Numbers Derivation}
+\subsection{Definition \arabic{stddefctr} of \TotalOriginals\xspace --- Odious \& Evil Numbers Derivation}
 
 This definition appears in \cite{OEIS-TMS-inv}.
 
@@ -344,7 +367,7 @@ T_{2,\arabic{stddefctr}}(n) &= 1 - oe(n) \pmod{2}
 \end{equation}
 
 \stepcounter{stddefctr}
-\subsection{Definition \arabic{stddefctr} --- Gould's Sequence Derivation}
+\subsection{Definition \arabic{stddefctr} of \TotalOriginals\xspace --- Gould's Sequence Derivation}
 
 This definition appears in \cite{OEIS-TMS}.
 
@@ -362,7 +385,7 @@ T_{2,\arabic{stddefctr}}(n) &= \text{Gould}(n) - 1 \mod{3} \\
 \end{equation}
 
 \stepcounter{stddefctr}
-\subsection{Definition \arabic{stddefctr} --- Derivation from Blue Code}
+\subsection{Definition \arabic{stddefctr} of \TotalOriginals\xspace --- Derivation from Blue Code}
 
 This definition appears in \cite{OEIS-TMS}.
 
@@ -384,7 +407,7 @@ Translated into words, this function computes the value of Sierpiński's triangl
 \note{It seems to me that this might be extendable by using GF(n) instead of GF(2), though I don't know of a way to efficiently compute or prove such a result}
 
 \stepcounter{stddefctr}
-\subsection{Definition \arabic{stddefctr} --- Generating Function}
+\subsection{Definition \arabic{stddefctr} of \TotalOriginals\xspace --- Generating Function}
 
 This definition appears in \cite{Allouche-Shallit_1999, OEIS-TMS}.
 
@@ -394,7 +417,7 @@ G(x) &= \mathcal{G.F.} \;\; \begin{aligned}[c]
     \dfrac{\displaystyle\dfrac{1}{1 - x} - \prod_{k \ge 0}^\infty (1 - x^{2^k})}{2}
     \end{aligned} \\
      &= \mathcal{G.F.} \;\; \begin{aligned}[c]
-    \dfrac{\displaystyle\sum_{k\ge0} x^k - \prod_{k \ge 0}^\infty (1 - x^{2^k})}{2}
+    \dfrac{\displaystyle\sum_{k\ge0}^\infty x^k - \prod_{k \ge 0}^\infty (1 - x^{2^k})}{2}
     \end{aligned} \\
 T_{2,\arabic{stddefctr}}(n) &= [x^n]G(x)
 \end{aligned}
@@ -410,20 +433,20 @@ Note that this is by far the least computationally efficient definition in this 
 
 \subsection{Summary}
 
-Of the \TotalOriginals we discussed above:
+Of the \TotalOriginals \note{(16?)} we discussed above:
 \begin{itemize}
     % discovery source
-    \item 13 were found on the OEIS \cite{OEIS-TMS, OEIS-TMS-inv, OEIS-TMS-pos-neg, OEIS-TMS-3-2, OEIS-TMS-inv-plus1} (defs. 1-4, 6, 8-15)
-    \item 1 was found in a textbook \cite{Arndt_2010} (def. 7)
-    \item 1 is original to this paper (def. 5)
+    \item 13 were found on the OEIS \cite{OEIS-TMS, OEIS-TMS-inv, OEIS-TMS-pos-neg, OEIS-TMS-3-2, OEIS-TMS-inv-plus1} ($T_{2,1\dots4}, T_{2,6}, T_{2,8\dots15}$)
+    \item 1 was found in a textbook \cite{Arndt_2010} ($T_{2,7}$)
+    \item 1 is \note{(2 are?)} original to this paper ($T_{2,5}$, \note{$T_{2,2b}$?})
     \\% generating method
-    \item 7 utilize recursion (defs. 1-7)
-    \item 6 reference other integer sequences (defs. 9-14)
-    \item 5 utilize floor-division (defs. 1-2, 8, 11-12, 14)
+    \item 7 \note{(8?)} utilize recursion ($T_{2,1\dots7}$)
+    \item 6 reference other integer sequences ($T_{2,9\dots14}$)
+    \item 5 utilize floor-division ($T_{2,1\dots2}, T_{2,8}, T_{2,11\dots12}, T_{2,14}$)
     \item \note{4 would be so good to include, but I don't know how}
-    \item 3 use operations on strings, not integers (defs. 3-5)
-    \item 2 use combinatoric functions (defs. 13-14)
-    \item 1 utilizes a generating function (def. 15)
+    \item 3 use operations on strings, not integers ($T_{2,3\dots5}$)
+    \item 2 use combinatoric functions ($T_{2,13\dots14}$)
+    \item 1 utilizes a generating function ($T_{2,15}$)
     \item 0 have closed form solutions
 \end{itemize}
 
@@ -454,11 +477,11 @@ $T_{2,12}$ &                              \\ \hline
 $T_{2,13}$ & $2^{15} = 32,768$            \\ \hline
 $T_{2,14}$ & $2^{29} = 536,870,912$       \\ \hline
 $T_{2,15}$ & $2^{11} = 2,048$             \\ \hline
-$T_{n,1}$  &\multirow{2}{*}{$2^{32}=4,294,967,296$}\\ \cline{1-1}
-$T_{n,2}$  &                              \\ \hline
-$T_{n,3}$  & $2^{33} = 8,589,934,592$     \\ \hline
-$T_{n,4}$  &\multirow{3}{*}{$2^{32}=4,294,967,296$}\\ \cline{1-1}
-$T_{n,5}$  &                              \\ \cline{1-1}
+$T_{n,1}$  &\multirow{3}{*}{$2^{32}=4,294,967,296$}\\ \cline{1-1}
+$T_{n,2}$  &                              \\ \cline{1-1}
+$T_{n,3}$  &                              \\ \hline
+$T_{n,4}$  & $2^{33} = 8,589,934,592$     \\ \hline
+$T_{n,5}$  &\multirow{2}{*}{$2^{32}=4,294,967,296$}\\ \cline{1-1}
 $T_{n,6}$  &                              \\ \hline
 $T_{n,7}$  & $2^{31} = 2,147,483,648$     \\ \hline
 $T_{n,8}$  & $2^{32} = 4,294,967,296$     \\ \hline
@@ -568,6 +591,51 @@ This is identical to Equation \ref{eq:p2_d1}, where we define $T_{2,1}$.
 \end{proof}
 
 \section{The Extensions}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \node (T2_1) {$T_{2,1}$};
+        \node[below of=T2_1] (T2_2) {$T_{2,2}$};
+        \node[below of=T2_2] (T2_3) {$T_{2,3}$};
+        \node[below of=T2_3] (T2_4) {$T_{2,4}$};
+        \node[below of=T2_4] (T2_5) {$T_{2,5}$};
+        \node[below of=T2_5] (T2_6) {$T_{2,6}$};
+        \node[below of=T2_6] (T2_7) {$T_{2,7}$};
+        % \node[below of=T2_7] (T2_8) {$T_{2,8}$};
+        % \node[below of=T2_8] (T2_9) {$T_{2,9}$};
+        % \node[below of=T2_9] (T2_10) {$T_{2,10}$};
+        % \node[below of=T2_10] (T2_11) {$T_{2,11}$};
+        % \node[below of=T2_11] (T2_12) {$T_{2,12}$};
+        % \node[below of=T2_12] (T2_13) {$T_{2,13}$};
+        % \node[below of=T2_13] (T2_14) {$T_{2,14}$};
+        \node[below of=T2_7,yshift=-1cm] (T2_15) {$T_{2,15}$};
+
+        \node[right of=T2_1, xshift=1cm] (Tn_1) {$T_{n,1}$};
+        \node[below of=Tn_1] (Tn_2) {$T_{n,2}$};
+        \node[below of=Tn_2] (Tn_3) {$T_{n,3}$};
+        \node[below of=Tn_3] (Tn_4) {$T_{n,4}$};
+        \node[below of=Tn_4] (Tn_5) {$T_{n,5}$};
+        \node[below of=Tn_5] (Tn_6) {$T_{n,6}$};
+        \node[below of=Tn_6] (Tn_7) {$T_{n,7}$};
+        \node[below of=Tn_7] (Tn_8) {$T_{n,8}$};
+        \node[below of=Tn_8] (Tn_9) {$T_{n,9}$};
+
+        \draw[->] (T2_1) -- (Tn_1);
+        \draw[->] (T2_1) -- (T2_2);
+        \draw[->] (T2_2) -- (Tn_2);
+        \draw[->] (T2_3) -- (Tn_3);
+        \draw[->] (T2_4) -- (Tn_4);
+        \draw[->] (T2_4) -- (T2_5);
+        \draw[->] (T2_5) -- (Tn_5);
+        \draw[->] (T2_6) -- (Tn_6);
+        \draw[->] (T2_7) -- (Tn_7);
+        \draw[->, dashed] (T2_4) -- (Tn_8);
+        \draw[->] (T2_15) -- (Tn_9);
+    \end{tikzpicture}
+    \caption{Map of standard definitions to their extensions}
+    \label{fig:extension-map}
+\end{figure}
 
 \subsection{Extension \arabic{extdefctr} of \TotalExtensions\xspace --- Modular Digit Sums}
 
@@ -820,7 +888,7 @@ This is very similar to the definition found in equation \ref{eq:p2_d6}, except 
 \stepcounter{extdefctr}
 \subsection{Extended Definition \arabic{extdefctr} of \TotalExtensions\xspace --- Latin Square Constructions}
 
-This definition appears in \cite{Bolker_2016}\note{, and seemingly only there. It is very clearly equivalent to our Extended Definition 3, but I will need to actually prove that.}
+This definition appears in \cite{Bolker_2016}\note{, and seemingly only there. It is very clearly equivalent to our Extended Definition 4, but I will need to actually prove that.}
 
 Let $L(n)$ be the reduced-form Latin Square with a first row of $\tuple{0, 1, \dots, n\!-\!1}$, and where each row progresses from one entry to the next as $L(n)_{a,x+1} \equiv L(n)_{a,x} + 1 \pmod{n}$. For each iteration $t_n$, substitute each entry $x$ for the string $L(n)_{x,*}$.
 
@@ -836,7 +904,7 @@ N\!\!-\!\!1& 0 & 1 & \ddots & \ddots
 \end{pmatrix}
 \end{equation}
 
-\subsubsection{Proof of Equivalence with Original Definition 3}
+\subsubsection{Proof of Equivalence with Original Definition 4}
 
 \stepcounter{extdefctr}
 \subsection{Extended Definition \arabic{extdefctr} of \TotalExtensions\xspace --- Generating Functions}
@@ -846,7 +914,7 @@ N\!\!-\!\!1& 0 & 1 & \ddots & \ddots
     G_s(x) &= \mathcal{G.F.} \;\; \begin{aligned}    
     \prod_{k\ge0}^\infty \sum_{i=0}^{s-1} \omega_s^i \cdot x^{i \cdot s^k}
     \end{aligned} \\
-    \omega_s ^{T_{n,\arabic{extdefctr}}(x, s)} &= [x^n]G_s(x) \\
+    \omega_s ^{T_{n,\arabic{extdefctr}}(j, s)} &= [x^j]G_s(x) \\
     T_{n,\arabic{extdefctr}}(j, s) &= \dfrac{\log\left([x^j]G_s(x)\right)}{\log(\omega_s)} \\
               &= \dfrac{\log\left([x^j]G_x(x)\right) \cdot s}{2i\pi} \\
 \end{aligned}
@@ -854,7 +922,58 @@ N\!\!-\!\!1& 0 & 1 & \ddots & \ddots
 
 \subsubsection{Proof of Equivalence with Original Definition 15}
 
-\note{Setting s=2 should show conclusively that it matches the original answer, with minor tweaks}
+\begin{proof}
+\textbf{Observation 1}: to start, let us rephrase definition 15 slightly
+
+\begin{equation}
+\begin{aligned}
+T_{2,15}(n) &= [x^n]G(x) \\
+    &= [x^n] \left(\begin{aligned}[c]
+    \dfrac{\displaystyle\sum_{k\ge0}^\infty x^k - \prod_{k \ge 0}^\infty (1 - x^{2^k})}{2}
+    \end{aligned}\right) \\
+    &= \dfrac{[x^n] \left(\begin{aligned}[c]
+    \displaystyle\sum_{k\ge0}^\infty x^k - \prod_{k \ge 0}^\infty (1 - x^{2^k})\end{aligned}\right)}{2}
+     \\
+    &= \dfrac{1 - [x^n]\begin{aligned}[c]
+    \displaystyle\prod_{k \ge 0}^\infty (1 - x^{2^k})
+    \end{aligned}
+    }{2}
+\end{aligned}
+\end{equation}
+
+\textbf{Observation 2}: the aparatus around the infinite product exists entirely to translate $\{1, -1\} \to \{0, 1\}$. Another way to do that is to take the complex log of this output: for $x = \{1, -1\}: \tfrac{\log(x)}{\log(-1)} = \{0, 1\}$
+
+\textbf{Inference 1}: \begin{equation}
+    \dfrac{1 - [x^n]\begin{aligned}
+    \displaystyle\prod_{k \ge 0}^\infty (1 - x^{2^k})
+    \end{aligned}
+    }{2} = \dfrac{\log\left([x^n]\begin{aligned}
+    \displaystyle\prod_{k \ge 0}^\infty (1 - x^{2^k})
+    \end{aligned}\right)}{\log(-1)}
+\end{equation}
+
+\textbf{Observation 3}: $\omega_2 = -1$
+
+\textbf{Observation 4}: If we take $T_{n,\arabic{extdefctr}}(x, s)$ for $s=2$, we get \begin{equation}
+\begin{aligned}
+    G_2(x) &= \mathcal{G.F.} \;\; \begin{aligned}    
+    \prod_{k\ge0}^\infty \sum_{i=0}^{2-1} \omega_2^i \cdot x^{i \cdot 2^k}
+    \end{aligned} \\
+           &= \mathcal{G.F.} \;\; \begin{aligned}    
+    \prod_{k\ge0}^\infty \omega_2^0 \cdot x^{0 \cdot 2^k} + \omega_2^i \cdot x^{i \cdot 2^k}
+    \end{aligned} \\
+           &= \mathcal{G.F.} \;\; \begin{aligned}    
+    \prod_{k\ge0}^\infty 1 + (-1) \cdot x^{2^k}
+    \end{aligned} \\
+           &= \mathcal{G.F.} \;\; \begin{aligned}    
+    \prod_{k\ge0}^\infty 1 - x^{2^k}
+    \end{aligned}
+\end{aligned}
+\end{equation}
+This is identical to the product found in $T_{2,15}$.
+
+\textbf{Conclusion}: $T_{n,\arabic{extdefctr}}(x, s) = T_{2,15}(x)$
+\end{proof}
 
 \subsection{Summary}
 
@@ -863,7 +982,7 @@ Of the \TotalExtensions we discussed above:
     % discovery source
     \item 1 was found on the OEIS ($T_{n,1}$)
     \item 2 were found in another paper ($T_{n,4}, T_{n,8}$)
-    \item 6 are original to this paper ($T_{n,2\dots3}, T_{n,5\dots8}$)
+    \item 6 are original to this paper ($T_{n,2\dots3}, T_{n,5\dots7}, T_{n,9}$)
     \\% generating method
     \item 7 utilize recursion ($T_{n,1\dots7}$)
     \item 4 utilize floor-division ($T_{n,1\dots2}, T_{n,6\dots7}$)
@@ -885,20 +1004,29 @@ All definitions are tested computationally, though due to resource limitations, 
 \textbf{Definition}       & \textbf{Bases}         & \textbf{Entries Tested}            \\\hline
 $T_{n,1}$                 & 3 - 256                & $2^{30} = 1,073,741,824$           \\\hline
 \multirow{2}{*}{$T_{n,2}$}& 3 - 16                 & $2^{29} = 536,870,912$             \\\cline{2-3}
-                          & 17 - 256               &\multirow{3}{*}{$2^{30}=1,073,741,824$}\\\cline{1-2}
-\multirow{4}{*}{$T_{n,3}$}& 3 - 16                 &                                    \\\cline{2-2} 
-                          & 33 - 208               &                                    \\\cline{2-3} 
-                          & 17 - 32                &\multirow{2}{*}{$2^{29}=536,870,912$}\\\cline{2-2}
+                          & 17 - 256               &\multirow{4}{*}{$2^{30}=1,073,741,824$}\\\cline{1-2}
+\multirow{6}{*}{$T_{n,3}$}& 3 - 16                 &                                    \\\cline{2-2} 
+                          & 33 - 48                &                                    \\\cline{2-2} 
+                          & 65 - 208               &                                    \\\cline{2-3} 
+                          & 17 - 32                &\multirow{3}{*}{$2^{29}=536,870,912$}\\\cline{2-2}
+                          & 49 - 64                &                                    \\\cline{2-2}
                           & 209 - 256              &                                    \\\hline
-\multirow{3}{*}{$T_{n,4}$}& 3 - 16                 &\multirow{2}{*}{$2^{30}=1,073,741,824$}\\\cline{2-2}
-                          & 33 - 256               &                                    \\\cline{2-3}
-                          & 17 - 32                &\multirow{2}{*}{$2^{29}=536,870,912$}\\\cline{1-2} 
-\multirow{2}{*}{$T_{n,5}$}& 3 - 192                &                                    \\\cline{2-3}
-                          & 193 - 256              & $2^{28} = 268,435,456$             \\\hline
-$T_{n,6}$                 &\multirow{3}{*}{3 - 256}&\multirow{3}{*}{$2^{30}=1,073,741,824$}\\\cline{1-1}
-$T_{n,7}$                 &                        &                                    \\\cline{1-1}
-$T_{n,8}$                 &                        &                                    \\\hline
-$T_{n,9}$                 & 3 - 256                & $2^{11} = 2,048$                  \\\hline
+\multirow{5}{*}{$T_{n,4}$}& 3 - 16                 &\multirow{3}{*}{$2^{30}=1,073,741,824$}\\\cline{2-2}
+                          & 33 - 48                &                                    \\\cline{2-2}
+                          & 65 - 256               &                                    \\\cline{2-3}
+                          & 17 - 32                &\multirow{4}{*}{$2^{29}=536,870,912$}\\\cline{2-2} 
+                          & 49 - 64                &                                    \\\cline{1-2}
+\multirow{4}{*}{$T_{n,5}$}& 3 - 48                 &                                    \\\cline{2-2}
+                          & 65 - 192               &                                    \\\cline{2-3}
+                          & 49 - 64                &\multirow{2}{*}{$2^{28}=268,435,456$}\\\cline{2-2}
+                          & 193 - 256              &                                    \\\hline
+$T_{n,6}$                 &\multirow{2}{*}{3 - 256}&\multirow{4}{*}{$2^{30}=1,073,741,824$}\\\cline{1-1}
+$T_{n,7}$                 &                        &                                    \\\cline{1-2}
+\multirow{3}{*}{$T_{n,8}$}& 3 - 32                 &                                    \\\cline{2-2}
+                          & 49 - 256               &                                    \\\cline{2-3}
+                          & 33 - 48                & $2^{29} = 536,870,912$             \\\hline
+\multirow{2}{*}{$T_{n,9}$}& 3 - 80                 & $2^{10} = 1,024$                   \\\cline{2-3}
+                          & 81 - 256               & $2^{11} = 2,048$                   \\\hline
 \end{tabular}
 \end{table}
 
@@ -1683,6 +1811,9 @@ The other is to take advantage of the relation $\binom{n}{k} = \binom{n}{k-1} \c
 
 \subsubsection{Time Complexity}
 
+\note{Time complexity of multiplying polynomials via Karatsuba method is $O(n^{\log_2(3)})$. I think this means that, since we need to apply it $\log_2(n)$ times to get $n$ terms, the overall complexity is $O(n^{\log_2(3)} \cdot \log(n))$}
+
+\renewcommand{\arraystretch}{1.25}
 \begin{table}[H]
     \centering
     \caption{Time Complexity Summary of Standard Definition \arabic{stddefctr}}
@@ -1690,14 +1821,15 @@ The other is to take advantage of the relation $\binom{n}{k} = \binom{n}{k-1} \c
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
         \hline
-        \textbf{Per Element} &  &  \\
+        \textbf{Per Element} & $O\left(n^{\log_2(3)} \cdot \log(n)\right)?$ &  \\
         \hline
-        \textbf{In Total} &  &  \\
+        \textbf{In Total} & $O\left(n^{\log_2(3)} \cdot \log(n)\right)$ &  \\
         \hline
     \end{tabular}
     \edef\tempLabel{tab:time_p2_d\arabic{stddefctr}}
      \expandafter\label\expandafter\tempLabel
 \end{table}
+\renewcommand{\arraystretch}{1}
 
 \subsubsection{Space Complexity}
 
@@ -1708,9 +1840,9 @@ The other is to take advantage of the relation $\binom{n}{k} = \binom{n}{k-1} \c
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
         \hline
-        \textbf{Per Element} &  &  \\
+        \textbf{Per Element} & $O(n)?$ & $O(n\log(n))?$ \\
         \hline
-        \textbf{In Total} &  &  \\
+        \textbf{In Total} & $O(n)?$ & $O(n\log(n))?$ \\
         \hline
     \end{tabular}
     \edef\tempLabel{tab:space_p2_d\arabic{stddefctr}}
@@ -2112,7 +2244,7 @@ This is one of the more space-efficient implementations. Each element takes at m
 \bibliographystyle{unsrt}
 \bibliography{references}     % without the .bib extension
 
-\onecolumn
+% \onecolumn
 \section{Notes}
 \small
 \lstset{basicstyle=\ttfamily, breaklines=true}

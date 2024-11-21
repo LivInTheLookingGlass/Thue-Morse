@@ -1,6 +1,6 @@
 from argparse import ArgumentParser, Namespace
 from functools import reduce
-from itertools import count
+from itertools import count, islice
 from math import ceil, floor, log, log2
 from pathlib import Path
 from struct import pack, unpack
@@ -87,7 +87,7 @@ def run(
         if args.file == 'stdout':
             print(start_string.format(kind, kind_str, num, args.n), end='')
             stdout.flush()
-            for x, _ in zip(func(args.p), range(args.n)):
+            for x in islice(func(args.p), args.n):
                 print(x, "", end='')
             print()
         else:
@@ -161,7 +161,8 @@ def process_file_output(
                 for x in batch:
                     print(x, "", end='')
             else:
-                print(f"{group[-1][0] + 1} of {args.n}...", end="\r")
+                thus_far = group[-1][0] + 1
+                print(f"{thus_far} of {args.n} {thus_far / args.n:.1%}...", end="\r")
             stdout.flush()
 
             if len(batch) != batch_size:

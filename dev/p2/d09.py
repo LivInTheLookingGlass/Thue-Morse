@@ -8,12 +8,13 @@ except ImportError:
 
 from ..args import run
 from ..compat.fluidpythran import boost
+from ..compat.int import bit_count
 
 
 @boost
 def odious() -> Iterator[int]:
     for i in count():
-        if i.bit_count() & 1:
+        if bit_count(i) & 1:
             yield i
 
 

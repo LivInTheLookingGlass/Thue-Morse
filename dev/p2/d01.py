@@ -8,12 +8,13 @@ except ImportError:
 
 from ..args import run
 from ..compat.fluidpythran import boost
+from ..compat.int import bit_count
 
 
 @boost
 def p2_d01(_: int = 2) -> Iterator[int]:
     for x in count():
-        yield x.bit_count() & 1
+        yield bit_count(x) & 1
 
 
 def to_z3(_: Union[int, 'Int'] = 2) -> 'RecFunction':

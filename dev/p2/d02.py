@@ -8,6 +8,7 @@ except ImportError:
 
 from ..args import run
 from ..compat.fluidpythran import boost
+from ..compat.int import bit_count
 from ..compat.numba import jit
 
 
@@ -19,7 +20,7 @@ def compute(bc: int) -> int:
 @boost
 def p2_d02(_: int = 2) -> Iterator[int]:
     for x in count():
-        yield compute(x.bit_count())
+        yield compute(bit_count(x))
 
 
 def to_z3(_: Union[int, 'Int'] = 2) -> 'RecFunction':

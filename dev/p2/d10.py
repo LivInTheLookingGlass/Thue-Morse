@@ -8,12 +8,13 @@ except ImportError:
 
 from ..args import run
 from ..compat.fluidpythran import boost
+from ..compat.int import bit_count
 
 
 @boost
 def evil(_: int = 2) -> Iterator[int]:
     for i in count():
-        if not (i.bit_count() & 1):
+        if not (bit_count(i) & 1):
             yield i
 
 

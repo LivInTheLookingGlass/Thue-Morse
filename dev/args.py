@@ -1,14 +1,14 @@
 from argparse import ArgumentParser, Namespace
 from bz2 import BZ2File
 from functools import reduce
-from itertools import count, islice
 from gzip import GzipFile
+from itertools import count, islice
 from lzma import LZMAFile
 from math import ceil, floor, log, log2
 from pathlib import Path
 from struct import pack, unpack
 from sys import stdin, stdout
-from typing import Callable, Generator, IO, Optional, Tuple, Union
+from typing import IO, Callable, Generator, Optional, Tuple, Union
 
 import numpy as np
 
@@ -100,7 +100,7 @@ def run(
 @boost
 def get_write_obj(fname: str, mode: str) -> Union[BZ2File, GzipFile, LZMAFile, IO[bytes]]:
     if fname.endswith('.bz'):
-        return BZ2File(Path(fname), mode)
+        return BZ2File(fname, mode)
     elif fname.endswith('.gz'):
         return GzipFile(Path(fname), mode)
     elif fname.endswith('.lz'):
@@ -177,7 +177,7 @@ def process_file_output(
                     print(x, "", end='')
             else:
                 thus_far = group[-1][0] + 1
-                print(f"{thus_far} of {args.n} {thus_far / args.n:.1%}...", end="\r")
+                print(f"{thus_far:,} of {args.n:,} ({thus_far / args.n:.1%})...", end="\r")
             stdout.flush()
 
             if len(batch) != batch_size:

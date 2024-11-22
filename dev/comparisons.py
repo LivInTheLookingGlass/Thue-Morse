@@ -1,12 +1,15 @@
 from argparse import Namespace
 from atexit import register
+from ctypes import c_wchar_p
 from enum import Enum, auto
 from itertools import chain, count
 from logging import INFO, FileHandler, StreamHandler, basicConfig, getLogger, shutdown
 from multiprocessing import Process
+from multiprocessing.sharedctypes import Value
 from pathlib import Path
 from shelve import Shelf
 from shelve import open as shelf_open
+from time import sleep
 from typing import Dict, Tuple, Union
 
 from . import get_iters
@@ -43,7 +46,7 @@ class Operation(Enum):
 DUMP_TYPE = Tuple[str, int, int, int]
 COMPARE_TYPE = Tuple[str, int, int, int, str, int]
 CLEAN_TYPE = Tuple[int]
-tasks: Dict[Tuple[Operation, Union[DUMP_TYPE, COMPARE_TYPE, CLEAN_TYPE]], Process] = {}
+tasks: Dict[Tuple[Operation, Union[DUMP_TYPE, COMPARE_TYPE, CLEAN_TYPE]], Tuple[Value, Process]] = {}
 
 
 @boost
@@ -172,20 +175,30 @@ def handle_compare(kind1: str, def1: int, base: int, stop: int, kind2: str, def2
 
 
 @boost
-def handle_spinoff(shelf: Shelf, job: Tuple[Operation, Tuple]) -> None:
+def spinoff_worker(output: Value, job: Tuple[Operation, Tuple]) -> None:
+    import sys
+    sys.stdout = RedirectStdoutToValue(output)
+
     task, params = job
     if task == Operation.DUMP:
         handle = handle_dump
     else:
-        error_str = f"Spinning off non-dumps not supported. Got: {job}"
+        error_str = f"Spinning off non-dumps not yet supported. Got: {job}"
         logger.error(error_str)
         raise ValueError(error_str)
+
+    handle(*params)
+
+
+@boost
+def handle_spinoff(shelf: Shelf, job: Tuple[Operation, Tuple]) -> None:
+    output = Value(c_wchar_p, '')
     p = Process(
-        target=handle,
-        args=params,
+        target=spinoff_worker,
+        args=(output, job),
         daemon=True
     )
-    tasks[job] = p
+    tasks[job] = (output, p)
     if 'spun_off' not in shelf:
         shelf['spun_off'] = [job]
     else:
@@ -196,10 +209,27 @@ def handle_spinoff(shelf: Shelf, job: Tuple[Operation, Tuple]) -> None:
 
 @boost
 def handle_await(shelf: Shelf, job: Tuple[Operation, Tuple]) -> None:
-    p = tasks[job]
+    output, p = tasks[job]
+    while p.is_alive():
+        print(output.value, end='')
+        sleep(0.1)
     p.join()
     if job in shelf.get('spun_off', []):
         shelf['spun_off'].remove(job)
+
+
+class RedirectStdoutToValue:
+    def __init__(self, progress_value: Value):
+        self.progress_value = progress_value
+
+    def write(self, message: str):
+        # This method will be called every time print() is called
+        if message != '\n':  # Prevent empty newlines from being captured
+            self.progress_value.value = c_wchar_p(message)
+
+    def flush(self):
+        # Necessary for compatibility with sys.stdout (required by print)
+        pass
 
 
 if __name__ == '__main__':

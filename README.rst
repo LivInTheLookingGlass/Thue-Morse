@@ -10,37 +10,37 @@ Repository Structure
 .. code-block:: text
 
   /
-  ├─ LICENSE                   # License file
-  ├─ README.rst                # Project readme
-  ├─ update_from_overleaf.bat  # Script to update the repository from Overleaf ZIP and PDF
-  ├─ update_from_overleaf.sh   # ^^^
-  ├─ rendered.pdf              # Compiled PDF output of the Overleaf project
-  ├─ src/                      # Directory containing the LaTeX source files
-  │  ├─ main.tex                 # Main LaTeX file (the entry point for compiling)
-  │  ├─ macros.tex               # LaTeX file that contains utility functions
-  │  ├─ references.bib           # Bibliography file (uses BibTeX for citations)
-  │  ├─ figures/                 # Directory for image files used
-  │  └─ notes/                   # Directory for notes used in writing the paper
-  ├─ benchmark/                # Directory containing benchmark histograms
-  └─ dev/                      # Directory with associated code
-     ├─ README.rst               # Readme for associated code
-     ├─ __init__.py              # Utilities that let you collect different definitions
-     ├─ args.py                  # A utility file that deals with command line argument parsing
-     ├─ from_file.py             # A stub file that lets you print out a binary file
-     ├─ test_seq.py              # A test file that allows you to check sequence equality
-     ├─ p2/                      # Code representation of definitions in base 2
-     │  ├─ __init__.py             # Empty file that allows this folder to be used as a module
-     │  └─ d[0-9][0-9].py          # The file for def. [0-9][0-9] of the Thue-Morse Seq. for 2 players
-     ├─ pn/                      # Code representation of definitions in base n
-     │  ├─ __init__.py             # Empty file that allows this folder to be used as a module
-     │  └─ d[0-9][0-9].py          # The file for def. [0-9][0-9] of the Thue-Morse Seq. for n players
-     └─ compat/                  # Where possible, replace functionality from missing libraries
-        ├─ __init__.py
-        ├─ bitarray.py             # Overloads bytearray, so it uses *only* 8x more space, not >64x
-        ├─ fluidpythran.py         # Instead of Just-In-Time compiling, use the original function
-        ├─ gmpy2.py                # Replace with int, so we're only slightly slower at large values
-        ├─ numba.py                # Replace @jit with @boost from fluidpythran if possible, or nothing
-        └─ z3.py                   # Detects if installed and replaces Int() if needed
+  ├─LICENSE                   # License file
+  ├─README.rst                # Project readme
+  ├─update_from_overleaf.bat  # Script to update the repository from Overleaf ZIP and PDF
+  ├─update_from_overleaf.sh
+  ├─rendered.pdf              # Compiled PDF output of the Overleaf project
+  ├─src/                      # Directory containing the LaTeX source files
+  │ ├─main.tex                  # Main LaTeX file (the entry point for compiling)
+  │ ├─macros.tex                # LaTeX file that contains utility functions
+  │ ├─references.bib            # Bibliography file (uses BibTeX for citations)
+  │ ├─figures/                  # Directory for image files used
+  │ │ └─benchmark/                # Directory containing benchmark histograms
+  │ └─notes/                    # Directory for notes used in writing the paper
+  └─dev/                      # Directory with associated code
+    ├─__init__.py               # Utilities that let you collect different definitions
+    ├─args.py                   # A utility file that deals with command line argument parsing
+    ├─from_file.py              # A stub file that lets you print out a binary file
+    ├─test_seq.py               # A test file that allows you to check sequence equality
+    ├─p2/                       # Code representation of definitions in base 2
+    │ ├─__init__.py               # Empty file that allows this folder to be used as a module
+    │ └─d[0-9][0-9].py            # The file for def. [0-9][0-9] of the Thue-Morse Seq. for 2 players
+    ├─pn                        # Code representation of definitions in base n
+    │ ├─__init__.py
+    │ └─d[0-9][0-9].py            # The file for def. [0-9][0-9] of the Thue-Morse Seq. for n players
+    └─compat/                   # Where possible, replace functionality from missing libraries
+      ├─__init__.py
+      ├─bitarray.py               # Overloads bytearray, so it uses *only* 8x more space, not >64x
+      ├─fluidpythran.py           # Instead of Just-In-Time compiling, use the original function
+      ├─gmpy2.py                  # Replace with int, so we're only slightly slower at large values
+      ├─int.py                    # On older python versions, implement int.bit_count()
+      ├─numba.py                  # Replace @jit with @boost from fluidpythran if possible, or nothing
+      └─z3.py                     # Detects if installed and replaces Int() if needed
 
 Code Structure
 --------------
@@ -131,14 +131,9 @@ Performance
 Up to Seconds
 -------------
 
-.. image:: ./src/figures/benchmark/20241119_211228.svg
+.. image:: ./src/figures/benchmark/20241122_154339.svg
 
 Up to Milliseconds
 ------------------
 
-.. image:: ./src/figures/benchmark/20241119_211111.svg
-
-Up to Microseconds
-------------------
-
-.. image:: ./src/figures/benchmark/20241119_210152.svg
+.. image:: ./src/figures/benchmark/20241122_163356.svg

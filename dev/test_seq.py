@@ -1,5 +1,5 @@
 from functools import partial
-from itertools import combinations, product
+from itertools import combinations, islice, product
 from pathlib import Path
 from signal import SIGTERM, signal
 from typing import Any, List, Literal, Set, Tuple, Union
@@ -83,14 +83,14 @@ def test_benchmark(benchmark, c: str, n: int):
 
     def to_check():
         it = iterator(2)
-        result = [x for x, _ in zip(it, range(n))]
+        result = [*islice(it, n)]
         it.close()
         return result
 
     results = benchmark(to_check)
     comparison = "p2.d01" if cs != "p2.d01" else "p2.d02"
     iterator = get_iters(comparison)[0]
-    if results != [x for x, _ in zip(iterator(2), range(n))]:
+    if results != [*islice(iterator(2), n)]:
         raise ValueError()
 
 

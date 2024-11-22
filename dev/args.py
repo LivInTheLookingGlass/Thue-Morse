@@ -8,7 +8,7 @@ from math import ceil, floor, log, log2
 from pathlib import Path
 from struct import pack, unpack
 from sys import stdin, stdout
-from typing import IO, Callable, Generator, Optional, Tuple, Union
+from typing import IO, Callable, Generator, Literal, Optional, Tuple, Union
 
 import numpy as np
 
@@ -98,15 +98,18 @@ def run(
 
 
 @boost
-def get_write_obj(fname: str, mode: str) -> Union[BZ2File, GzipFile, LZMAFile, IO[bytes]]:
+def get_write_obj(
+    fname: str,
+    mode: Literal['r', 'rb', 'w', 'wb', 'a', 'ab', 'x', 'xb']
+) -> Union[BZ2File, GzipFile, LZMAFile, IO[bytes]]:
+    pname = Path(fname)
     if fname.endswith('.bz'):
         return BZ2File(fname, mode)
-    elif fname.endswith('.gz'):
-        return GzipFile(Path(fname), mode)
-    elif fname.endswith('.lz'):
-        return LZMAFile(Path(fname), mode)
-    else:
-        return Path(fname).open(mode)
+    if fname.endswith('.gz'):
+        return GzipFile(pname, mode)
+    if fname.endswith('.lz'):
+        return LZMAFile(pname, mode)
+    return pname.open(mode)
 
 
 @boost

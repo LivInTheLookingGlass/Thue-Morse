@@ -242,14 +242,14 @@ jobs:
           [67]-*)
             test_len=30
             ;;
-          [348]-*)
-            test_len=29
-            ;;
-          [25]-*)
+          [2348]-*)
             test_len=28
             ;;
+          5-*)
+            test_len=27
+            ;;
           9-*)
-            test_len=10
+            test_len=9
             ;;
           *)
             echo "Unknown definition; limit not set"

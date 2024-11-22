@@ -3,9 +3,11 @@ from atexit import register
 from enum import Enum, auto
 from itertools import chain, count
 from logging import INFO, FileHandler, StreamHandler, basicConfig, getLogger, shutdown
+from multiprocessing import Process
 from pathlib import Path
 from shelve import Shelf
 from shelve import open as shelf_open
+from typing import Dict, Tuple, Union
 
 from . import get_iters
 from .args import get_file_obj, process_file_output, struct_size
@@ -27,12 +29,21 @@ p2_defs = [int(p.name[1:-3]) for p in Path(__file__).parent.glob('p2/d*.py')]
 pn_defs = [int(p.name[1:-3]) for p in Path(__file__).parent.glob('pn/d*.py')]
 pn_defs.remove(1)
 all_defs = [('2', d) for d in p2_defs] + [('n', d) for d in pn_defs]
+always_spin_off = [('n', 1), ('2', 13), ('2', 15), ('n', 9)]
 
 
 class Operation(Enum):
     DUMP = auto()
     COMPARE = auto()
     CLEAN = auto()
+    SPINOFF = auto()
+    AWAIT = auto()
+
+
+DUMP_TYPE = Tuple[str, int, int, int]
+COMPARE_TYPE = Tuple[str, int, int, int, str, int]
+CLEAN_TYPE = Tuple[int]
+tasks: Dict[Tuple[Operation, Union[DUMP_TYPE, COMPARE_TYPE, CLEAN_TYPE]], Process] = {}
 
 
 @boost
@@ -45,6 +56,8 @@ def main(stop: int = (1 << 16), base_stop: int = 257) -> None:
         shelf['base_stop'] = base_stop
         if shelf.get('next_operation') is None:
             begin(shelf)
+        for job in shelf.get('spun_off', ()):
+            handle_spinoff(shelf, job)
         pending_loop(shelf)
 
 
@@ -52,19 +65,23 @@ def main(stop: int = (1 << 16), base_stop: int = 257) -> None:
 def begin(shelf: Shelf) -> None:
     stop = shelf['stop']
     base_stop = shelf['base_stop']
-    shelf['next_operation'] = (Operation.DUMP, ('n', 1, 2, stop))
+    shelf['next_operation'] = (Operation.SPINOFF, (Operation.DUMP, ('n', 1, 2, stop)))
     task_list = list(chain.from_iterable(
         [(Operation.DUMP, (kind, def_, 2, stop)), (Operation.COMPARE, (('n', 1, 2, stop, kind, def_)))]
         for kind, def_ in all_defs
     ))
+    task_list.insert(1, (Operation.AWAIT, (Operation.DUMP, ('n', 1, 2, stop))))
     task_list.append((Operation.CLEAN, (2, )))
     for base in range(3, base_stop):
-        task_list.append((Operation.DUMP, ('n', 1, base, stop)))
-        task_list.extend(chain.from_iterable(
+        new_list = []
+        new_list.append((Operation.SPINOFF, (Operation.DUMP, ('n', 1, base, stop))))
+        new_list.extend(chain.from_iterable(
             [(Operation.DUMP, ('n', def_, base, stop)), (Operation.COMPARE, (('n', 1, base, stop, 'n', def_)))]
             for def_ in pn_defs
         ))
-        task_list.append((Operation.CLEAN, (base, )))
+        new_list.insert(1, (Operation.AWAIT, (Operation.DUMP, ('n', 1, base, stop))))
+        new_list.append((Operation.CLEAN, (base, )))
+        task_list.extend(new_list)
     shelf['pending'] = task_list
     shelf.sync()
 
@@ -83,6 +100,12 @@ def pending_loop(shelf: Shelf) -> None:
         elif next_op == Operation.CLEAN:
             logger.info("Cleaning up base {}".format(*params))
             handle_clean(*params)
+        elif next_op == Operation.SPINOFF:
+            logger.info("Spinning off task: {}".format(params))
+            handle_spinoff(shelf, params)
+        elif next_op == Operation.AWAIT:
+            logger.info("Awaiting task: {}".format(params))
+            handle_await(shelf, params)
         else:
             error_str = f"Unknown next operation: ({next_op}, {params})"
             logger.error(error_str)
@@ -108,6 +131,7 @@ def handle_dump(kind: str, def_: int, base: int, stop: int) -> None:
     else:
         kind_str = ''
     process_file_output(args, get_iters(f'p{kind}.d{def_:02}')[0], kind, kind_str, def_)
+    logger.info("Dump Complete: kind={}, def={}, base={}, stop={}".format(kind, def_, base, stop))
 
 
 @boost
@@ -145,6 +169,37 @@ def handle_compare(kind1: str, def1: int, base: int, stop: int, kind2: str, def2
                 logger.error(error_str)
                 raise ValueError(error_str)
     Path(fname2).unlink()
+
+
+@boost
+def handle_spinoff(shelf: Shelf, job: Tuple[Operation, Tuple]) -> None:
+    task, params = job
+    if task == Operation.DUMP:
+        handle = handle_dump
+    else:
+        error_str = f"Spinning off non-dumps not supported. Got: {job}"
+        logger.error(error_str)
+        raise ValueError(error_str)
+    p = Process(
+        target=handle,
+        args=params,
+        daemon=True
+    )
+    tasks[job] = p
+    if 'spun_off' not in shelf:
+        shelf['spun_off'] = [job]
+    else:
+        shelf['spun_off'].append(job)
+    shelf.sync()
+    p.start()
+
+
+@boost
+def handle_await(shelf: Shelf, job: Tuple[Operation, Tuple]) -> None:
+    p = tasks[job]
+    p.join()
+    if job in shelf.get('spun_off', []):
+        shelf['spun_off'].remove(job)
 
 
 if __name__ == '__main__':

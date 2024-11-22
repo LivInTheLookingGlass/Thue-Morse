@@ -11,7 +11,8 @@ from ..compat.fluidpythran import boost
 def pn_d03(n: int = 2) -> Iterator[int]:
     dtype = np_select_type(n)
     seq = np.arange(n, dtype=dtype)
-    yield from seq
+    for i in seq:
+        yield int(i)
     prev_len = len(seq)
     while True:
         seq = np.concatenate([seq, np.fromiter(chain.from_iterable((seq + i) % n for i in range(1, n)), dtype=dtype)])

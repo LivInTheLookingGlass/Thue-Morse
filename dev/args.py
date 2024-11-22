@@ -98,7 +98,7 @@ def run(
 
 
 @boost
-def get_write_obj(
+def get_file_obj(
     fname: str,
     mode: Literal['r', 'rb', 'w', 'wb', 'a', 'ab', 'x', 'xb']
 ) -> Union[BZ2File, GzipFile, LZMAFile, IO[bytes]]:
@@ -117,7 +117,7 @@ def process_file_input(args: Namespace):
     if args.file == 'stdin':
         f_obj = stdin.buffer
     else:
-        f_obj = get_write_obj(args.file, 'rb')
+        f_obj = get_file_obj(args.file, 'rb')
 
     try:
         _kind, def_, p, entries = unpack(struct_format, f_obj.read(struct_size))
@@ -170,7 +170,7 @@ def process_file_output(
         print(f"Selected p{kind}_d{num:02} for {args.n} entries ({human_readable_bytes(total_bytes)})")
     stdout.flush()
 
-    with get_write_obj(args.file, 'wb') as f:
+    with get_file_obj(args.file, 'wb') as f:
         f.write(pack(struct_format, kind == '2', num - 1, args.p - 2, args.n - 1))
         for group in batched(zip(range(args.n), func(args.p)), batch_size):
             batch = [y for _, y in group]

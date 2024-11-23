@@ -36,7 +36,7 @@ def rotate(t: bitarray, n: int) -> bitarray:
 def rotate(t, n: int):
     if n:
         if isinstance(t, np.ndarray):
-            return np.concat((t[n:], t[:n]))
+            return np.concatenate((t[n:], t[:n]))
         return t[n:] + t[:n]
     return t
 

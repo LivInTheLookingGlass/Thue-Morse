@@ -11,7 +11,6 @@ from shelve import Shelf
 from shelve import open as shelf_open
 from sys import stdout
 from time import sleep
-from uuid import uuid4
 from typing import Dict, Tuple, Union
 
 from . import get_iters
@@ -49,6 +48,10 @@ DUMP_TYPE = Tuple[str, int, int, int]
 COMPARE_TYPE = Tuple[str, int, int, int, str, int]
 CLEAN_TYPE = Tuple[int]
 tasks: Dict[Tuple[Operation, Union[DUMP_TYPE, COMPARE_TYPE, CLEAN_TYPE]], Tuple[SharedMemory, Process]] = {}
+
+
+def get_fname(kind: str, def_: int, base: int, stop: int) -> str:
+    return f'work/p{kind}.d{def_:02}.{base}.{stop}.bin.gz'
 
 
 @boost
@@ -140,7 +143,7 @@ def handle_dump(kind: str, def_: int, base: int, stop: int) -> None:
     args = Namespace()
     args.n = stop
     args.p = base
-    args.file = f'work/p{kind}.d{def_:02}.{base}.{stop}.bin.gz'
+    args.file = get_fname(kind, def_, base, stop)
     args.quiet = True
     if kind == 'n':
         kind_str = f' ({def_} selected)'
@@ -159,31 +162,37 @@ def handle_clean(base: int) -> None:
 @boost
 def handle_compare(kind1: str, def1: int, base: int, stop: int, kind2: str, def2: int) -> None:
     chunk_size = 1 << 20
-    fname1 = f'work/p{kind1}.d{def1:02}.{base}.{stop}.bin.gz'
-    fname2 = f'work/p{kind2}.d{def2:02}.{base}.{stop}.bin.gz'
-    with get_file_obj(fname1, 'rb') as f1, get_file_obj(fname2, 'rb') as f2:
-        f1.seek(struct_size)
-        f2.seek(struct_size)
+    fname1 = get_fname(kind1, def1, base, stop)
+    fname2 = get_fname(kind2, def2, base, stop)
+    for attempt in [1, 2]:
+        with get_file_obj(fname1, 'rb') as f1, get_file_obj(fname2, 'rb') as f2:
+            f1.seek(struct_size)
+            f2.seek(struct_size)
 
-        chunk1 = f1.read(chunk_size - struct_size)
-        chunk2 = f2.read(chunk_size - struct_size)
-        if chunk1 != chunk2:
-            error_str = f"Files differ in first chunk of {chunk_size} bytes"
-            logger.error(error_str)
-            raise ValueError(error_str)
-
-        for idx in count(1):
-            chunk1 = f1.read(chunk_size)
-            chunk2 = f2.read(chunk_size)
-
-            if not chunk1 and not chunk2:
-                logger.info("Compare success! No difference in output")
-                break  # Files match
-
+            chunk1 = f1.read(chunk_size - struct_size)
+            chunk2 = f2.read(chunk_size - struct_size)
             if chunk1 != chunk2:
-                error_str = f"Files differ at chunk {idx} (chunk size = {chunk_size})"
+                error_str = f"Files differ in first chunk of {chunk_size} bytes"
                 logger.error(error_str)
+                if attempt == 1:
+                    logger.info("Trying again in 5 seconds")
+                    sleep(5)
+                    continue
                 raise ValueError(error_str)
+
+            for idx in count(1):
+                chunk1 = f1.read(chunk_size)
+                chunk2 = f2.read(chunk_size)
+
+                if not chunk1 and not chunk2:
+                    logger.info("Compare success! No difference in output")
+                    break  # Files match
+
+                if chunk1 != chunk2:
+                    error_str = f"Files differ at chunk {idx} (chunk size = {chunk_size})"
+                    logger.error(error_str)
+                    raise ValueError(error_str)
+        break
     Path(fname2).unlink()
 
 
@@ -209,7 +218,7 @@ def spinoff_worker(output: str, job: Tuple[Operation, Tuple]) -> None:
 
 @boost
 def handle_spinoff(shelf: Shelf, job: Tuple[Operation, Tuple]) -> None:
-    output = SharedMemory(name=str(uuid4()), create=True, size=(1 << 16))
+    output = SharedMemory(create=True, size=(1 << 16))
     p = Process(
         target=spinoff_worker,
         args=(output.name, job)
@@ -226,15 +235,18 @@ def handle_spinoff(shelf: Shelf, job: Tuple[Operation, Tuple]) -> None:
 @boost
 def handle_await(shelf: Shelf, job: Tuple[Operation, Tuple]) -> None:
     output, p = tasks[job]
-    breakpoint()
     while p.is_alive():
         print(output.buf.tobytes().strip(b'\x00').decode(), end='\r')
         stdout.flush()
         sleep(0.1)
     p.join()
+    if p.exitcode:
+        error_str = f'Child process failed! Exit code {p.exitcode} on {job}'
+        logger.error(error_str)
+        raise RuntimeError(error_str)
+    del tasks[job]
     output.close()
     output.unlink()
-    del tasks[job]
     if job in shelf.get('spun_off', []):
         shelf['spun_off'].remove(job)
         shelf.sync()

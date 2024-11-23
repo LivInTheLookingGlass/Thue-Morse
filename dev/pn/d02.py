@@ -9,7 +9,7 @@ from ..compat.numba import jit
 from .d01 import get_p
 
 
-@jit
+@jit(nopython=True)
 def closest_root(target: complex, roots: 'np.typing.NDArray[np.complex64]') -> int:
     distances = np.abs(roots - target)  # vectorized
     return int(np.argmin(distances))

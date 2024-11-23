@@ -6,7 +6,7 @@ from ..compat.fluidpythran import boost
 from ..compat.numba import jit
 
 
-@jit
+@jit(nopython=True)
 def A001317(n: int) -> int:
     exp_2_k = 1
     binomial_coeff = 1
@@ -20,7 +20,7 @@ def A001317(n: int) -> int:
     return partial_sum
 
 
-@jit
+@jit(nopython=True)
 def A193231(i: int) -> int:
     ret = 0
     idx = 0

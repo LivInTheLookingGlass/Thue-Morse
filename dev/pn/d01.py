@@ -20,7 +20,7 @@ def get_p(n: int) -> Callable[[int, int], int]:
     raise ValueError("Invalid base")
 
 
-@jit
+@jit(nopython=True)
 def pip(x: int, n: int):
     """Digit sum for positive integer bases"""
     digit_sum = 0
@@ -30,7 +30,7 @@ def pip(x: int, n: int):
     return digit_sum % n
 
 
-@jit
+@jit(nopython=True)
 def pin(x: int, n: int):
     """Digit sum for negative integer bases"""
     digit_sum = 0

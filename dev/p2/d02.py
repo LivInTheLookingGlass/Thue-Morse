@@ -12,7 +12,7 @@ from ..compat.int import bit_count
 from ..compat.numba import jit
 
 
-@jit
+@jit(nopython=True)
 def compute(bc: int) -> int:
     return (1 - (-1)**bc) >> 1
 

@@ -11,7 +11,7 @@ from ..compat.fluidpythran import boost
 from ..compat.numba import jit
 
 
-@jit
+@jit(nopython=True)
 def xor_in_n(a, b, n):
     if a < 1:
         return b
@@ -29,7 +29,7 @@ def xor_in_n(a, b, n):
     return res
 
 
-@jit
+@jit(nopython=True)
 def xor_wrapper(x: int, n: int, value: int) -> int:
     xored = xor_in_n(x, (x - 1), n)
     lx = -1

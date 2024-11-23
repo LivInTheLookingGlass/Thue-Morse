@@ -180,7 +180,7 @@ def process_file_output(
                     print(x, "", end='')
             else:
                 thus_far = group[-1][0] + 1
-                print(f"{thus_far:,} of {args.n:,} ({thus_far / args.n:.1%})...", end="\r")
+                stdout.write(f"{thus_far:,} of {args.n:,} ({thus_far / args.n:.1%})...\r")
             stdout.flush()
 
             if len(batch) != batch_size:
@@ -190,4 +190,4 @@ def process_file_output(
                 reversed(batch)
             ).to_bytes(batch_bytes, 'big')
             f.write(to_write)
-            # f.flush()
+        f.flush()

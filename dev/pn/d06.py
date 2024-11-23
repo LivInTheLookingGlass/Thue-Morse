@@ -11,7 +11,7 @@ from ..compat.fluidpythran import boost
 from ..compat.numba import jit
 
 
-@jit
+@jit(nopython=True)
 def T(x: int, n: int) -> int:
     if x == 0:
         return 0

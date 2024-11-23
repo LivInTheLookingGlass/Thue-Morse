@@ -1,6 +1,5 @@
 from argparse import Namespace
 from atexit import register
-from ctypes import c_wchar_p
 from enum import Enum, auto
 from itertools import chain, count
 from logging import INFO, FileHandler, StreamHandler, basicConfig, getLogger, shutdown
@@ -11,7 +10,7 @@ from shelve import Shelf
 from shelve import open as shelf_open
 from sys import stdout
 from time import sleep
-from typing import Dict, Tuple, Union
+from typing import Dict, List, Literal, Tuple, Union
 
 from . import get_iters
 from .args import get_file_obj, process_file_output, struct_size
@@ -47,7 +46,16 @@ class Operation(Enum):
 DUMP_TYPE = Tuple[str, int, int, int]
 COMPARE_TYPE = Tuple[str, int, int, int, str, int]
 CLEAN_TYPE = Tuple[int]
-tasks: Dict[Tuple[Operation, Union[DUMP_TYPE, COMPARE_TYPE, CLEAN_TYPE]], Tuple[SharedMemory, Process]] = {}
+SPINOFF_AWAIT_TYPE = Union[
+    Tuple[Literal[Operation.DUMP], DUMP_TYPE],
+    Tuple[Literal[Operation.COMPARE], COMPARE_TYPE],
+    Tuple[Literal[Operation.CLEAN], CLEAN_TYPE]
+]
+ANY_JOB_TYPE = Union[
+    SPINOFF_AWAIT_TYPE,
+    Tuple[Literal[Operation.SPINOFF, Operation.AWAIT], SPINOFF_AWAIT_TYPE]
+]
+tasks: Dict[Tuple[Literal[Operation.SPINOFF], SPINOFF_AWAIT_TYPE], Tuple[SharedMemory, Process]] = {}
 
 
 def get_fname(kind: str, def_: int, base: int, stop: int) -> str:
@@ -71,10 +79,10 @@ def main(stop: int = (1 << 16), base_stop: int = 257) -> None:
 
 @boost
 def begin(shelf: Shelf) -> None:
-    stop = shelf['stop']
-    base_stop = shelf['base_stop']
+    stop: int = shelf['stop']
+    base_stop: int = shelf['base_stop']
     shelf['next_operation'] = (Operation.SPINOFF, (Operation.DUMP, ('n', 1, 2, stop)))
-    task_list = list(chain.from_iterable(
+    task_list: List[ANY_JOB_TYPE] = list(chain.from_iterable(
         [(Operation.DUMP, (kind, def_, 2, stop)), (Operation.COMPARE, (('n', 1, 2, stop, kind, def_)))]
         for kind, def_ in all_defs
         if (kind, def_) not in always_spin_off
@@ -86,7 +94,7 @@ def begin(shelf: Shelf) -> None:
         task_list.append((Operation.COMPARE, ('n', 1, 2, stop, kind, def_)))
     task_list.append((Operation.CLEAN, (2, )))
     for base in range(3, base_stop):
-        new_list = []
+        new_list: List[ANY_JOB_TYPE] = []
         new_list.append((Operation.SPINOFF, (Operation.DUMP, ('n', 1, base, stop))))
         new_list.extend(chain.from_iterable(
             [(Operation.DUMP, ('n', def_, base, stop)), (Operation.COMPARE, (('n', 1, base, stop, 'n', def_)))]
@@ -95,7 +103,8 @@ def begin(shelf: Shelf) -> None:
         ))
         new_list.insert(1, (Operation.AWAIT, (Operation.DUMP, ('n', 1, base, stop))))
         for idx, (kind, def_) in enumerate(always_spin_off, start=1):
-            if kind == '2': continue
+            if kind == '2':
+                continue
             new_list.insert(idx * 2 + 1, (Operation.SPINOFF, (Operation.DUMP, (kind, def_, base, stop))))
             new_list.append((Operation.AWAIT, (Operation.DUMP, (kind, def_, base, stop))))
             new_list.append((Operation.COMPARE, ('n', 1, base, stop, kind, def_)))
@@ -131,10 +140,7 @@ def pending_loop(shelf: Shelf) -> None:
             raise ValueError(error_str)
 
         # set up next op
-        if shelf['pending']:
-            shelf['next_operation'], *shelf['pending'] = shelf['pending']
-        else:
-            shelf['next_operation'] = None
+        shelf['next_operation'], *shelf['pending'] = shelf.get('pending', [None])
         shelf.sync()
 
 
@@ -201,7 +207,12 @@ def spinoff_worker(output: str, job: Tuple[Operation, Tuple]) -> None:
     import sys
     try:
         shared_mem = SharedMemory(name=output)
-        sys.stdout.write = RedirectStdoutToValue(shared_mem)
+
+        def write(message: str):
+            shared_mem.buf[:] = message.rstrip('\r').encode().ljust(shared_mem.size, b'\00')
+
+        # this is a hack, but it works
+        sys.stdout.write = write  # type: ignore
 
         task, params = job
         if task == Operation.DUMP:
@@ -217,7 +228,7 @@ def spinoff_worker(output: str, job: Tuple[Operation, Tuple]) -> None:
 
 
 @boost
-def handle_spinoff(shelf: Shelf, job: Tuple[Operation, Tuple]) -> None:
+def handle_spinoff(shelf: Shelf, job: Tuple[Literal[Operation.SPINOFF], SPINOFF_AWAIT_TYPE]) -> None:
     output = SharedMemory(create=True, size=(1 << 16))
     p = Process(
         target=spinoff_worker,
@@ -233,7 +244,7 @@ def handle_spinoff(shelf: Shelf, job: Tuple[Operation, Tuple]) -> None:
 
 
 @boost
-def handle_await(shelf: Shelf, job: Tuple[Operation, Tuple]) -> None:
+def handle_await(shelf: Shelf, job: Tuple[Literal[Operation.SPINOFF], SPINOFF_AWAIT_TYPE]) -> None:
     output, p = tasks[job]
     while p.is_alive():
         print(output.buf.tobytes().strip(b'\x00').decode(), end='\r')
@@ -250,13 +261,6 @@ def handle_await(shelf: Shelf, job: Tuple[Operation, Tuple]) -> None:
     if job in shelf.get('spun_off', []):
         shelf['spun_off'].remove(job)
         shelf.sync()
-
-
-def RedirectStdoutToValue(progress_value: SharedMemory):
-    def write(message: str):
-        progress_value.buf[:] = message.rstrip('\r').encode().ljust(progress_value.size, b'\00')
-
-    return write
 
 
 if __name__ == '__main__':

@@ -29,8 +29,8 @@ basicConfig(
 logger = getLogger(__name__)
 register(shutdown)
 
-p2_defs = [int(p.name[1:-3]) for p in Path(__file__).parent.glob('p2/d*.py')]
-pn_defs = [int(p.name[1:-3]) for p in Path(__file__).parent.glob('pn/d*.py')]
+p2_defs = sorted(int(p.name[1:-3]) for p in Path(__file__).parent.glob('p2/d*.py'))
+pn_defs = sorted(int(p.name[1:-3]) for p in Path(__file__).parent.glob('pn/d*.py'))
 pn_defs.remove(1)
 all_defs = [('2', d) for d in p2_defs] + [('n', d) for d in pn_defs]
 always_spin_off = [('n', 1), ('2', 13), ('2', 15), ('n', 9)]

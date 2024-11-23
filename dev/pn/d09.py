@@ -2,7 +2,10 @@ from functools import reduce
 from operator import mul
 from typing import Iterator
 
-from symengine import I, exp, expand, log, pi, symbols
+try:
+    from symengine import I, exp, expand, log, pi, symbols
+except ImportError:
+    from sympy import I, exp, expand, log, pi, symbols
 
 from ..args import run
 from ..compat.fluidpythran import boost

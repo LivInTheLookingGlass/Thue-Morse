@@ -5,11 +5,13 @@ from enum import Enum, auto
 from itertools import chain, count
 from logging import INFO, FileHandler, StreamHandler, basicConfig, getLogger, shutdown
 from multiprocessing import Process
-from multiprocessing.sharedctypes import Value
+from multiprocessing.shared_memory import SharedMemory
 from pathlib import Path
 from shelve import Shelf
 from shelve import open as shelf_open
+from sys import stdout
 from time import sleep
+from uuid import uuid4
 from typing import Dict, Tuple, Union
 
 from . import get_iters
@@ -17,9 +19,9 @@ from .args import get_file_obj, process_file_output, struct_size
 from .compat.fluidpythran import boost
 
 basicConfig(
-    level=INFO, 
-    format='[%(asctime)s] %(message)s', 
-    datefmt='%Y-%m-%d %H:%M:%S', 
+    level=INFO,
+    format='[%(asctime)s] %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S',
     handlers=[
         StreamHandler(),
         FileHandler('comparisons.log', mode='a')
@@ -46,7 +48,7 @@ class Operation(Enum):
 DUMP_TYPE = Tuple[str, int, int, int]
 COMPARE_TYPE = Tuple[str, int, int, int, str, int]
 CLEAN_TYPE = Tuple[int]
-tasks: Dict[Tuple[Operation, Union[DUMP_TYPE, COMPARE_TYPE, CLEAN_TYPE]], Tuple[Value, Process]] = {}
+tasks: Dict[Tuple[Operation, Union[DUMP_TYPE, COMPARE_TYPE, CLEAN_TYPE]], Tuple[SharedMemory, Process]] = {}
 
 
 @boost
@@ -72,8 +74,13 @@ def begin(shelf: Shelf) -> None:
     task_list = list(chain.from_iterable(
         [(Operation.DUMP, (kind, def_, 2, stop)), (Operation.COMPARE, (('n', 1, 2, stop, kind, def_)))]
         for kind, def_ in all_defs
+        if (kind, def_) not in always_spin_off
     ))
     task_list.insert(1, (Operation.AWAIT, (Operation.DUMP, ('n', 1, 2, stop))))
+    for idx, (kind, def_) in enumerate(always_spin_off, start=1):
+        task_list.insert(idx * 2 + 1, (Operation.SPINOFF, (Operation.DUMP, (kind, def_, 2, stop))))
+        task_list.append((Operation.AWAIT, (Operation.DUMP, (kind, def_, 2, stop))))
+        task_list.append((Operation.COMPARE, ('n', 1, 2, stop, kind, def_)))
     task_list.append((Operation.CLEAN, (2, )))
     for base in range(3, base_stop):
         new_list = []
@@ -81,8 +88,14 @@ def begin(shelf: Shelf) -> None:
         new_list.extend(chain.from_iterable(
             [(Operation.DUMP, ('n', def_, base, stop)), (Operation.COMPARE, (('n', 1, base, stop, 'n', def_)))]
             for def_ in pn_defs
+            if ('n', def_) not in always_spin_off
         ))
         new_list.insert(1, (Operation.AWAIT, (Operation.DUMP, ('n', 1, base, stop))))
+        for idx, (kind, def_) in enumerate(always_spin_off, start=1):
+            if kind == '2': continue
+            new_list.insert(idx * 2 + 1, (Operation.SPINOFF, (Operation.DUMP, (kind, def_, base, stop))))
+            new_list.append((Operation.AWAIT, (Operation.DUMP, (kind, def_, base, stop))))
+            new_list.append((Operation.COMPARE, ('n', 1, base, stop, kind, def_)))
         new_list.append((Operation.CLEAN, (base, )))
         task_list.extend(new_list)
     shelf['pending'] = task_list
@@ -175,28 +188,31 @@ def handle_compare(kind1: str, def1: int, base: int, stop: int, kind2: str, def2
 
 
 @boost
-def spinoff_worker(output: Value, job: Tuple[Operation, Tuple]) -> None:
+def spinoff_worker(output: str, job: Tuple[Operation, Tuple]) -> None:
     import sys
-    sys.stdout = RedirectStdoutToValue(output)
+    try:
+        shared_mem = SharedMemory(name=output)
+        sys.stdout.write = RedirectStdoutToValue(shared_mem)
 
-    task, params = job
-    if task == Operation.DUMP:
-        handle = handle_dump
-    else:
-        error_str = f"Spinning off non-dumps not yet supported. Got: {job}"
-        logger.error(error_str)
-        raise ValueError(error_str)
+        task, params = job
+        if task == Operation.DUMP:
+            handle = handle_dump
+        else:
+            error_str = f"Spinning off non-dumps not yet supported. Got: {job}"
+            logger.error(error_str)
+            raise ValueError(error_str)
 
-    handle(*params)
+        handle(*params)
+    finally:
+        shared_mem.close()
 
 
 @boost
 def handle_spinoff(shelf: Shelf, job: Tuple[Operation, Tuple]) -> None:
-    output = Value(c_wchar_p, '')
+    output = SharedMemory(name=str(uuid4()), create=True, size=(1 << 16))
     p = Process(
         target=spinoff_worker,
-        args=(output, job),
-        daemon=True
+        args=(output.name, job)
     )
     tasks[job] = (output, p)
     if 'spun_off' not in shelf:
@@ -210,26 +226,25 @@ def handle_spinoff(shelf: Shelf, job: Tuple[Operation, Tuple]) -> None:
 @boost
 def handle_await(shelf: Shelf, job: Tuple[Operation, Tuple]) -> None:
     output, p = tasks[job]
+    breakpoint()
     while p.is_alive():
-        print(output.value, end='')
+        print(output.buf.tobytes().strip(b'\x00').decode(), end='\r')
+        stdout.flush()
         sleep(0.1)
     p.join()
+    output.close()
+    output.unlink()
+    del tasks[job]
     if job in shelf.get('spun_off', []):
         shelf['spun_off'].remove(job)
+        shelf.sync()
 
 
-class RedirectStdoutToValue:
-    def __init__(self, progress_value: Value):
-        self.progress_value = progress_value
+def RedirectStdoutToValue(progress_value: SharedMemory):
+    def write(message: str):
+        progress_value.buf[:] = message.rstrip('\r').encode().ljust(progress_value.size, b'\00')
 
-    def write(self, message: str):
-        # This method will be called every time print() is called
-        if message != '\n':  # Prevent empty newlines from being captured
-            self.progress_value.value = c_wchar_p(message)
-
-    def flush(self):
-        # Necessary for compatibility with sys.stdout (required by print)
-        pass
+    return write
 
 
 if __name__ == '__main__':

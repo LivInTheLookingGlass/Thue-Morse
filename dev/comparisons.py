@@ -1,4 +1,4 @@
-from argparse import Namespace
+from argparse import ArgumentParser, Namespace
 from atexit import register
 from enum import Enum, auto
 from itertools import chain, count
@@ -140,7 +140,7 @@ def pending_loop(shelf: Shelf) -> None:
             raise ValueError(error_str)
 
         # set up next op
-        shelf['next_operation'], *shelf['pending'] = shelf.get('pending', [None])
+        shelf['next_operation'], *shelf['pending'] = shelf.get('pending') or [None]
         shelf.sync()
 
 
@@ -171,35 +171,42 @@ def handle_compare(kind1: str, def1: int, base: int, stop: int, kind2: str, def2
     fname1 = get_fname(kind1, def1, base, stop)
     fname2 = get_fname(kind2, def2, base, stop)
     for attempt in [1, 2]:
-        with get_file_obj(fname1, 'rb') as f1, get_file_obj(fname2, 'rb') as f2:
-            f1.seek(struct_size)
-            f2.seek(struct_size)
+        try:
+            with get_file_obj(fname1, 'rb') as f1, get_file_obj(fname2, 'rb') as f2:
+                f1.seek(struct_size)
+                f2.seek(struct_size)
 
-            chunk1 = f1.read(chunk_size - struct_size)
-            chunk2 = f2.read(chunk_size - struct_size)
-            if chunk1 != chunk2:
-                error_str = f"Files differ in first chunk of {chunk_size} bytes"
-                logger.error(error_str)
-                if attempt == 1:
-                    logger.info("Trying again in 5 seconds")
-                    sleep(5)
-                    continue
-                raise ValueError(error_str)
-
-            for idx in count(1):
-                chunk1 = f1.read(chunk_size)
-                chunk2 = f2.read(chunk_size)
-
-                if not chunk1 and not chunk2:
-                    logger.info("Compare success! No difference in output")
-                    break  # Files match
-
+                chunk1 = f1.read(chunk_size - struct_size)
+                chunk2 = f2.read(chunk_size - struct_size)
                 if chunk1 != chunk2:
-                    error_str = f"Files differ at chunk {idx} (chunk size = {chunk_size})"
+                    error_str = f"Files differ in first chunk of {chunk_size} bytes"
                     logger.error(error_str)
+                    if attempt == 1:
+                        raise FileNotFoundError(error_str)
                     raise ValueError(error_str)
-        break
-    Path(fname2).unlink()
+
+                for idx in count(1):
+                    chunk1 = f1.read(chunk_size)
+                    chunk2 = f2.read(chunk_size)
+
+                    if not chunk1 and not chunk2:
+                        logger.info("Compare success! No difference in output")
+                        break  # Files match
+
+                    if chunk1 != chunk2:
+                        error_str = f"Files differ at chunk {idx} (chunk size = {chunk_size})"
+                        logger.error(error_str)
+                        raise ValueError(error_str)
+            break
+        except FileNotFoundError as e:
+            error_str = f"File not found: {e.args}"
+            logger.error(error_str)
+            if attempt == 1:
+                logger.info("Trying again in 5 seconds")
+                sleep(5)
+                continue
+            else:
+                raise
 
 
 @boost
@@ -264,4 +271,9 @@ def handle_await(shelf: Shelf, job: Tuple[Literal[Operation.SPINOFF], SPINOFF_AW
 
 
 if __name__ == '__main__':
-    main()
+    parser = ArgumentParser()
+    parser.add_argument('n', type=int, help='The number of values to test', default=(1 << 15), nargs='?')
+    parser.add_argument('p', type=int, help='The maximum number of players to test against', default=256, nargs='?')
+    args = parser.parse_args()
+
+    main(args.n, args.p + 1)

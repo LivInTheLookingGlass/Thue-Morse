@@ -20,7 +20,7 @@ def T(n: int) -> int:
 
 @boost
 def p2_d06(_: int = 2) -> Iterator[int]:
-    return map(T, count())
+    yield from map(T, count())
 
 
 def to_z3(_: Union[int, 'Int'] = 2) -> 'RecFunction':

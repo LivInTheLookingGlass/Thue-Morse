@@ -21,7 +21,7 @@ def T(x: int, n: int) -> int:
 
 @boost
 def pn_d06(n: int = 2) -> Iterator[int]:
-    return map(partial(T, n=n), count())
+    yield from map(partial(T, n=n), count())
 
 
 def to_z3(s: Union[int, 'Int'] = 2) -> 'RecFunction':

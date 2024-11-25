@@ -47,7 +47,7 @@ def pin(x: int, n: int):
 
 @boost
 def pn_d01(n: int = 2) -> Iterator[int]:
-    return map(get_p(n), count())
+    yield from map(get_p(n), count())
 
 
 def to_z3(s: Union[int, 'Int'] = 2) -> 'RecFunction':

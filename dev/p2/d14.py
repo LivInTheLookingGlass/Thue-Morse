@@ -34,7 +34,7 @@ def A193231(i: int) -> int:
 
 @boost
 def p2_d14(_: int = 2) -> Iterator[int]:
-    return map(A193231, count())
+    yield from map(A193231, count())
 
 
 if __name__ == '__main__':

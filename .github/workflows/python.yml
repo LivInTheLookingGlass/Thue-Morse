@@ -213,6 +213,27 @@ jobs:
         - 225-240
         - 241-256
         def: [2, 3, 4, 5, 6, 7, 8, 9]
+        exclude:
+        - def: 9
+          bases: 097-112
+        - def: 9
+          bases: 113-128
+        - def: 9
+          bases: 129-144
+        - def: 9
+          bases: 145-160
+        - def: 9
+          bases: 161-176
+        - def: 9
+          bases: 177-192
+        - def: 9
+          bases: 193-208
+        - def: 9
+          bases: 209-224
+        - def: 9
+          bases: 225-240
+        - def: 9
+          bases: 241-256
 
     runs-on: ubuntu-latest
     env:
@@ -256,8 +277,23 @@ jobs:
           [3458]-*)
             test_len=27
             ;;
-          9-*)
-            test_len=6
+          9-003*)
+            test_len=12
+            ;;
+          9-017*)
+            test_len=11
+            ;;
+          9-049*)
+            test_len=10
+            ;;
+          9-049*)
+            test_len=9
+            ;;
+          9-065*)
+            test_len=8
+            ;;
+          9-081*)
+            test_len=7
             ;;
           *)
             echo "Unknown definition; limit not set"

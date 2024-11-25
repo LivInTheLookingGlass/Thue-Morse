@@ -3,7 +3,7 @@ from collections import deque
 from itertools import count
 from multiprocessing import cpu_count
 from multiprocessing.pool import ApplyResult, Pool
-from typing import Deque, Iterator, Optional, Union
+from typing import Deque, Generator, Optional, Union
 
 try:
     from z3 import If, Int, IntSort, RecAddDefinition, RecFunction
@@ -44,7 +44,7 @@ def gould(n: int) -> int:
 
 
 @boost
-def p2_d13(_: int = 2) -> Iterator[int]:
+def p2_d13(_: int = 2) -> Generator[int, None, None]:
     queue: Deque[ApplyResult[int]] = deque(maxlen=max_size)
     ensure_pool()
     global pool

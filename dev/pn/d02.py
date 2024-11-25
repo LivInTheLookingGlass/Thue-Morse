@@ -1,5 +1,5 @@
 from itertools import count
-from typing import Iterator
+from typing import Generator
 
 import numpy as np
 
@@ -16,12 +16,11 @@ def closest_root(target: complex, roots: 'np.typing.NDArray[np.complex64]') -> i
 
 
 @boost
-def pn_d02(n: int = 2) -> Iterator[int]:
+def pn_d02(n: int = 2) -> Generator[int, None, None]:
     p = get_p(n)
     roots = np.exp(1j * np.linspace(0, 2 * np.pi, abs(n), endpoint=False, dtype=np.complex64))  # vectorized
     primitive_root = roots[1]
-    for x in count():
-        yield closest_root(primitive_root**p(x, n), roots)
+    yield from map(lambda x: closest_root(primitive_root**p(x, n), roots), count())
 
 
 if __name__ == '__main__':

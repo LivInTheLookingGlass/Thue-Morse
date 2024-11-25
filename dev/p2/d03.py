@@ -1,4 +1,4 @@
-from typing import Iterator, Union
+from typing import Generator, Union
 
 try:
     from z3 import (Concat, If, Int, IntSort, Length, RecAddDefinition, RecFunction, String, StringSort, StringVal,
@@ -12,7 +12,7 @@ from ..compat.fluidpythran import boost
 
 
 @boost
-def p2_d03(_: int = 2) -> Iterator[int]:
+def p2_d03(_: int = 2) -> Generator[int, None, None]:
     seq: bitarray = bitarray((0, 1))
     yield from seq
     while True:

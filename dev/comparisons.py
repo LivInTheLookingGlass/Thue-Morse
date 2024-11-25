@@ -1,7 +1,7 @@
 from argparse import ArgumentParser, Namespace
 from atexit import register
 from enum import Enum, auto
-from itertools import chain, count
+from itertools import chain
 from logging import INFO, FileHandler, StreamHandler, basicConfig, getLogger, shutdown
 from multiprocessing import Process
 from multiprocessing.shared_memory import SharedMemory
@@ -14,7 +14,7 @@ from time import sleep
 from typing import Dict, List, Literal, Tuple, Union
 
 from . import get_iters
-from .args import get_file_obj, process_file_input, process_file_output, struct_size
+from .args import process_file_input, process_file_output
 from .compat.fluidpythran import boost
 
 basicConfig(
@@ -168,12 +168,14 @@ def handle_clean(base: int) -> None:
 
 @boost
 def handle_compare(kind1: str, def1: int, base: int, stop: int, kind2: str, def2: int) -> None:
-    chunk_size = 1 << 20
     fname1 = get_fname(kind1, def1, base, stop)
     fname2 = get_fname(kind2, def2, base, stop)
     for attempt in [1, 2]:
         try:
-            for idx, (v1, v2) in enumerate(zip(process_file_input(Namespace(file=fname1), True), process_file_input(Namespace(file=fname2), True))):
+            for idx, (v1, v2) in enumerate(zip(
+                process_file_input(Namespace(file=fname1), True),
+                process_file_input(Namespace(file=fname2), True))
+            ):
                 if v1 != v2:
                     raise ValueError(f"Mismatch at T({idx})! {v1} ≠ {v2}")
         except (FileNotFoundError, StructError, ValueError) as e:

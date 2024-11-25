@@ -1,5 +1,6 @@
+from functools import partial
 from itertools import count
-from typing import Callable, Iterator, Union
+from typing import Callable, Generator, Union
 
 try:
     from z3 import If, Int, IntSort, RecAddDefinition, RecFunction
@@ -46,8 +47,8 @@ def pin(x: int, n: int):
 
 
 @boost
-def pn_d01(n: int = 2) -> Iterator[int]:
-    yield from map(get_p(n), count())
+def pn_d01(n: int = 2) -> Generator[int, None, None]:
+    yield from map(partial(get_p(n), n=n), count())
 
 
 def to_z3(s: Union[int, 'Int'] = 2) -> 'RecFunction':

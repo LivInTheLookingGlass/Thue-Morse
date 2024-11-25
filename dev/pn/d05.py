@@ -1,5 +1,5 @@
 from itertools import chain, islice
-from typing import Iterator, Union
+from typing import Generator, Union
 
 import numpy as np
 
@@ -15,7 +15,7 @@ from ..p2.d05 import rotate
 
 
 @boost
-def pn_d05(n: int = 2) -> Iterator[int]:
+def pn_d05(n: int = 2) -> Generator[int, None, None]:
     dtype = np_select_type(n)
     seq = np.arange(n, dtype=dtype)
     prev_len = 0

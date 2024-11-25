@@ -1,5 +1,5 @@
 from itertools import count
-from typing import Iterator, Union
+from typing import Generator, Union
 
 try:
     from z3 import If, Int, IntSort, RecAddDefinition, RecFunction
@@ -12,16 +12,15 @@ from ..compat.int import bit_count
 
 
 @boost
-def evil(_: int = 2) -> Iterator[int]:
+def evil(_: int = 2) -> Generator[int, None, None]:
     for i in count():
         if not (bit_count(i) & 1):
             yield i
 
 
 @boost
-def p2_d10(_: int = 2) -> Iterator[int]:
-    for n, i in enumerate(evil()):
-        yield (i - (n << 1)) & 1
+def p2_d10(_: int = 2) -> Generator[int, None, None]:
+    yield from map(lambda n, i: (i - (n << 1)) & 1, count(), evil())
 
 
 def to_z3(_: Union[int, 'Int'] = 2) -> 'RecFunction':

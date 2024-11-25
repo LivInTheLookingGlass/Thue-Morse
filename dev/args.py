@@ -118,12 +118,12 @@ def process_file_input(args: Namespace, gen_mode: Literal[True]) -> Generator[in
 
 
 @overload
-def process_file_input(args: Namespace, gen_mode: Literal[False]) -> None:
+def process_file_input(args: Namespace, gen_mode: Literal[False] = False) -> None:
     ...
 
 
 @boost
-def process_file_input(args: Namespace, gen_mode = False):
+def process_file_input(args: Namespace, gen_mode: bool = False):
     if args.file == 'stdin':
         f_obj = stdin.buffer
     else:
@@ -137,11 +137,7 @@ def process_file_input(args: Namespace, gen_mode = False):
         p += 2
         batch_size, bits_per_entry, batch_bytes = min_bytes_batch(p)
         buff = f_obj.read(batch_bytes)
-
-        if kind == '2':
-            kind_str = ''
-        else:
-            kind_str = f' ({p} selected)'
+        kind_str = f' ({p} selected)' * (not _kind)
 
         if not gen_mode:
             print(start_string.format(kind, kind_str, def_, entries), end='')
@@ -155,8 +151,7 @@ def process_file_input(args: Namespace, gen_mode = False):
             if gen_mode:
                 yield from batch
             else:
-                for x in batch:
-                    print(x, "", end='')
+                print(" ".join(str(x) for x in batch), end='')
             buff = f_obj.read(batch_bytes)
     finally:
         if f_obj is not stdin.buffer:

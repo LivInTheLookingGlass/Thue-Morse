@@ -1,5 +1,5 @@
 from itertools import chain, islice
-from typing import Iterator
+from typing import Generator
 
 import numpy as np
 
@@ -9,7 +9,7 @@ from .d03 import np_select_type
 
 
 @boost
-def pn_d08(n: int = 2) -> Iterator[int]:
+def pn_d08(n: int = 2) -> Generator[int, None, None]:
     dtype = np_select_type(n)
     seq = np.arange(n, dtype=dtype)
     square = np.array([np.roll(seq, -i) for i in range(n)], dtype=dtype)

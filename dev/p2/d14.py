@@ -1,5 +1,5 @@
 from itertools import count
-from typing import Iterator
+from typing import Generator
 
 from ..args import run
 from ..compat.fluidpythran import boost
@@ -33,7 +33,7 @@ def A193231(i: int) -> int:
 
 
 @boost
-def p2_d14(_: int = 2) -> Iterator[int]:
+def p2_d14(_: int = 2) -> Generator[int, None, None]:
     yield from map(A193231, count())
 
 

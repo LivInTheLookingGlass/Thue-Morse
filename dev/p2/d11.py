@@ -1,4 +1,4 @@
-from typing import Iterator, Union
+from typing import Generator, Union
 
 try:
     from z3 import If, Int, IntSort, RecAddDefinition, RecFunction
@@ -18,7 +18,7 @@ def A1510481(n: int, bc: int) -> int:
 
 
 @boost
-def p2_d11(_: int = 2) -> Iterator[int]:
+def p2_d11(_: int = 2) -> Generator[int, None, None]:
     i = -1
     j = jbc = 0
     k = kbc = 1

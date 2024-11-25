@@ -1,5 +1,5 @@
 from itertools import chain, islice
-from typing import Iterator
+from typing import Generator
 
 import numpy as np
 
@@ -8,7 +8,7 @@ from ..compat.fluidpythran import boost
 
 
 @boost
-def pn_d04(n: int = 2) -> Iterator[int]:
+def pn_d04(n: int = 2) -> Generator[int, None, None]:
     dtype = np_select_type(n)
     seq = np.arange(n, dtype=dtype)
     prev_len = 0

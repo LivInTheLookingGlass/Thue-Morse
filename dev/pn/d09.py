@@ -1,6 +1,6 @@
 from functools import reduce
 from operator import mul
-from typing import Iterator
+from typing import Generator
 
 try:
     from symengine import I, exp, expand, log, pi, symbols
@@ -12,8 +12,8 @@ from ..compat.fluidpythran import boost
 
 
 @boost
-def pn_d09(s: int = 2) -> Iterator[int]:
-    start = 3
+def pn_d09(s: int = 2) -> Generator[int, None, None]:
+    start = 2
     n = s**start
     nts = 0  # usually <previous n> * s, except at first
     k = start

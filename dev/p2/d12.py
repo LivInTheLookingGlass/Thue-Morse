@@ -1,5 +1,5 @@
 from itertools import chain
-from typing import Iterator, Union
+from typing import Generator, Union
 
 try:
     from z3 import If, Int, IntSort, RecAddDefinition, RecFunction
@@ -13,9 +13,8 @@ from .d10 import evil
 
 
 @boost
-def p2_d12(_: int = 2) -> Iterator[int]:
-    for i in chain.from_iterable(zip(odious(), evil())):
-        yield 1 - i & 1
+def p2_d12(_: int = 2) -> Generator[int, None, None]:
+    yield from map(lambda x: 1 - x & 1, chain.from_iterable(zip(odious(), evil())))
 
 
 def to_z3(_: Union[int, 'Int'] = 2) -> 'RecFunction':

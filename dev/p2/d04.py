@@ -1,5 +1,5 @@
 from itertools import chain, islice
-from typing import Iterator, Union
+from typing import Generator, Union
 
 try:
     from z3 import (Concat, If, Int, IntSort, Length, RecAddDefinition, RecFunction, String, StringSort, StringVal,
@@ -13,7 +13,7 @@ from ..compat.fluidpythran import boost
 
 
 @boost
-def p2_d04(_: int = 2) -> Iterator[int]:
+def p2_d04(_: int = 2) -> Generator[int, None, None]:
     seq = bitarray((0, 1))
     prev_len = 0
     while True:

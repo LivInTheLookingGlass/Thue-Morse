@@ -8,12 +8,13 @@ from multiprocessing.shared_memory import SharedMemory
 from pathlib import Path
 from shelve import Shelf
 from shelve import open as shelf_open
+from struct import error as StructError
 from sys import stdout
 from time import sleep
 from typing import Dict, List, Literal, Tuple, Union
 
 from . import get_iters
-from .args import get_file_obj, process_file_output, struct_size
+from .args import get_file_obj, process_file_input, process_file_output, struct_size
 from .compat.fluidpythran import boost
 
 basicConfig(
@@ -172,34 +173,11 @@ def handle_compare(kind1: str, def1: int, base: int, stop: int, kind2: str, def2
     fname2 = get_fname(kind2, def2, base, stop)
     for attempt in [1, 2]:
         try:
-            with get_file_obj(fname1, 'rb') as f1, get_file_obj(fname2, 'rb') as f2:
-                f1.seek(struct_size)
-                f2.seek(struct_size)
-
-                chunk1 = f1.read(chunk_size - struct_size)
-                chunk2 = f2.read(chunk_size - struct_size)
-                if chunk1 != chunk2:
-                    error_str = f"Files differ in first chunk of {chunk_size} bytes"
-                    logger.error(error_str)
-                    if attempt == 1:
-                        raise FileNotFoundError(error_str)
-                    raise ValueError(error_str)
-
-                for idx in count(1):
-                    chunk1 = f1.read(chunk_size)
-                    chunk2 = f2.read(chunk_size)
-
-                    if not chunk1 and not chunk2:
-                        logger.info("Compare success! No difference in output")
-                        break  # Files match
-
-                    if chunk1 != chunk2:
-                        error_str = f"Files differ at chunk {idx} (chunk size = {chunk_size})"
-                        logger.error(error_str)
-                        raise ValueError(error_str)
-            break
-        except FileNotFoundError as e:
-            error_str = f"File not found: {e.args}"
+            for idx, (v1, v2) in enumerate(zip(process_file_input(Namespace(file=fname1), True), process_file_input(Namespace(file=fname2), True))):
+                if v1 != v2:
+                    raise ValueError(f"Mismatch at T({idx})! {v1} ≠ {v2}")
+        except (FileNotFoundError, StructError, ValueError) as e:
+            error_str = f"Error: {e.args}"
             logger.error(error_str)
             if attempt == 1:
                 logger.info("Trying again in 5 seconds")

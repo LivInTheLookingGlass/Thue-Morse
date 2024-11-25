@@ -8,7 +8,7 @@ from math import ceil, floor, log, log2
 from pathlib import Path
 from struct import pack, unpack
 from sys import stdin, stdout
-from typing import IO, Callable, Generator, Literal, Optional, Tuple, Union
+from typing import IO, Callable, Generator, Literal, Optional, Tuple, Union, overload
 
 import numpy as np
 
@@ -112,8 +112,18 @@ def get_file_obj(
     return pname.open(mode)
 
 
+@overload
+def process_file_input(args: Namespace, gen_mode: Literal[True]) -> Generator[int, None, None]:
+    ...
+
+
+@overload
+def process_file_input(args: Namespace, gen_mode: Literal[False]) -> None:
+    ...
+
+
 @boost
-def process_file_input(args: Namespace):
+def process_file_input(args: Namespace, gen_mode = False):
     if args.file == 'stdin':
         f_obj = stdin.buffer
     else:
@@ -133,7 +143,8 @@ def process_file_input(args: Namespace):
         else:
             kind_str = f' ({p} selected)'
 
-        print(start_string.format(kind, kind_str, def_, entries), end='')
+        if not gen_mode:
+            print(start_string.format(kind, kind_str, def_, entries), end='')
         while buff:
             batch = []
             buff_val = int.from_bytes(buff, 'big')
@@ -141,8 +152,11 @@ def process_file_input(args: Namespace):
                 batch.append(buff_val & ((1 << bits_per_entry) - 1))
                 buff_val >>= bits_per_entry
             batch += [0] * (batch_size - len(batch))
-            for x in batch:
-                print(x, "", end='')
+            if gen_mode:
+                yield from batch
+            else:
+                for x in batch:
+                    print(x, "", end='')
             buff = f_obj.read(batch_bytes)
     finally:
         if f_obj is not stdin.buffer:

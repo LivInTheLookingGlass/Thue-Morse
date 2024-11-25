@@ -169,11 +169,8 @@ jobs:
           2_08)
             test_len=26
             ;;
-          2_13)
-            test_len=15
-            ;;
-          2_15|n_09)
-            test_len=11
+          2_1[35]|n_09)
+            test_len=20
             ;;
           *)
             echo "Unknown definition; limit not set"

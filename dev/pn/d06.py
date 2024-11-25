@@ -1,3 +1,4 @@
+from functools import partial
 from itertools import count
 from typing import Iterator, Union
 
@@ -20,8 +21,7 @@ def T(x: int, n: int) -> int:
 
 @boost
 def pn_d06(n: int = 2) -> Iterator[int]:
-    for i in count():
-        yield T(i, n)
+    return map(partial(T, n=n), count())
 
 
 def to_z3(s: Union[int, 'Int'] = 2) -> 'RecFunction':

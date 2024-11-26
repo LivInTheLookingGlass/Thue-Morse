@@ -169,8 +169,11 @@ jobs:
           2_08)
             test_len=26
             ;;
-          2_1[35]|n_09)
-            test_len=20
+          2_15|n_09)
+            test_len=18
+            ;;
+          2_13)
+            test_len=17
             ;;
           *)
             echo "Unknown definition; limit not set"
@@ -211,10 +214,6 @@ jobs:
         - 241-256
         def: [2, 3, 4, 5, 6, 7, 8, 9]
         exclude:
-        - def: 9
-          bases: 097-112
-        - def: 9
-          bases: 113-128
         - def: 9
           bases: 129-144
         - def: 9
@@ -275,22 +274,31 @@ jobs:
             test_len=27
             ;;
           9-003*)
-            test_len=12
+            test_len=17
             ;;
           9-017*)
-            test_len=11
+            test_len=16
+            ;;
+          9-033*)
+            test_len=14
             ;;
           9-049*)
-            test_len=10
+            test_len=13
             ;;
           9-049*)
-            test_len=9
+            test_len=12
             ;;
           9-065*)
-            test_len=8
+            test_len=11
             ;;
           9-081*)
-            test_len=7
+            test_len=10
+            ;;
+          9-097*)
+            test_len=9
+            ;;
+          9-113*)
+            test_len=8
             ;;
           *)
             echo "Unknown definition; limit not set"

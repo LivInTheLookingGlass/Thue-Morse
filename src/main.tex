@@ -96,6 +96,7 @@ T_{2,\arabic{stddefctr}b}(n) &= \dfrac{\log\left(\omega_2^{p(n)}\right)}{\log\le
 \subsection{Definition \arabic{stddefctr} of \TotalOriginals\xspace --- Invert and Extend}
 
 This definition appears in \cite{OEIS-TMS, Bolker_2016, pannipitiya_2024}.
+This definition appears in \cite{OEIS-TMS, Bolker_2016, pannipitiya_2024}.
 
 This definition is more natural to think about as extending a tuple that contains the sequence. We will give a recurrence relation below, but to build an intuition we will work in this framework first.
 
@@ -134,6 +135,7 @@ T_{2,\arabic{stddefctr}}(n) &= T_{2,\arabic{stddefctr}}\left(n - 2^{\floor{\log_
 \subsection{Definition \arabic{stddefctr} of \TotalOriginals\xspace --- Substitute and Flatten}
 
 This definition appears in \cite{Spiegelhofer_2020, Kolář-Nori_1991, pannipitiya_2024, OEIS-TMS}. It is one of the most commonly used because of its simplicity. Define the morhpism $\mu$ on the alphabet $\{0, 1\}$ by $\mu(0) = 01, \mu(1) = 10$. $T$ is then the unique fixed point of $\mu$ that begins with $0$. In other words, $T = \lim_{n\to\infty}\mu^n(0)$.
+This definition appears in \cite{Spiegelhofer_2020, Kolář-Nori_1991, pannipitiya_2024, OEIS-TMS}. It is one of the most commonly used because of its simplicity. Define the morhpism $\mu$ on the alphabet $\{0, 1\}$ by $\mu(0) = 01, \mu(1) = 10$. $T$ is then the unique fixed point of $\mu$ that begins with $0$. In other words, $T = \lim_{n\to\infty}\mu^n(0)$.
 
 \begin{equation}
     \edef\tempLabel{eq:p2_d\arabic{stddefctr}}
@@ -149,6 +151,7 @@ T_{2,\arabic{stddefctr}}(n) &= t(\ceil{\log_2(n + 1)})_n
     \end{aligned}
 \end{equation}
 
+So for example, calculating $T_{2,4}(3)$ would look like:
 So for example, calculating $T_{2,4}(3)$ would look like:
 
 \begin{equation}
@@ -186,6 +189,7 @@ r(\mathbf{x}, i) &= \begin{aligned}[c]
 \stepcounter{stddefctr}
 \subsection{Definition \arabic{stddefctr} of \TotalOriginals\xspace --- Recursion}
 
+This definition appears in \cite{Kolář-Nori_1991, pannipitiya_2024, OEIS-TMS}.
 This definition appears in \cite{Kolář-Nori_1991, pannipitiya_2024, OEIS-TMS}.
 
 \begin{equation}
@@ -246,6 +250,7 @@ This definition appears in \cite{OEIS-TMS}. \note{I'm still not completely sure 
           n &\text{if } n \le 1 \\
           b\left(\ceil{\dfrac{n}{2}}\right) - b\left(\floor{\dfrac{n}{2}}\right) &\text{otherwise}
 \end{cases} \\
+T_{2,\arabic{stddefctr}}(n-1) &= \dfrac{1 - b(2n - 1)}{2} \pmod{2}
 T_{2,\arabic{stddefctr}}(n-1) &= \dfrac{1 - b(2n - 1)}{2} \pmod{2}
     \end{aligned}
 \end{equation}
@@ -980,6 +985,15 @@ A similar definition to the below is found in \cite{badziahin_2015} for $x \in \
 
 \note{Above needs checking. I am only 80\% confident in my analysis here.}
 
+A similar definition to the below is found in \cite{badziahin_2015} for $x \in \mathbf{Q}((x^{-1}))$. While that definition is equivalent to $T_2$, it does not match the values for the other generalizations in this paper. For a specific example: \begin{equation}
+\begin{aligned}
+    T_3 &= \tuple{0,1,2,1,2,0,2,0,1,\ldots} \\
+   T'_3 &= \tuple{0,2,0,2,1,0,0,0,0,\ldots} \pmod{3}
+\end{aligned}
+\end{equation}
+
+\note{Above needs checking. I am only 80\% confident in my analysis here.}
+
 \subsubsection{Proof of Equivalence with Original Definition 15}
 
 \begin{proof}
@@ -1162,6 +1176,20 @@ This doesn't even work for power-of-2 bases, like $t_4(2) = \tuple{0, 1, 2, 3, 1
 
 \note{I seem to remember coming across a paper claiming that (square-free + cube-free) = aperiodic}
 
+\subsection{Square Free}
+
+\note{Given a non-empty word $X$, $XX \not\in T_n$}
+
+\subsection{Cube Free}
+
+\note{Given a non-empty word $X$, $XXX \not\in T_n$}
+
+\subsection{Aperiodicity}
+
+\note{Not totally sure how this should go, but I think a good approximation would be to show that the distance between the nearest two appearances of a substring grows to infinity much faster than the length of those substrings grows}
+
+\note{I seem to remember coming across a paper claiming that (square-free + cube-free) = aperiodic}
+
 \section{Acknowledgment}
 
 We thank Dan Rowe for helping with the initial work on this paper, as well as Randy Appleton and Lydia Crocker who helped greatly with proofreading and editing.
@@ -1196,6 +1224,7 @@ We thank Dan Rowe for helping with the initial work on this paper, as well as Ra
 \setcounter{stddefctr}{1}
 \setcounter{extdefctr}{1}
 
+\subsection{Complexity of Original Def. \arabic{stddefctr} --- Parity of Hamming Weight}
 \subsection{Complexity of Original Def. \arabic{stddefctr} --- Parity of Hamming Weight}
 \edef\tempLabel{ca:p2_d\arabic{stddefctr}}
 \expandafter\label\expandafter\tempLabel
@@ -1252,6 +1281,7 @@ This is one of the more space-efficient implementations. Each element takes at m
 
 \stepcounter{stddefctr}
 \subsection{Complexity of Original Definition \arabic{stddefctr} --- Root of Unity}
+\subsection{Complexity of Original Definition \arabic{stddefctr} --- Root of Unity}
 \edef\tempLabel{ca:p2_d\arabic{stddefctr}}
  \expandafter\label\expandafter\tempLabel
 
@@ -1292,6 +1322,7 @@ This is one of the more space-efficient implementations. Each element takes at m
 \end{table}
 
 \stepcounter{stddefctr}
+\subsection{Complexity of Original Definition \arabic{stddefctr} --- Invert and Extend}
 \subsection{Complexity of Original Definition \arabic{stddefctr} --- Invert and Extend}
 \edef\tempLabel{ca:p2_d\arabic{stddefctr}}
  \expandafter\label\expandafter\tempLabel
@@ -1334,6 +1365,7 @@ This is one of the more space-efficient implementations. Each element takes at m
 
 \stepcounter{stddefctr}
 \subsection{Complexity of Original Def. \arabic{stddefctr} --- Substitute and Flatten}
+\subsection{Complexity of Original Def. \arabic{stddefctr} --- Substitute and Flatten}
 \edef\tempLabel{ca:p2_d\arabic{stddefctr}}
  \expandafter\label\expandafter\tempLabel
 
@@ -1375,6 +1407,7 @@ This is one of the more space-efficient implementations. Each element takes at m
 
 \stepcounter{stddefctr}
 \subsection{Complexity of Original Definition \arabic{stddefctr} --- Recursive Rotation}
+\subsection{Complexity of Original Definition \arabic{stddefctr} --- Recursive Rotation}
 \edef\tempLabel{ca:p2_d\arabic{stddefctr}}
  \expandafter\label\expandafter\tempLabel
 
@@ -1415,6 +1448,7 @@ This is one of the more space-efficient implementations. Each element takes at m
 \end{table}
 
 \stepcounter{stddefctr}
+\subsection{Complexity of Original Definition \arabic{stddefctr} --- Recursion}
 \subsection{Complexity of Original Definition \arabic{stddefctr} --- Recursion}
 \edef\tempLabel{ca:p2_d\arabic{stddefctr}}
  \expandafter\label\expandafter\tempLabel
@@ -1463,6 +1497,7 @@ This is one of the more space-efficient implementations. Each element takes at m
 
 \stepcounter{stddefctr}
 \subsection{Complexity of Original Def. \arabic{stddefctr} --- Highest Bit Difference}
+\subsection{Complexity of Original Def. \arabic{stddefctr} --- Highest Bit Difference}
 \edef\tempLabel{ca:p2_d\arabic{stddefctr}}
  \expandafter\label\expandafter\tempLabel
 
@@ -1507,6 +1542,7 @@ This is one of the more space-efficient implementations. Each element takes at m
 \end{table}
 
 \stepcounter{stddefctr}
+\subsection{Complexity of Original Def. \arabic{stddefctr} --- Floor-Ceiling Difference}
 \subsection{Complexity of Original Def. \arabic{stddefctr} --- Floor-Ceiling Difference}
 \edef\tempLabel{ca:p2_d\arabic{stddefctr}}
  \expandafter\label\expandafter\tempLabel
@@ -1561,6 +1597,7 @@ In a recursive approach, you will end up descending $O(\log(n))$ stack frames, e
 
 \stepcounter{stddefctr}
 \subsection{Complexity of Orig. Def. \arabic{stddefctr} --- Odious Number Derivation}
+\subsection{Complexity of Orig. Def. \arabic{stddefctr} --- Odious Number Derivation}
 \edef\tempLabel{ca:p2_d\arabic{stddefctr}}
  \expandafter\label\expandafter\tempLabel
 
@@ -1601,6 +1638,7 @@ In a recursive approach, you will end up descending $O(\log(n))$ stack frames, e
 \end{table}
 
 \stepcounter{stddefctr}
+\subsection{Complexity of Orig. Def. \arabic{stddefctr} --- Evil Numbers Derivation 1}
 \subsection{Complexity of Orig. Def. \arabic{stddefctr} --- Evil Numbers Derivation 1}
 \edef\tempLabel{ca:p2_d\arabic{stddefctr}}
  \expandafter\label\expandafter\tempLabel
@@ -1643,6 +1681,7 @@ In a recursive approach, you will end up descending $O(\log(n))$ stack frames, e
 
 \stepcounter{stddefctr}
 \subsection{Complexity of Orig. Def. \arabic{stddefctr} --- Evil Numbers Derivation 2}
+\subsection{Complexity of Orig. Def. \arabic{stddefctr} --- Evil Numbers Derivation 2}
 \edef\tempLabel{ca:p2_d\arabic{stddefctr}}
  \expandafter\label\expandafter\tempLabel
 
@@ -1684,6 +1723,7 @@ In a recursive approach, you will end up descending $O(\log(n))$ stack frames, e
 
 \stepcounter{stddefctr}
 \subsection{Complexity of Orig. Def. \arabic{stddefctr} --- Odious \& Evil Derivation}
+\subsection{Complexity of Orig. Def. \arabic{stddefctr} --- Odious \& Evil Derivation}
 \edef\tempLabel{ca:p2_d\arabic{stddefctr}}
  \expandafter\label\expandafter\tempLabel
 
@@ -1724,6 +1764,7 @@ In a recursive approach, you will end up descending $O(\log(n))$ stack frames, e
 \end{table}
 
 \stepcounter{stddefctr}
+\subsection{Complexity of Orig. Def. \arabic{stddefctr} --- Gould's Seq. Derivation}
 \subsection{Complexity of Orig. Def. \arabic{stddefctr} --- Gould's Seq. Derivation}
 \edef\tempLabel{ca:p2_d\arabic{stddefctr}}
  \expandafter\label\expandafter\tempLabel
@@ -1780,6 +1821,7 @@ The other is to take advantage of the relation $\binom{n}{k} = \binom{n}{k-1} \c
 \renewcommand{\arraystretch}{1}
 
 \stepcounter{stddefctr}
+\subsection{Complexity of Orig. Def. \arabic{stddefctr} --- Derivation from Blue Code}
 \subsection{Complexity of Orig. Def. \arabic{stddefctr} --- Derivation from Blue Code}
 \edef\tempLabel{ca:p2_d\arabic{stddefctr}}
  \expandafter\label\expandafter\tempLabel
@@ -2097,6 +2139,7 @@ This is one of the more space-efficient implementation. Each element takes at mo
 
 \stepcounter{extdefctr}
 \subsection{Complexity of Extension Definition \arabic{extdefctr} --- Roots of Unity}
+\subsection{Complexity of Extension Definition \arabic{extdefctr} --- Roots of Unity}
 \edef\tempLabel{ca:pn_d\arabic{extdefctr}}
  \expandafter\label\expandafter\tempLabel
 
@@ -2137,6 +2180,7 @@ This is one of the more space-efficient implementation. Each element takes at mo
 \end{table}
 
 \stepcounter{extdefctr}
+\subsection{Complexity of Extension Def. \arabic{extdefctr} --- Increment and Extend}
 \subsection{Complexity of Extension Def. \arabic{extdefctr} --- Increment and Extend}
 \edef\tempLabel{ca:pn_d\arabic{extdefctr}}
  \expandafter\label\expandafter\tempLabel
@@ -2179,6 +2223,7 @@ This is one of the more space-efficient implementation. Each element takes at mo
 
 \stepcounter{extdefctr}
 \subsection{Complexity of Extension Def. \arabic{extdefctr} --- Substitute and Flatten}
+\subsection{Complexity of Extension Def. \arabic{extdefctr} --- Substitute and Flatten}
 \edef\tempLabel{ca:pn_d\arabic{extdefctr}}
  \expandafter\label\expandafter\tempLabel
 
@@ -2220,6 +2265,7 @@ This is one of the more space-efficient implementation. Each element takes at mo
 
 \stepcounter{extdefctr}
 \subsection{Complexity of Extension Definition \arabic{extdefctr} --- Recursive Rotation}
+\subsection{Complexity of Extension Definition \arabic{extdefctr} --- Recursive Rotation}
 \edef\tempLabel{ca:pn_d\arabic{extdefctr}}
  \expandafter\label\expandafter\tempLabel
 
@@ -2260,6 +2306,7 @@ This is one of the more space-efficient implementation. Each element takes at mo
 \end{table}
 
 \stepcounter{extdefctr}
+\subsection{Complexity of Extension Definition \arabic{extdefctr} --- Recursion}
 \subsection{Complexity of Extension Definition \arabic{extdefctr} --- Recursion}
 \edef\tempLabel{ca:pn_d\arabic{extdefctr}}
  \expandafter\label\expandafter\tempLabel
@@ -2308,6 +2355,7 @@ This is one of the more space-efficient implementations. Each element takes at m
 
 \stepcounter{extdefctr}
 \subsection{Complexity of Extension Def. \arabic{extdefctr} --- Highest Digit Difference}
+\subsection{Complexity of Extension Def. \arabic{extdefctr} --- Highest Digit Difference}
 \edef\tempLabel{ca:pn_d\arabic{extdefctr}}
  \expandafter\label\expandafter\tempLabel
 
@@ -2350,6 +2398,7 @@ This is one of the more space-efficient implementations. Each element takes at m
 \end{table}
 
 \stepcounter{extdefctr}
+\subsection{Complexity of Ext. Def. \arabic{extdefctr} --- Latin Square Constructions}
 \subsection{Complexity of Ext. Def. \arabic{extdefctr} --- Latin Square Constructions}
 \edef\tempLabel{ca:pn_d\arabic{extdefctr}}
  \expandafter\label\expandafter\tempLabel
@@ -2394,11 +2443,13 @@ This is one of the more space-efficient implementations. Each element takes at m
 
 \stepcounter{extdefctr}
 \subsection{Complexity of Extension Def. \arabic{extdefctr} --- Generating Functions}
+\subsection{Complexity of Extension Def. \arabic{extdefctr} --- Generating Functions}
 \edef\tempLabel{ca:pn_d\arabic{extdefctr}}
  \expandafter\label\expandafter\tempLabel
 
 \subsubsection{Time Complexity}
 
+\note{Time complexity of multiplying polynomials via Karatsuba method is $O(n^{\log_2(3)})$. I think this means that, since we need to apply it $\log_s(n)$ times to get $n$ terms, the overall complexity is $O(b^{\log_2(3)} \cdot \log(n))$. I'm a \textit{little} uncertain how the base scales things.}
 \note{Time complexity of multiplying polynomials via Karatsuba method is $O(n^{\log_2(3)})$. I think this means that, since we need to apply it $\log_s(n)$ times to get $n$ terms, the overall complexity is $O(b^{\log_2(3)} \cdot \log(n))$. I'm a \textit{little} uncertain how the base scales things.}
 
 \renewcommand{\arraystretch}{1.25}
@@ -2410,7 +2461,9 @@ This is one of the more space-efficient implementations. Each element takes at m
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
         \hline
         \textbf{Per Element} & $O(b^{\log_2(3)} \cdot \log(n))$? &  \\
+        \textbf{Per Element} & $O(b^{\log_2(3)} \cdot \log(n))$? &  \\
         \hline
+        \textbf{In Total} & $O(b^{\log_2(3)} \cdot \log(n))$? &  \\
         \textbf{In Total} & $O(b^{\log_2(3)} \cdot \log(n))$? &  \\
         \hline
     \end{tabular}
@@ -2429,7 +2482,9 @@ This is one of the more space-efficient implementations. Each element takes at m
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
         \hline
         \textbf{Per Element} & $O(n)$? & $O(n \cdot \log(n))$? \\
+        \textbf{Per Element} & $O(n)$? & $O(n \cdot \log(n))$? \\
         \hline
+        \textbf{In Total} & $O(n)$? & $O(n \cdot \log(n))$? \\
         \textbf{In Total} & $O(n)$? & $O(n \cdot \log(n))$? \\
         \hline
     \end{tabular}

@@ -24,6 +24,8 @@
 \setcounter{stddefctr}{1}
 \newcounter{extdefctr}
 \setcounter{extdefctr}{1}
+\newcounter{rowcount}
+\setcounter{rowcount}{1}
 
 % Define Python style for listings
 \lstdefinestyle{pythonstyle}{
@@ -42,7 +44,7 @@
 \renewcommand{\mod}[1]{\hspace{-7pt} \oldmod \, #1}
 
 % Define the note command
-\newcommand{\note}[1]{\small\textcolor{purple}{#1}\normalsize}
+\newcommand{\note}[1]{\small\textcolor{violet}{#1}\normalsize}
 
 % Define a concat command
 \newcommand*\concat{\mathbin{\|}}
@@ -61,9 +63,15 @@
 \newcommand{\ETMS}{Extended Thue-Morse Sequence\xspace}
 \newcommand{\Integers}{\mathbb{Z}}
 \newcommand{\Naturals}{\mathbb{N}}
-\newcommand{\totaloriginals}{15}
+\newcommand{\totaloriginals}{19}
 \newcommand{\totalextensions}{9}
 \newcommand{\TotalOriginals}{\totaloriginals\xspace}
 \newcommand{\TotalExtensions}{\totalextensions\xspace}
 \newcommand{\TotalDefs}{\the\numexpr \totaloriginals + \totalextensions \relax\xspace}
+\newcommand{\rc}{\!\!\therowcount\stepcounter{rowcount}\!\!}
+\newcommand{\Lm}{\!\!L\!\!}
+\newcommand{\Nm}{\!\!N\!\!}
+\newcommand{\Om}{\!\!O\!\!}
+\newcommand{\Sm}{\!\!S\!\!}
+\newcommand{\Xm}{\!\!X\!\!}
 

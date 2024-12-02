@@ -25,6 +25,7 @@ Repository Structure
   └─dev/                      # Directory with associated code
     ├─__init__.py               # Utilities that let you collect different definitions
     ├─args.py                   # A utility file that deals with command line argument parsing
+    ├─comparisons.py            # A checkpointing comparison tool for proving equality up to n entries
     ├─from_file.py              # A stub file that lets you print out a binary file
     ├─test_seq.py               # A test file that allows you to check sequence equality
     ├─p2/                       # Code representation of definitions in base 2
@@ -39,6 +40,7 @@ Repository Structure
       ├─fluidpythran.py           # Instead of Just-In-Time compiling, use the original function
       ├─gmpy2.py                  # Replace with int, so we're only slightly slower at large values
       ├─int.py                    # On older python versions, implement int.bit_count()
+      ├─itertools.py              # On older python versions, implement batched()
       ├─numba.py                  # Replace @jit with @boost from fluidpythran if possible, or nothing
       └─z3.py                     # Detects if installed and replaces Int() if needed
 
@@ -58,12 +60,12 @@ the test suite. Artifacts generated from this will be stored in the ``prover/`` 
 Required Dependencies
 ---------------------
 
-The following are required for some implementations. In the case of symengine this is because it is too difficult to
-implement its features without other libraries. For numpy, while it isn't strictly necessary it does significantly
-speed up vector operations
+The following are required for some implementations. In the case of symengine / sympy this is because it is too
+difficult to implement its features without other libraries. For numpy, while it isn't strictly necessary it does
+significantly speed up vector operations
 
 - numpy
-- symengine
+- symengine / sympy
 
 Optional Dependencies
 ---------------------

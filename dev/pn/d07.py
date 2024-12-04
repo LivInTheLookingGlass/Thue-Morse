@@ -11,7 +11,7 @@ except ImportError:
 
 from ..args import np_select_type, run
 from ..compat.fluidpythran import boost
-from ..p2.d06 import rotate
+from ..p2.d10 import rotate
 
 
 @boost

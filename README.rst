@@ -57,6 +57,10 @@ Z3Py ``IntSort``, representing the base of the generated sequence. As above, if 
 ignored. It will always return the Z3Py function representation of this definition, allowing for easy comparisons in
 the test suite. Artifacts generated from this will be stored in the ``prover/`` directory.
 
+Note that some implementations are *not* infinite generators. This is due to how sympy manages precision. The same
+formula in sympy will accumulate error terms that it will not in Mathematica, where those definitions are primarily
+tested.
+
 Required Dependencies
 ---------------------
 

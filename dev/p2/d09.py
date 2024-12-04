@@ -1,41 +1,45 @@
-from itertools import count
+from itertools import chain, islice
 from typing import Generator, Union
 
 try:
-    from z3 import If, Int, IntSort, RecAddDefinition, RecFunction
+    from z3 import (Concat, If, Int, IntSort, Length, RecAddDefinition, RecFunction, String, StringSort, StringVal,
+                    SubString)
 except ImportError:
     pass
 
 from ..args import run
+from ..compat.bitarray import bitarray
 from ..compat.fluidpythran import boost
-from ..compat.int import bit_count
-
-
-@boost
-def odious() -> Generator[int, None, None]:
-    for i in count():
-        if bit_count(i) & 1:
-            yield i
 
 
 @boost
 def p2_d09(_: int = 2) -> Generator[int, None, None]:
-    yield from map(lambda x: (x + 1) & 1, odious())
+    seq = bitarray((0, 1))
+    prev_len = 0
+    while True:
+        yield from islice(seq, prev_len, None)
+        prev_len = len(seq)
+        seq = bitarray(chain.from_iterable((1, 0) if x else (0, 1) for x in seq))
 
 
 def to_z3(_: Union[int, 'Int'] = 2) -> 'RecFunction':
     n = Int('n')
-    f = RecFunction('f2_09', IntSort(), IntSort())
-    p = RecFunction('p2_09', IntSort(), IntSort())
-    o = RecFunction('o2_09', IntSort(), IntSort())
+    s = String('s')
+    r = String('r')
+    sub = RecFunction('sub2_09', StringSort(), StringSort(), StringSort())
+    t = RecFunction('t2_09', IntSort(), StringSort())
+    ilog2 = RecFunction('ilog2_2_09', IntSort(), IntSort())
     T2_09 = RecFunction('T2_09', IntSort(), IntSort())
-    RecAddDefinition(p, [n], If(n == 0, 0,
-                                p(n / 2) + n))
-    RecAddDefinition(f, [n], If(p(n) % 2 == 1, n,
-                                f(n + 1)))
-    RecAddDefinition(o, [n], If(n == 0, 1,
-                                f(o(n - 1) + 1)))
-    RecAddDefinition(T2_09, [n], (o(n) + 1) % 2)
+    RecAddDefinition(sub, [r, s], If(Length(s) == 0, r,
+                                     Concat(r, Concat(If(SubString(s, 0, 1) == StringVal("0"),
+                                                         StringVal("01"),
+                                                         StringVal("10")),
+                                                      SubString(s, 1, Length(s) - 1)))))
+    RecAddDefinition(t, [n], If(n == 0, StringVal('0'),
+                                sub(StringVal(""), t(n - 1))))
+    RecAddDefinition(ilog2, [n], If(n <= 1, 0,
+                                    1 + ilog2(n / 2)))
+    RecAddDefinition(T2_09, [n], If(SubString(t(ilog2(n) + 1), n, 1) == StringVal("0"), 0, 1))
     return T2_09
 
 

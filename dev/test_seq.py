@@ -9,7 +9,7 @@ from pytest import mark, skip, xfail
 from . import get_iters, get_z3s
 from .compat.fluidpythran import boost
 from .compat.z3 import And, Exists, ForAll, Implies, Int, OnClause, RecFunction, Solver, Z3Exception, disable_z3, z3
-from .p2.d13 import ensure_pool
+from .p2.d15 import ensure_pool
 
 ensure_pool()
 

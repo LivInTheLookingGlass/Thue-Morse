@@ -1,4 +1,4 @@
-from itertools import chain
+from itertools import count
 from typing import Generator, Union
 
 try:
@@ -8,33 +8,33 @@ except ImportError:
 
 from ..args import run
 from ..compat.fluidpythran import boost
-from .d09 import odious
-from .d10 import evil
+from ..compat.int import bit_count
+
+
+@boost
+def evil(_: int = 2) -> Generator[int, None, None]:
+    for i in count():
+        if not (bit_count(i) & 1):
+            yield i
 
 
 @boost
 def p2_d12(_: int = 2) -> Generator[int, None, None]:
-    yield from map(lambda x: 1 - x & 1, chain.from_iterable(zip(odious(), evil())))
+    yield from map(lambda n, i: (i - (n << 1)) & 1, count(), evil())
 
 
 def to_z3(_: Union[int, 'Int'] = 2) -> 'RecFunction':
     n = Int('n')
-    fe = RecFunction('fe2_12', IntSort(), IntSort())
-    fo = RecFunction('fo2_12', IntSort(), IntSort())
+    f = RecFunction('f2_12', IntSort(), IntSort())
     p = RecFunction('p2_12', IntSort(), IntSort())
     e = RecFunction('e2_12', IntSort(), IntSort())
-    o = RecFunction('o2_12', IntSort(), IntSort())
     T2_12 = RecFunction('T2_12', IntSort(), IntSort())
     RecAddDefinition(p, [n], If(n == 0, 0,
                                 p(n / 2) + n))
-    RecAddDefinition(fe, [n], If(p(n) % 2 == 0, n,
-                                 fe(n + 1)))
-    RecAddDefinition(fo, [n], If(p(n) % 2 == 1, n,
-                                 fo(n + 1)))
+    RecAddDefinition(f, [n], If(p(n) % 2 == 0, n,
+                                f(n + 1)))
     RecAddDefinition(e, [n], If(n == 0, 0,
-                                fe(e(n - 1) + 1)))
-    RecAddDefinition(o, [n], If(n == 0, 1,
-                                fo(o(n - 1) + 1)))
+                                f(e(n - 1) + 1)))
     RecAddDefinition(T2_12, [n], (e(n) + 1) % 2)
     return T2_12
 

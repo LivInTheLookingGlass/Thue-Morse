@@ -33,4 +33,4 @@ def to_z3(_: Union[int, 'Int'] = 2) -> 'RecFunction':
 
 
 if __name__ == '__main__':
-    run(1, p2_d02, '2')
+    run(2, p2_d02, '2')

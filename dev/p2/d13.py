@@ -1,9 +1,4 @@
-from atexit import register
-from collections import deque
-from itertools import count
-from multiprocessing import cpu_count
-from multiprocessing.pool import ApplyResult, Pool
-from typing import Deque, Generator, Optional, Union
+from typing import Generator, Union
 
 try:
     from z3 import If, Int, IntSort, RecAddDefinition, RecFunction
@@ -12,64 +7,39 @@ except ImportError:
 
 from ..args import run
 from ..compat.fluidpythran import boost
-from ..compat.gmpy2 import mpz
-
-max_size = 4 * cpu_count()
-pool: Optional[Pool] = None
+from ..compat.int import bit_count
+from ..compat.numba import jit
 
 
-def ensure_pool():
-    global pool
-    if pool is None:
-        pool = Pool()
-        register(pool.close)
-
-
-@boost
-def gould(n: int) -> int:
-    binomial_coeff = mpz(1)
-    partial_sum = 0
-    k = 0
-    while k < ((n + 1) >> 1):
-        # Add the current term to the total sum
-        partial_sum += binomial_coeff & 1
-        # C(n, k) = C(n, k-1) * (n - (k - 1)) / k
-        binomial_coeff *= n - k
-        k += 1
-        binomial_coeff //= k
-    partial_sum <<= 1
-    if (n & 1) == 0:
-        partial_sum += binomial_coeff & 1
-    return int((partial_sum - 1) % 3)  # This isn't part of the gould sequence, but it helps to process this here
+@jit(nopython=True)
+def A1510481(n: int, bc: int) -> int:
+    n1 = n + 1
+    return (n1 >> 1) + ((bc & 1) * (n1 & 1))
 
 
 @boost
 def p2_d13(_: int = 2) -> Generator[int, None, None]:
-    queue: Deque[ApplyResult[int]] = deque(maxlen=max_size)
-    ensure_pool()
-    global pool
-    assert pool is not None
-    for i in count():
-        queue.append(pool.apply_async(gould, (i,)))
-        if len(queue) >= max_size:
-            yield queue.popleft().get()  # Blocking call to get the result
+    i = -1
+    j = jbc = 0
+    k = kbc = 1
+    while True:
+        yield 1 - A1510481(j, kbc) + A1510481(i, jbc)
+        i = j
+        j = k
+        k += 1
+        jbc = kbc
+        kbc = bit_count(k)
 
 
 def to_z3(_: Union[int, 'Int'] = 2) -> 'RecFunction':
     n = Int('n')
-    k = Int('k')
-    binomial_coeff = RecFunction('binomial_coeff2_13', IntSort(), IntSort(), IntSort())
-    partial_sum = RecFunction('partial_sum2_13', IntSort(), IntSort(), IntSort())
-    gould = RecFunction('gould2_13', IntSort(), IntSort())
+    ilog2 = RecFunction('ilog2_2_13', IntSort(), IntSort())
+    p = RecFunction('p2_13', IntSort(), IntSort())
     T2_13 = RecFunction('T2_13', IntSort(), IntSort())
-    RecAddDefinition(gould, [n], If(n % 2 == 0, partial_sum(n, 0) * 2 + binomial_coeff(n, n / 2) % 2,
-                                    partial_sum(n, 0) * 2))
-    RecAddDefinition(binomial_coeff, [n, k], If(k == 0, 1,
-                                                binomial_coeff(n, k - 1) * (n - (k - 1)) / k))
-    RecAddDefinition(partial_sum, [n, k], If(k > (n + 1) / 2, 0,
-                                             If(binomial_coeff(n, k) % 2 == 1, 1 + partial_sum(n, k + 1),
-                                                partial_sum(n, k + 1))))
-    RecAddDefinition(T2_13, [n], (gould(n) - 1) % 3)
+    RecAddDefinition(ilog2, [n], If(n <= 1, 0,
+                                    1 + ilog2(n / 2)))
+    RecAddDefinition(p, [n], n / 2 + (ilog2(n + 1) % 2) * (n % 2))
+    RecAddDefinition(T2_13, [n], 1 - p(n + 1) + p(n))
     return T2_13
 
 

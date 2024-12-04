@@ -1,11 +1,8 @@
-from itertools import islice
-from typing import Generator, Sequence, TypeVar, Union, overload
-
-import numpy as np
+from itertools import count
+from typing import Generator, Union
 
 try:
-    from z3 import (Concat, If, Int, IntSort, Length, RecAddDefinition, RecFunction, String, StringSort, StringVal,
-                    SubString)
+    from z3 import If, Int, IntSort, RecAddDefinition, RecFunction
 except ImportError:
     pass
 
@@ -13,58 +10,43 @@ from ..args import run
 from ..compat.bitarray import bitarray
 from ..compat.fluidpythran import boost
 
-T = TypeVar("T")
-DT = TypeVar("DT", bound=np.generic)
-
-
-@overload
-def rotate(t: Sequence[T], n: int) -> Sequence[T]:
-    ...
-
-
-@overload
-def rotate(t: 'np.typing.NDArray[DT]', n: int) -> 'np.typing.NDArray[DT]':
-    ...
-
-
-@overload
-def rotate(t: bitarray, n: int) -> bitarray:
-    ...
-
 
 @boost
-def rotate(t, n: int):
-    if n:
-        if isinstance(t, np.ndarray):
-            return np.concatenate((t[n:], t[:n]))
-        return t[n:] + t[:n]
-    return t
+def b(n: int, memo: bitarray) -> int:
+    nr1 = n << 1
+    nr1p1 = nr1 + 1
+    lmemo = len(memo)
+    if nr1p1 < lmemo:
+        if memo[nr1] == 1:
+            return -memo[nr1p1]
+        elif memo[nr1p1] == 1:
+            return 1
+    n2 = n >> 1
+    result = b(n2 + (n & 1), memo) - b(n2, memo)
+    if nr1p1 < lmemo:
+        memo[nr1] = (result < 1)
+        memo[nr1p1] = abs(result)
+    return result
 
 
 @boost
 def p2_d05(_: int = 2) -> Generator[int, None, None]:
-    seq: bitarray = bitarray((0, 1))
-    prev_len = 0
-    while True:
-        yield from islice(seq, prev_len, None)
-        prev_len = len(seq)
-        seq.extend(rotate(seq, prev_len >> 1))
+    mem_limit = 1 << 20
+    memo = bitarray(1024)
+    memo[:4] = bitarray((1, 0, 0, 1))
+    for i in count(1):
+        if i < mem_limit:
+            memo.extend((0, 0))
+        yield (1 - b((i << 1) - 1, memo)) >> 1
 
 
 def to_z3(_: Union[int, 'Int'] = 2) -> 'RecFunction':
     n = Int('n')
-    s = String('s')
-    rot = RecFunction('rot2_05', StringSort(), IntSort(), StringSort())
-    t = RecFunction('t2_05', IntSort(), StringSort())
-    ilog2 = RecFunction('ilog2_2_05', IntSort(), IntSort())
+    b = RecFunction('b2_05', IntSort(), IntSort())
     T2_05 = RecFunction('T2_05', IntSort(), IntSort())
-    RecAddDefinition(rot, [s, n], Concat(SubString(s, n, Length(s) - n), SubString(s, 0, n)))
-    RecAddDefinition(t, [n], If(n == 0, StringVal('0'),
-                                If(n == 1, StringVal('01'),
-                                   Concat(t(n - 1), rot(t(n - 1), Length(t(n - 1)) / 2)))))
-    RecAddDefinition(ilog2, [n], If(n <= 1, 0,
-                                    1 + ilog2(n / 2)))
-    RecAddDefinition(T2_05, [n], If(SubString(t(ilog2(n) + 1), n, 1) == StringVal("0"), 0, 1))
+    RecAddDefinition(b, [n], If(n < 2, n,
+                                b(n / 2 + (n % 2)) - b(n / 2)))
+    RecAddDefinition(T2_05, [n], b(n) % 2)
     return T2_05
 
 

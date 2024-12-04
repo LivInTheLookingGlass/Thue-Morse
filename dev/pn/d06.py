@@ -1,37 +1,25 @@
-from functools import partial
-from itertools import count
-from typing import Generator, Union
+from itertools import chain, islice
+from typing import Generator
 
-try:
-    from z3 import If, Int, IntSort, RecAddDefinition, RecFunction
-except ImportError:
-    pass
+import numpy as np
 
-from ..args import run
+from ..args import np_select_type, run
 from ..compat.fluidpythran import boost
-from ..compat.numba import jit
-
-
-@jit(nopython=True)
-def T(x: int, n: int) -> int:
-    if x == 0:
-        return 0
-    return (x + T(x // n, n)) % n
 
 
 @boost
 def pn_d06(n: int = 2) -> Generator[int, None, None]:
-    yield from map(partial(T, n=n), count())
-
-
-def to_z3(s: Union[int, 'Int'] = 2) -> 'RecFunction':
-    n = Int('n')
-    p = RecFunction('pn_06', IntSort(), IntSort())
-    Tn_06 = RecFunction('Tn_06', IntSort(), IntSort())
-    RecAddDefinition(p, [n], If(n == 0, 0,
-                                (n - p(n / s)) % s))
-    RecAddDefinition(Tn_06, [n], p(n))
-    return Tn_06
+    dtype = np_select_type(n)
+    seq = np.arange(n, dtype=dtype)
+    prev_len = 0
+    while True:
+        for i in islice(seq, prev_len, None):
+            yield int(i)
+        prev_len = len(seq)
+        seq = np.fromiter(chain.from_iterable(
+            (*range(x, n), *range(0, x))
+            for x in seq
+        ), dtype=dtype)
 
 
 if __name__ == '__main__':

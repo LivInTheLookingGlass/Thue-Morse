@@ -3,9 +3,8 @@ from typing import Generator
 
 import numpy as np
 
-from ..args import run
+from ..args import np_select_type, run
 from ..compat.fluidpythran import boost
-from .d03 import np_select_type
 
 
 @boost

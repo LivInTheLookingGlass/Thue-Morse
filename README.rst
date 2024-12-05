@@ -20,13 +20,15 @@ Repository Structure
   │ ├─macros.tex                # LaTeX file that contains utility functions
   │ ├─references.bib            # Bibliography file (uses BibTeX for citations)
   │ ├─figures/                  # Directory for image files used
-  │ │ └─benchmark/                # Directory containing benchmark histograms
+  │ │ ├─benchmark/                # Directory containing benchmark histograms
+  │ │ └─complexity/               # Directory containing complexity scatterplots
   │ └─notes/                    # Directory for notes used in writing the paper
   └─dev/                      # Directory with associated code
     ├─__init__.py               # Utilities that let you collect different definitions
     ├─args.py                   # A utility file that deals with command line argument parsing
     ├─comparisons.py            # A checkpointing comparison tool for proving equality up to n entries
-    ├─from_file.py              # A stub file that lets you print out a binary file
+    ├─from_file.py              # A tool that lets you print out a binary file
+    ├─make_plots.py             # A tool that lets you produce the complexity plots in the paper
     ├─test_seq.py               # A test file that allows you to check sequence equality
     ├─p2/                       # Code representation of definitions in base 2
     │ ├─__init__.py               # Empty file that allows this folder to be used as a module
@@ -137,9 +139,37 @@ Performance
 Up to Seconds
 -------------
 
-.. image:: ./src/figures/benchmark/20241122_154339.svg
+.. image:: ./src/figures/benchmark/20241204_182753.svg
 
 Up to Milliseconds
 ------------------
 
-.. image:: ./src/figures/benchmark/20241122_163356.svg
+.. image:: ./src/figures/benchmark/20241204_182830.svg
+
+Up to Microseconds
+------------------
+
+.. image:: ./src/figures/benchmark/20241204_183033.svg
+
+Complexity Analysis
+~~~~~~~~~~~~~~~~~~~
+
+Fixed Size Integers, One Element
+--------------------------------
+
+.. image:: ./src/figures/complexity/complexity_comparison_0_0.svg
+
+Fixed Size Integers, n Elements
+-------------------------------
+
+.. image:: ./src/figures/complexity/complexity_comparison_0_1.svg
+
+Arbitrary Size Integers, One Element
+------------------------------------
+
+.. image:: ./src/figures/complexity/complexity_comparison_1_0.svg
+
+Arbitrary Size Integers, n Elements
+-----------------------------------
+
+.. image:: ./src/figures/complexity/complexity_comparison_1_1.svg

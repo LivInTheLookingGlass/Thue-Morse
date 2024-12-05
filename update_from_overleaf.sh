@@ -27,6 +27,7 @@ rm -rf "$SRC_DIR" "$RENDERED_PDF"
 echo "Unpacking ZIP file to $SRC_DIR..."
 mkdir -p "$SRC_DIR"
 unzip -q "$ZIP_FILE" -d "$SRC_DIR"
+rm "$ZIP_FILE"
 
 echo "Moving PDF to $RENDERED_PDF..."
 mv "$PDF_FILE" "$RENDERED_PDF"

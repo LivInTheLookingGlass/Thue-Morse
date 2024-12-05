@@ -29,6 +29,7 @@ del "%RENDERED_PDF%"
 echo "Unpacking ZIP file to %SRC_DIR%..."
 mkdir "%SRC_DIR%"
 powershell -Command "Expand-Archive -Path '%ZIP_FILE%' -DestinationPath '%SRC_DIR%' -Force"
+del "%ZIP_FILE%"
 
 echo "Moving PDF to %RENDERED_PDF%..."
 move "%PDF_FILE%" "%RENDERED_PDF%"

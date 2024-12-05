@@ -599,6 +599,7 @@ This is identical to Equation \ref{eq:p2_d1}, where we define $T_{2,1}$.
 \subsection{Correlating Definition 2 and Definition 5}
 
 \begin{proof}
+\par\noindent\par
     \textbf{Observation 1}: If $n$ is even:\begin{equation}\begin{aligned}    
     b(n = 2k) &= b(\ceil{\tfrac{2k}{2}}) - b(\floor{\tfrac{2k}{2}}) \\
     &= b(k) - b(k) \\&= 0
@@ -726,6 +727,7 @@ This allows for increased flexibility, especially when using fractional bases. I
 \subsubsection{Proof of Equivalence with Original Definition \arabic{extdefctr}}
 
 \begin{proof}
+\par\noindent\par
 It is clear from visual inspection that $p_2$ is identical to our original definition of $p$.
 
 \begin{equation}
@@ -752,6 +754,7 @@ T_{n,\arabic{extdefctr}}(x,s) = \dfrac{\log\left(\omega_s^{p_s(x)}\right)}{\log\
 \subsubsection{Proof of Equivalence with Original Definition 3}
 
 \begin{proof}
+\par\noindent\par
     Let's start by substituting $s$ for $2$:
     \begin{equation}
     \begin{aligned}
@@ -780,6 +783,7 @@ T_{n,6}(s \cdot x + k, s) &= k + T_{n,6}(x, s) \pmod{s}
 \subsubsection{Proof of Equivalence with Original Definition 4}
 
 \begin{proof}
+\par\noindent\par
     Let's begin by substituting $s$ for $2$:
 \begin{equation}
 \begin{aligned}
@@ -948,6 +952,7 @@ A similar definition to the below is found in \cite{badziahin_2015} for $x \in \
 \subsubsection{Proof of Equivalence with Original Definition 17}
 
 \begin{proof}
+\par\noindent\par
 \textbf{Observation 1}: to start, let us rephrase definition 17 slightly
 
 \begin{equation}
@@ -1099,33 +1104,56 @@ It is well known \cite{Cai_2020} for the Standard \TMS that
 
 \subsection{Palindrome}
 
-This seems trivially violated for $n > 2$. Example: $t_3(2) = \tuple{0, 1, 2, 1, 2, 0, 2, 0, 1}$
+In base 2: \begin{equation}
+    \forall x, y : (x > 1) \land (0 \le y < 2^x), \;\; t_2(x)_y = t_2(x)_{2^x - y - 1}
+\end{equation}
+\note{(Find a citation for this)}
 
-This doesn't even work for power-of-2 bases, like $t_4(2) = \tuple{0, 1, 2, 3, 1, 2, 3, 0, 2, 3, 0, 1, 3, 0, 1, 2}$
+\begin{proof}
+\par\noindent\par
+    \textbf{Assumption 1}: $n > 2$
 
-\note{I am unable to think of any base other than 2 where this property could even conceivably hold true. Probably need to do a proof by contradiction, assuming base $\ge3$}
+    \textbf{Assumption 2}: $t_n(x)$ is palindromic, for $x > 1$
+
+    \textbf{Observation 1}: $$t_n(x)_{n^x - 1} = p_n(n^x - 1) \equiv (n - 1)x \pmod{n}$$
+
+    \textbf{Inference 1}: By Assumption 2, $t_n(x)_0 = 0 = t_n(x)_{n^x - 1}$
+
+    \textbf{Observation 2}: $$t_n(x)_{n^x - 2} = p_n(n^x - 2) \equiv (n - 1)(x - 1) - 2 \pmod{n}$$
+
+    \textbf{Inference 2}: By Assumption 2, $t_n(x)_1 = 1 = t_n(x)_{n^x - 2}$
+
+    \textbf{Inference 3}: By Inferences 1 \& 2, \begin{equation}\begin{aligned}
+        t_n(x)_{n^x-1} &\equiv t_n(x)_{n^x-2} - 1  \\
+        (n - 1)x &\equiv (n - 1)(x - 1) - 2 - 1 \\
+                 &\equiv (n - 1)(x - 1) + (n - 1) - 2 \\
+                 &\equiv (n - 1)x - 2 \\
+               0 &\equiv - 2 \\
+    \end{aligned}
+    \end{equation}
+
+    \textbf{Contradiction!} While $n > 2$, these terms cannot be equal. This means that if the first and last terms match, the second and penultimate will not, and vice versa.
+\end{proof}
 
 \subsection{Uniform Recurrence}
 
-\note{The \TMS is a uniformly recurrent word: given any finite string X in the sequence, there is some length nX (often much longer than the length of X) such that X appears in every block of length nX. Tackle this by using $T_{n,4}$}
+\note{The \TMS is a uniformly recurrent word: given any finite string X in the sequence, there is some length nX (often much longer than the length of X) such that X appears in every block of length nX. Tackle this by using $T_{n,6}$}
 
 \subsection{Cube Free}
 
-\note{Given a non-empty word $X$, $(X \concat X \concat X) \not\in T_n$. Pretty sure that Square Free implies Cube Free}
+\note{Given a word $X : |X| > 1, X \in T_n$, $(X \concat X \concat X) \not\in T_n$.}
 
 \subsection{Overlap Free}
 
-\note{Given a non-empty word $X$, $(X \concat X \concat X_0) \not\in T_n$. For $T_2$, this is shown in \cite{pannipitiya_2024}. Note additionally that this apparently is equivalent to 7/3-power-free \cite{rampersad_2003}}
+\note{Given a word $X : |X| > 1, X \in T_n$, $(X \concat X \concat X_0) \not\in T_n$. For $T_2$, this is shown in \cite{pannipitiya_2024}. Note additionally that this apparently is equivalent to 7/3-power-free \cite{rampersad_2003}. Cube Free implies Overlap Free}
 
 \subsection{Square Free}
 
-\note{Given a non-empty word $X$, $(X \concat X) \not\in T_n$}
+\note{Given a word $X : |X| > 1, X \in T_n$, $(X \concat X) \not\in T_n$. Overlap Free implies Square Free}
 
 \subsection{Aperiodicity}
 
-\note{Not totally sure how this should go, but I think a good approximation would be to show that the distance between the nearest two appearances of a substring grows to infinity much faster than the length of those substrings grows}
-
-\note{I seem to remember coming across a paper claiming that (square-free + cube-free) = aperiodic}
+\note{Not totally sure how this should go, but I think a good approximation would be to show that the distance between the nearest two appearances of a substring grows to infinity much faster than the length of those substrings grows. For words of size greater than $n$, this seems feasible. For words in size $2$ thru $n$, I think I need to show that the distance between repetitions is aperiodic. That \textit{should} be equivalent to distance between repetitions of integers, since one of the definitions expands digits to words}
 
 \section{Acknowledgment}
 
@@ -1135,23 +1163,65 @@ We thank Dan Rowe for helping with the initial work on this paper, as well as Ra
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\linewidth]{figures/benchmark/20241204_182753.pdf}
+    \vspace{-20pt}
     \caption{Benchmark results up to seconds.}
+    \includegraphics[width=\linewidth, trim=0 0 0 0, clip]{figures/benchmark/20241204_182753.pdf}
     \label{fig:benchmark_in_s}
+    \vspace{-25pt}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\linewidth]{figures/benchmark/20241204_182830.pdf}
+    \vspace{-20pt}
     \caption{Benchmark results up to milliseconds.}
+    \includegraphics[width=\linewidth, trim=0 0 0 0, clip]{figures/benchmark/20241204_182830.pdf}
     \label{fig:benchmark_in_ms}
+    \vspace{-25pt}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\linewidth]{figures/benchmark/20241204_183033.pdf}
+    \vspace{-20pt}
     \caption{Benchmark results up to microseconds.}
+    \includegraphics[width=\linewidth, trim=0 0 0 0, clip]{figures/benchmark/20241204_183033.pdf}
     \label{fig:benchmark_in_us}
+    \vspace{-25pt}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \vspace{-20pt}
+    \caption{Compared Complexity for Fixed Size Integers and One Element.}
+    \includegraphics[width=\linewidth, trim=0 0 0 0, clip]{figures/complexity/complexity_comparison_0_0.pdf}
+    \label{fig:complexity_0_0}
+    \vspace{-25pt}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \vspace{-20pt}
+    \caption{Compared Complexity for Fixed Size Integers and $n$ Elements.}
+    \includegraphics[width=\linewidth, trim=0 0 0 0, clip]{figures/complexity/complexity_comparison_0_1.pdf}
+    \label{fig:complexity_0_1}
+    \vspace{-25pt}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \vspace{-20pt}
+    \caption{Compared Complexity for Arbitrary Size Integers and One Element.}
+    \includegraphics[width=\linewidth, trim=0 0 0 0, clip]{figures/complexity/complexity_comparison_1_0.pdf}
+    \label{fig:complexity_1_0}
+    \vspace{-25pt}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \vspace{-20pt}
+    \caption{Compared Complexity for Arbitrary Size Integers and $n$ Elements.}
+    \includegraphics[width=\linewidth, trim=0 0 0 0, clip]{figures/complexity/complexity_comparison_1_1.pdf}
+    \label{fig:complexity_1_1}
+    \vspace{-25pt}
 \end{figure}
 
 \note{These figures are temporary and will be replaced with something prettier when things are finalized}
@@ -2445,10 +2515,16 @@ This is one of the more space-efficient implementations. Each element takes at m
 \bibliographystyle{unsrt}
 \bibliography{references}     % without the .bib extension
 
-\section{Task Sheet}
+\section{Notes}
+\small
+\lstset{basicstyle=\ttfamily, breaklines=true}
+\lstinputlisting{notes/definitions_to_add.txt}
+\normalsize
 
+\section{Task Tracker}
 \renewcommand{\arraystretch}{1.15}
-\begin{table}[H]
+
+\begin{table}[ht]
 \label{tab:comparison-b2n}
 \centering
 \caption{Comparison Matrix of the Standard Definitions to Their Extensions}
@@ -2460,7 +2536,7 @@ This is one of the more space-efficient implementations. Each element takes at m
 \end{tabular}
 \end{table}
 
-\begin{table}[H]
+\begin{table}[ht]
 \label{tab:comparison-b2}
 \centering
 \caption{Comparison Matrix of the Standard Definitions}
@@ -2493,7 +2569,7 @@ This is one of the more space-efficient implementations. Each element takes at m
 \end{table}
 \setcounter{rowcount}{1}
 
-\begin{table}[H]
+\begin{table}[ht]
 \label{tab:comparison-bn}
 \centering
 \caption{Comparison Matrix of the Extended Definitions}
@@ -2513,7 +2589,7 @@ This is one of the more space-efficient implementations. Each element takes at m
 \end{table}
 \setcounter{rowcount}{1}
 
-\begin{table}[H]
+\begin{table}[ht]
 \label{tab:property-tasks}
 \centering
 \caption{List of Possibly Preserved Properties}
@@ -2521,7 +2597,7 @@ This is one of the more space-efficient implementations. Each element takes at m
 \begin{tabular}{|r|l|c|}
 \hline
 \rc & Use as a Fair-Share Sequence & \Lm~~\Xm \\ \hline
-\rc & Palindrome                   & \Lm~~\Nm \\ \hline
+\rc & Palindrome                   & \Nm      \\ \hline
 \rc & Uniform Recurrence           &          \\ \hline
 \rc & Cube Free                    &          \\ \hline
 \rc & Overlap Free                 &          \\ \hline
@@ -2531,7 +2607,7 @@ This is one of the more space-efficient implementations. Each element takes at m
 \end{table}
 \setcounter{rowcount}{1}
 
-\begin{table}[H]
+\begin{table}[ht]
 \label{tab:extensions-attempted}
 \centering
 \caption{Attempt to Extend}
@@ -2561,12 +2637,40 @@ This is one of the more space-efficient implementations. Each element takes at m
 \end{tabular}
 \end{table}
 \setcounter{rowcount}{1}
-\renewcommand{\arraystretch}{1}
 
-% \onecolumn
-\section{Notes}
-\small
-\lstset{basicstyle=\ttfamily, breaklines=true}
-\lstinputlisting{notes/definitions_to_add.txt}
+\begin{table}[ht]
+\label{tab:complexity-analyzed}
+\centering
+\caption{Analyze Complexity}
+\note{X = Done, S = started} \vspace{5pt} \\
+\begin{tabular}{|r|c|c|c|c|}
+\hline
+\multirow{2}{*}{\textbf{Def.}} & \multicolumn{2}{c|}{\textbf{Standard}} & \multicolumn{2}{c|}{\textbf{Extended}} \\
+\cline{2-5}
+ & Time & Space & Time & Space \\ \hline
+\rc & \Xm & \Xm & \Xm & \Xm \\ \hline
+\rc &     &     &     &     \\ \hline
+\rc &     &     & \Xm & \Xm \\ \hline
+\rc & \Xm & \Xm &     &     \\ \hline
+\rc & \Sm & \Xm &     &     \\ \hline
+\rc & \Sm & \Sm &     &     \\ \hline
+\rc &     &     &     &     \\ \hline
+\rc &     &     &     &     \\ \hline
+\rc &     &     & \Sm & \Sm \\ \hline
+\rc &     &     \\ \cline{1-3}
+\rc &     &     \\ \cline{1-3}
+\rc &     &     \\ \cline{1-3}
+\rc &     &     \\ \cline{1-3}
+\rc &     &     \\ \cline{1-3}
+\rc & \Xm & \Xm \\ \cline{1-3}
+\rc &     &     \\ \cline{1-3}
+\rc & \Sm & \Sm \\ \cline{1-3}
+\rc &     &     \\ \cline{1-3}
+\rc &     &     \\ \cline{1-3}
+\rc &     &     \\ \cline{1-3}
+\end{tabular}
+\end{table}
+\setcounter{rowcount}{1}
+\renewcommand{\arraystretch}{1}
 
 \end{document}

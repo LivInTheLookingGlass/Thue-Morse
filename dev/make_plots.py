@@ -10,8 +10,8 @@ from numpy import linspace
 
 
 class ComplexityEnum(Enum):
-    CONSTANT        = auto()
-    SIMPLE_LOG      = auto()
+    CONST           = auto()
+    LOG             = auto()
     LOG_SQUARE      = auto()
     LOG2_LOGLOG     = auto()
     LINEAR          = auto()
@@ -28,8 +28,8 @@ class ComplexityEnum(Enum):
 
 CE = ComplexityEnum
 enum_map: Dict[ComplexityEnum, str] = {
-    CE.CONSTANT        : r'1',
-    CE.SIMPLE_LOG      : r'\log(n)',
+    CE.CONST           : r'1',
+    CE.LOG             : r'\log(n)',
     CE.LOG_SQUARE      : r'\log(n)^2',
     CE.LOG2_LOGLOG     : r'\log(n)^2 \cdot \log(\log(n))',
     CE.LINEAR          : r'n',
@@ -46,8 +46,8 @@ enum_map: Dict[ComplexityEnum, str] = {
 get_comp_name = enum_map.get
 
 time_map: Dict[str, float] = {
-    enum_map[CE.CONSTANT]:        1,
-    enum_map[CE.SIMPLE_LOG]:      2,
+    enum_map[CE.CONST]:           1,
+    enum_map[CE.LOG]:             2,
     enum_map[CE.LOG_SQUARE]:      2 * 2,
     enum_map[CE.LOG2_LOGLOG]:     4 * (1 + log10(2)),
     enum_map[CE.LINEAR]:          100,
@@ -62,8 +62,8 @@ time_map: Dict[str, float] = {
 }
 
 space_map: Dict[str, float] = {
-    enum_map[CE.CONSTANT]:   1,
-    enum_map[CE.SIMPLE_LOG]: 2,
+    enum_map[CE.CONST]:      1,
+    enum_map[CE.LOG]:        2,
     enum_map[CE.LINEAR]:     100,
     enum_map[CE.LIN_LOG]:    200,
     enum_map[CE.LIN2]:       100 * 100,
@@ -86,8 +86,8 @@ complexities: List[Tuple[
     Tuple[ComplexityEnum, ComplexityEnum, ComplexityEnum, ComplexityEnum],
     Tuple[ComplexityEnum, ComplexityEnum, ComplexityEnum, ComplexityEnum]]] = [
     ('$T_{2,1}$',
-     (CE.SIMPLE_LOG,      CE.LIN_LOG,         CE.LOG2_LOGLOG,    CE.LIN_LOG2_LOGLOG),
-     (CE.CONSTANT,        CE.LINEAR,          CE.SIMPLE_LOG,     CE.LIN_LOG)),
+     (CE.LOG,             CE.LIN_LOG,         CE.LOG2_LOGLOG,    CE.LIN_LOG2_LOGLOG),
+     (CE.CONST,           CE.LINEAR,          CE.LOG,            CE.LIN_LOG)),
     ('$T_{2,2}$',
      (CE.UNKNOWN,         CE.UNKNOWN,         CE.UNKNOWN,        CE.UNKNOWN),
      (CE.UNKNOWN,         CE.UNKNOWN,         CE.UNKNOWN,        CE.UNKNOWN)),
@@ -95,17 +95,17 @@ complexities: List[Tuple[
      (CE.UNKNOWN,         CE.UNKNOWN,         CE.UNKNOWN,        CE.UNKNOWN),
      (CE.UNKNOWN,         CE.UNKNOWN,         CE.UNKNOWN,        CE.UNKNOWN)),
     ('$T_{2,4}$',
-     (CE.SIMPLE_LOG,      CE.LIN_LOG,         CE.LOG_SQUARE,     CE.LIN2_LOG_LOGLOG),
-     (CE.CONSTANT,        CE.LINEAR,          CE.SIMPLE_LOG,     CE.LIN_LOG)),
+     (CE.LOG,             CE.LIN_LOG,         CE.LOG_SQUARE,     CE.LIN2_LOG_LOGLOG),
+     (CE.CONST,           CE.LINEAR,          CE.LOG,            CE.LIN_LOG)),
     ('$T_{2,5r}$',
      (CE.LINEAR,          CE.LIN2,            CE.LIN_LOG_LOGLOG, CE.LIN2_LOG_LOGLOG),
-     (CE.SIMPLE_LOG,      CE.LIN_LOG,         CE.LOG_SQUARE,     CE.LIN_LOG2)),
+     (CE.LOG,             CE.LIN_LOG,         CE.LOG_SQUARE,     CE.LIN_LOG2)),
     ('$T_{2,5d}$',
      (CE.LINEAR,          CE.LIN2,            CE.LIN_LOG_LOGLOG, CE.LIN2_LOG_LOGLOG),
      (CE.LINEAR,          CE.LIN2,            CE.LIN_LOG,        CE.LIN2_LOG)),
     ('$T_{2,6}$',
      (CE.LIN_LOG,         CE.LIN_LOG,         CE.LIN_LOG2,       CE.LIN_LOG2),
-     (CE.CONSTANT,        CE.LINEAR,          CE.SIMPLE_LOG,     CE.LIN_LOG)),
+     (CE.CONST,           CE.LINEAR,          CE.LOG,            CE.LIN_LOG)),
     ('$T_{2,7}$',
      (CE.UNKNOWN,         CE.UNKNOWN,         CE.UNKNOWN,        CE.UNKNOWN),
      (CE.UNKNOWN,         CE.UNKNOWN,         CE.UNKNOWN,        CE.UNKNOWN)),
@@ -135,7 +135,7 @@ complexities: List[Tuple[
      (CE.LINEAR,          CE.LIN2,            CE.LIN_LOG,        CE.LIN2_LOG)),
     ('$T_{2,15p}$',
      (CE.LINEAR,          CE.LIN2,            CE.LIN_LOG_LOGLOG, CE.LIN_LOG_LOGLOG),
-     (CE.CONSTANT,        CE.LINEAR,          CE.SIMPLE_LOG,     CE.LIN_LOG)),
+     (CE.CONST,           CE.LINEAR,          CE.LOG,            CE.LIN_LOG)),
     ('$T_{2,16}$',
      (CE.UNKNOWN,         CE.UNKNOWN,         CE.UNKNOWN,        CE.UNKNOWN),
      (CE.UNKNOWN,         CE.UNKNOWN,         CE.UNKNOWN,        CE.UNKNOWN)),
@@ -152,14 +152,14 @@ complexities: List[Tuple[
      (CE.UNKNOWN,         CE.UNKNOWN,         CE.UNKNOWN,        CE.UNKNOWN),
      (CE.UNKNOWN,         CE.UNKNOWN,         CE.UNKNOWN,        CE.UNKNOWN)),
     ('$T_{n,1}$',
-     (CE.SIMPLE_LOG,      CE.LIN_LOG,         CE.LOG2_LOGLOG,    CE.LIN_LOG2_LOGLOG),
-     (CE.CONSTANT,        CE.LINEAR,          CE.SIMPLE_LOG,     CE.LIN_LOG)),
+     (CE.LOG,             CE.LIN_LOG,         CE.LOG2_LOGLOG,    CE.LIN_LOG2_LOGLOG),
+     (CE.CONST,           CE.LINEAR,          CE.LOG,            CE.LIN_LOG)),
     ('$T_{n,2}$',
      (CE.UNKNOWN,         CE.UNKNOWN,         CE.UNKNOWN,        CE.UNKNOWN),
      (CE.UNKNOWN,         CE.UNKNOWN,         CE.UNKNOWN,        CE.UNKNOWN)),
     ('$T_{n,3}$',
-     (CE.SIMPLE_LOG,      CE.LIN_LOG,         CE.LIN_LOG,        CE.LIN_LOG2),
-     (CE.CONSTANT,        CE.LINEAR,          CE.SIMPLE_LOG,     CE.LIN_LOG)),
+     (CE.LOG,             CE.LIN_LOG,         CE.LIN_LOG,        CE.LIN_LOG2),
+     (CE.CONST,           CE.LINEAR,          CE.LOG,            CE.LIN_LOG)),
     ('$T_{n,4}$',
      (CE.UNKNOWN,         CE.UNKNOWN,         CE.UNKNOWN,        CE.UNKNOWN),
      (CE.UNKNOWN,         CE.UNKNOWN,         CE.UNKNOWN,        CE.UNKNOWN)),
@@ -176,7 +176,7 @@ complexities: List[Tuple[
      (CE.UNKNOWN,         CE.UNKNOWN,         CE.UNKNOWN,        CE.UNKNOWN),
      (CE.UNKNOWN,         CE.UNKNOWN,         CE.UNKNOWN,        CE.UNKNOWN)),
     ('$T_{n,9}$',
-     (CE.SIMPLE_LOG,      CE.SIMPLE_LOG,      CE.UNKNOWN,        CE.UNKNOWN),
+     (CE.LOG,             CE.LOG,             CE.UNKNOWN,        CE.UNKNOWN),
      (CE.LINEAR,          CE.LINEAR,          CE.LIN_LOG,        CE.LIN_LOG)),
 ]
 

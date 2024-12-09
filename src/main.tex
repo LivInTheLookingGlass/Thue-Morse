@@ -40,8 +40,6 @@ This paper is divided into 8 sections. In Section 1, we introduce the concepts b
 
 In Section 3 we prove their equivalence with each other in the standard base-2 domain. In Section 4 we present \TotalExtensions definitions that extend into larger domains. Most of these can only construct sequences with integer value elements, though a select few can be extended into even broader domains, such as rational bases. In Section 5 we prove that the extensions are equivalent to each other in the domain of positive integer bases. In Section 6 we examine the preservation (or failure) of properties for the standard \TMS when extended to larger bases. Sections 7 and 8 are acknowledgments and the appendix respectively. The appendix contains complexity analyses (both time and space) for the different definitions. These show which may be the most computationally efficient ways to calculate the \TMS or \ETMS, given your available resources.
 
-\note{I want to reorder these definitions by generation method}
-
 \section{The Original Sequence}
 
 \subsection{Definition \arabic{stddefctr} of \TotalOriginals\xspace --- Parity of Hamming Weight}
@@ -64,8 +62,6 @@ The subscript indicates that we are using $2$ players (writing in base $2$) and 
 
 \stepcounter{stddefctr}
 \subsection{Definition \arabic{stddefctr} of \TotalOriginals\xspace --- Powers of Negative One}
-
-\note{Should I split this into 2 definitions (yes)? I've done so for others that were this dissimilar while sharing a common root idea. It feels odd that this is the only one with an $a$ and $b$ version.}
 
 This appears in \cite{OEIS-TMS-inv}.
 
@@ -400,7 +396,7 @@ T_{2,\arabic{stddefctr}}(n) &= 1 - oe(n) \pmod{2}
 
 This definition appears in \cite{OEIS-TMS}.
 
-Gould's Sequence \cite{OEIS-Gould} are the number of odd entries in a given row of Pascal's Triangle. Note that this is by far one of the least computationally efficient definition in this paper (see Tables \ref{tab:time_p2_d13} \& \ref{tab:space_p2_d13}).
+Gould's Sequence \cite{OEIS-Gould} are the number of odd entries in a given row of Pascal's Triangle. Note that of the numeric methods, this is the least computationally efficient definition in this paper (see Tables \ref{tab:time_p2_d15} \& \ref{tab:space_p2_d15}).
 
 \note{Why mod 3? Everything else is mod 2. This definition is unlikely to be extendable, and the obvious routes fail. I don't get why this works, and I think I need to. I \textit{think} $\text{Gould}(x)$ always returns $2k + \{0,1\}$}
 
@@ -467,7 +463,7 @@ This means that it is equivalent to $T_{2,1}$ \note{(prove it)}.
 
 In practice, to get the coefficients up to the $n$th term, one needs to only expand the product to $k_\text{max} = \floor{\log_2(n + 1)} - 1$.
 
-Note that this and the next definition are by far the least computationally efficient definitions in this paper (see Figure \ref{fig:benchmark_in_s} and Tables \ref{tab:time_p2_d15}, \ref{tab:space_p2_d15}, \ref{tab:time_p2_d16}, \ref{tab:space_p2_d16}).\footnote{Our implementation \cite{repo} heavily utilizes \cite{symengine, sympy} for these calculations}
+Note that this and the next definition are by far the least computationally efficient definitions in this paper (see Figure \ref{fig:benchmark_in_s} and Tables \ref{tab:time_p2_d17}, \ref{tab:space_p2_d17}, \ref{tab:time_p2_d18}, \ref{tab:space_p2_d18}).\footnote{Our implementation \cite{repo} heavily utilizes \cite{symengine, sympy} for these calculations}
 
 \stepcounter{stddefctr}
 \subsection{Definition \arabic{stddefctr} of \TotalOriginals\xspace --- Generating Function 2}
@@ -554,9 +550,14 @@ Of the \TotalOriginals we discussed above:
 
     \textbf{Inference 1}: $\dfrac{1 - (-1)^n}{2} = n \;\; \mod{2}$
 
-    \textbf{Conclusion}: \begin{equation}
-        T_{2,2}(n) = \dfrac{1 - (-1)^{p(n)}}{2} = p(n) \mod{2} = T_{2,1}(n)
-    \end{equation}
+    \textbf{Conclusion}:
+    \vspace{-1.5em}
+    \begin{equation}\begin{aligned}
+        T_{2,2}(n) &= \dfrac{1 - (-1)^{p(n)}}{2}\\
+                   &= p(n) \mod{2}\\
+                   &= T_{2,1}(n)
+    \end{aligned}
+    \end{equation}\vspace{-1.5em}
 \end{proof}
 
 \subsection{Correlating Definition 1 and Definition 4}
@@ -594,6 +595,43 @@ This is identical to Equation \ref{eq:p2_d1}, where we define $T_{2,1}$.
     \textbf{Observation 3}: $T_{2,1} = p(n)$, and $p(n)$ computes the parity of the Hamming Weight of $n$.
 
     \textbf{Conclusion}: $T_{2,1}(n) = T_{2,8}(n)$
+\end{proof}
+
+\subsection{Correlating Definition 2 and Definition 3}
+
+\begin{proof}
+\par\noindent\par
+    \textbf{Branch 1}: $p(n)$ is even
+
+    \textbf{Observation 1}:\begin{equation}\begin{aligned}
+    T_{2,2}(n) &= \dfrac{1 - (-1)^{2k}}{2}\\
+               &= \dfrac{1 - 1}{2} = 0
+    \end{aligned}
+    \end{equation}
+
+    \textbf{Observation 2}: \begin{equation}\begin{aligned}
+    T_{2,3}(n) &= \dfrac{\log((-1)^{2k})}{\log(-1)} \\
+               &= \dfrac{\log(1)}{\log(-1)} \\
+               &= \dfrac{0}{\log(-1)} = 0
+    \end{aligned}
+    \end{equation}
+
+    \textbf{Branch 2}: $p(n)$ is odd
+
+    \textbf{Observation 3}:\begin{equation}\begin{aligned}
+    T_{2,2}(n) &= \dfrac{1 - (-1)^{2k+1}}{2} \\
+               &= \dfrac{1 - (-1)}{2}\\ 
+               &= \dfrac{2}{2} = 1
+    \end{aligned}
+    \end{equation}
+
+    \textbf{Observation 4}:\begin{equation}\begin{aligned}
+    T_{2,3}(n) &= \dfrac{\log((-1)^{2k+1})}{\log(-1)}\\
+    &= \dfrac{\log(-1)}{\log(-1)} = 1
+    \end{aligned}
+    \end{equation}
+
+    \textbf{Conclusion}: $T_{2,2}(n) = T_{2,3}(n)$
 \end{proof}
 
 \subsection{Correlating Definition 2 and Definition 5}
@@ -696,7 +734,7 @@ While the \TMS has a well-established binary form, its extension to larger alpha
 
 \subsection{Extension \arabic{extdefctr} of \TotalExtensions\xspace --- Modular Digit Sums}
 
-This definition appears in \cite{Astudillo_2003, Dekking_2023, OEIS-TMS-3-2, Shallit_2022, Shevelev_2017, OEIS-TMS-negabinary, Starosta_2011, Parshina_2017, Robert_2013}.
+This definition appears in \cite{Astudillo_2003, Dekking_2023, OEIS-TMS-3-2, Shallit_2022, Shevelev_2017, OEIS-TMS-negabinary, Starosta_2011, Parshina_2017, Robert_2013, OEIS-TMS-3, OEIS-TMS-4, OEIS-TMS-5, OEIS-TMS-6, OEIS-TMS-7, OEIS-TMS-8, OEIS-TMS-9}.
 
 To extend definition 1 from $2$ to $n$ players, we must first map our concept of parity to base n. We can do this by taking the parity equation defined above and replacing the $2$s with $n$, for $n \in \Integers_{\ge 2}$.
 
@@ -864,7 +902,7 @@ T_{n,\arabic{extdefctr}}(x, s) &= T_{n,\arabic{extdefctr}}\left(x - s^{\floor{\l
 \stepcounter{extdefctr}
 \subsection{Extended Definition \arabic{extdefctr} of \TotalExtensions\xspace --- Substitute and Flatten}
 
-This definition appears in \cite{Chen_2019}
+This definition appears in \cite{Chen_2019, OEIS-TMS-3, OEIS-TMS-4}
 
 \note{There's a bit of a leap here, since we have to explain why the rotation is equivalent to the binary choice presented in the original. There also might be a better syntax to define the rotation, perhaps using the format used in inv and inc.}
 
@@ -909,7 +947,7 @@ r(\mathbf{x}, i) &= \begin{aligned}[c]
 \stepcounter{extdefctr}
 \subsection{Extended Definition \arabic{extdefctr} of \TotalExtensions\xspace --- Latin Square Constructions}
 
-This definition appears in \cite{Bolker_2016}\note{, and seemingly only there. It is very clearly equivalent to our Extended Definition 4, but I will need to actually prove that.}
+This definition appears in \cite{tompkins_2007, Bolker_2016}
 
 Let $L(n)$ be the reduced-form Latin Square with a first row of $\tuple{0, 1, \dots, n\!-\!1}$, and where each row progresses from one entry to the next as $L(n)_{a,x+1} \equiv L(n)_{a,x} + 1 \pmod{n}$. For each iteration $t_n$, substitute each entry $x$ for the string $L(n)_{x,*}$.
 
@@ -1139,17 +1177,21 @@ In base 2: \begin{equation}
 
 \note{The \TMS is a uniformly recurrent word: given any finite string X in the sequence, there is some length nX (often much longer than the length of X) such that X appears in every block of length nX. Tackle this by using $T_{n,6}$}
 
-\subsection{Cube Free}
+\subsection{Square Free}
 
-\note{Given a word $X : |X| > 1, X \in T_n$, $(X \concat X \concat X) \not\in T_n$.}
+\note{Given a word $X : |X| > 1, X \in T_n$, $(X \concat X) \not\in T_n$. Square Free implies Overlap Free. The original \TMS is \textit{not} square-free, as it is not possible to construct a square-free sequence with an alphabet smaller than 3 (cite to Thue himself). However it can produce a square-free sequence easily by grouping into pairs of terms, forming the new alphabet $\tuple{00, 01, 10, 11}$ (citation?). It also seems from my testing that this generalizes, in that if you restrict $X: |X| = nk$, then $(X \concat X) \not\in T_n$.}
 
 \subsection{Overlap Free}
 
-\note{Given a word $X : |X| > 1, X \in T_n$, $(X \concat X \concat X_0) \not\in T_n$. For $T_2$, this is shown in \cite{pannipitiya_2024}. Note additionally that this apparently is equivalent to 7/3-power-free \cite{rampersad_2003}. Cube Free implies Overlap Free}
+Extensions of the \TMS that comply with $T_{n,8}$ are overlap-free \cite{tompkins_2007}.
 
-\subsection{Square Free}
+\note{Given a word $X : |X| > 1, X \in T_n$, $(X \concat X \concat X_0) \not\in T_n$. For $T_2$, this is shown in \cite{pannipitiya_2024}. Note additionally that this apparently is equivalent to 7/3-power-free \cite{rampersad_2003}. Overlap Free implies Cube Free}
 
-\note{Given a word $X : |X| > 1, X \in T_n$, $(X \concat X) \not\in T_n$. Overlap Free implies Square Free}
+\subsection{Cube Free}
+
+Because extensions of the \TMS that comply with $T_{n,8}$ are overlap-free \cite{tompkins_2007}, they are also cube-free.
+
+\note{Given a word $X : |X| > 1, X \in T_n$, $(X \concat X \concat X) \not\in T_n$.}
 
 \subsection{Aperiodicity}
 
@@ -2524,19 +2566,19 @@ This is one of the more space-efficient implementations. Each element takes at m
 \section{Task Tracker}
 \renewcommand{\arraystretch}{1.15}
 
-\begin{table}[ht]
+\begin{table}[htb]
 \label{tab:comparison-b2n}
 \centering
 \caption{Comparison Matrix of the Standard Definitions to Their Extensions}
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
 \hline
 1  & 3  & 4  & 6  & 8  & 9  & 10 & 11 & 17 \\ \hline
-\Xm&\Xm &\Xm &    &    &    &    &    &\Xm     \\ \hline
-1  & 2  & 3  & 4  & 5  & 6  & 7  & 8  & 9   \\ \hline
+\Xm&\Xm &\Xm &    &    &    &    &    &\Xm \\ \hline
+1  & 2  & 3  & 4  & 5  & 6  & 7  & 8  & 9  \\ \hline
 \end{tabular}
 \end{table}
 
-\begin{table}[ht]
+\begin{table}[htb]
 \label{tab:comparison-b2}
 \centering
 \caption{Comparison Matrix of the Standard Definitions}
@@ -2546,7 +2588,7 @@ This is one of the more space-efficient implementations. Each element takes at m
 \cline{1-1}
 \rc \\ \cline{1-2}
 \Xm  & \rc \\ \cline{1-3}
-     & \Om & \rc \\ \cline{1-4}
+     & \Xm & \rc \\ \cline{1-4}
 \Xm  &     &     & \rc \\ \cline{1-5}
      & \Sm &     &     & \rc \\ \cline{1-6}
      &     &     &     &     & \rc \\ \cline{1-7}
@@ -2569,7 +2611,7 @@ This is one of the more space-efficient implementations. Each element takes at m
 \end{table}
 \setcounter{rowcount}{1}
 
-\begin{table}[ht]
+\begin{table}[htb]
 \label{tab:comparison-bn}
 \centering
 \caption{Comparison Matrix of the Extended Definitions}
@@ -2589,7 +2631,7 @@ This is one of the more space-efficient implementations. Each element takes at m
 \end{table}
 \setcounter{rowcount}{1}
 
-\begin{table}[ht]
+\begin{table}[htb]
 \label{tab:property-tasks}
 \centering
 \caption{List of Possibly Preserved Properties}
@@ -2607,7 +2649,7 @@ This is one of the more space-efficient implementations. Each element takes at m
 \end{table}
 \setcounter{rowcount}{1}
 
-\begin{table}[ht]
+\begin{table}[htb]
 \label{tab:extensions-attempted}
 \centering
 \caption{Attempt to Extend}
@@ -2638,7 +2680,7 @@ This is one of the more space-efficient implementations. Each element takes at m
 \end{table}
 \setcounter{rowcount}{1}
 
-\begin{table}[ht]
+\begin{table}[htb]
 \label{tab:complexity-analyzed}
 \centering
 \caption{Analyze Complexity}

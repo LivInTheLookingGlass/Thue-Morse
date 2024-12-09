@@ -34,13 +34,3 @@ mv "$PDF_FILE" "$RENDERED_PDF"
 
 echo "Adding new files to git..."
 git add "$SRC_DIR"/* "$RENDERED_PDF"
-
-if [ -n "$COMMIT_MSG" ]; then
-  echo "Committing changes with provided message..."
-  git commit -a -m "$COMMIT_MSG"
-else
-  echo "No commit message provided. Opening editor for git commit..."
-  git commit -a
-fi
-
-echo "Repository updated successfully."

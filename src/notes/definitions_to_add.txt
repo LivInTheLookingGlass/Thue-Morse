@@ -30,3 +30,8 @@ A005940: The Doudna sequence
 Definitions from OEIS (inverse: 10010110)
 
 If A(n)=(a(0),a(2),...,a(2^n-1)), then A(n+1)=(A(n),1-A(n)). - Arie Bos, Jul 27 2022
+-----------------------------------------
+Definitions from OEIS (base 3: 012120201)
+a(n) = A026600(n+1) - 1.
+
+A026600: a(n) is the n-th letter of the infinite word generated from w(1)=1 inductively by w(n)=JUXTAPOSITION{w(n-1),w'(n-1),w"(n-1)}, where w(k) becomes w'(k) by the cyclic permutation 1->2->3->1 and w"(k) = (w')'(k).

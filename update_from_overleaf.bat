@@ -36,14 +36,4 @@ move "%PDF_FILE%" "%RENDERED_PDF%"
 
 echo "Adding new files to git..."
 git add "%SRC_DIR%\*" "%RENDERED_PDF%"
-
-if [%COMMIT_MSG%] == [] (
-  echo "No commit message provided. Opening editor for git commit..."
-  git commit -a
-) else (
-  echo "Committing changes with provided message..."
-  git commit -a -m "%COMMIT_MSG%"
-)
-
-echo "Repository updated successfully."
 endlocal

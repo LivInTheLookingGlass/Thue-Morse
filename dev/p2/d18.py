@@ -11,7 +11,7 @@ def p2_d18(_: int = 2, size_hint: Optional[int] = None) -> Generator[int, None, 
     n = 8
     nr1 = 0  # normally is n right-shifted 1
     x = symbols('x')
-    g_f = (sqrt(x + 1) - sqrt(1 - 3 * x)) / (2 * (x + 1)**(3/2))
+    g_f = (sqrt(x + 1) - sqrt(1 - 3 * x)) / (2 * (x + 1)**(3 / 2))
     while True:
         series_expansion = g_f.series(x, 0, n + 1)
         for i in range(nr1, n):

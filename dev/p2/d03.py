@@ -12,7 +12,6 @@ except ImportError:
 from ..args import run
 from ..compat.fluidpythran import boost
 from ..compat.int import bit_count
-from ..compat.numba import jit
 from ..pn.d02 import closest_root
 
 

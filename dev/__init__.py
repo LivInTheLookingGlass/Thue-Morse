@@ -1,7 +1,7 @@
 from importlib import import_module
 from traceback import print_exc
 from types import ModuleType
-from typing import Any, Callable, Dict, Generator, Optional, Protocol, Sequence
+from typing import Any, Dict, Generator, Optional, Protocol, Sequence
 
 parent_name = '.'.join(__name__.split('.')[:-1])
 

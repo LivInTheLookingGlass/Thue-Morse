@@ -15,7 +15,11 @@ from ..p2.d10 import rotate
 
 
 @boost
-def pn_d07(n: int = 2, size_hint: Optional[int] = None) -> Generator[int, None, None]:
+def pn_d07(
+    n: int = 2,
+    size_hint: Optional[int] = None,
+    benchmark: bool = False
+) -> Generator[int, None, None]:
     dtype = np_select_type(n)
     seq = np.arange(n, dtype=dtype)
     prev_len = 0

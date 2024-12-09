@@ -7,7 +7,11 @@ from ..compat.int import bit_count
 
 
 @boost
-def p2_d07(_: int = 2, size_hint: Optional[int] = None) -> Generator[int, None, None]:
+def p2_d07(
+    _: int = 2,
+    size_hint: Optional[int] = None,
+    benchmark: bool = False
+) -> Generator[int, None, None]:
     yield 0
     for i in count():
         for x in reversed(range(1 << i, 1 << (i + 1))):

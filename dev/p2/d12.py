@@ -19,7 +19,11 @@ def evil(_: int = 2) -> Generator[int, None, None]:
 
 
 @boost
-def p2_d12(_: int = 2, size_hint: Optional[int] = None) -> Generator[int, None, None]:
+def p2_d12(
+    _: int = 2,
+    size_hint: Optional[int] = None,
+    benchmark: bool = False
+) -> Generator[int, None, None]:
     yield from map(lambda n, i: (i - (n << 1)) & 1, count(), evil())
 
 

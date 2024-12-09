@@ -12,7 +12,11 @@ from ..compat.fluidpythran import boost
 
 
 @boost
-def p2_d17(_: int = 2, size_hint: Optional[int] = None) -> Generator[int, None, None]:
+def p2_d17(
+    _: int = 2,
+    size_hint: Optional[int] = None,
+    benchmark: bool = False
+) -> Generator[int, None, None]:
     start = 3
     n = 1 << start
     nr1 = 0

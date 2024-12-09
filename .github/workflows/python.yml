@@ -275,10 +275,13 @@ jobs:
       run: |
         ulimit -S -v $(( (4 + max_mem + swap_size) * 1024 * 1024)); ulimit -H -v; ulimit -S -v
         case ${{matrix.def}} in
-          2_0[23456789]|2_1[012346]|n_0[1457])
+          2_0[26789]|2_1[01246])
+            test_len=34
+            ;;
+          2_0[34]|2_1[35]|n_0[57])
             test_len=32
             ;;
-          2_05|n_0[236])
+          2_05|n_0[23])
             test_len=30
             ;;
           n_08)

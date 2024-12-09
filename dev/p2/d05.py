@@ -30,7 +30,11 @@ def b(n: int, memo: bitarray) -> int:
 
 
 @boost
-def p2_d05(_: int = 2, size_hint: Optional[int] = None) -> Generator[int, None, None]:
+def p2_d05(
+    _: int = 2,
+    size_hint: Optional[int] = None,
+    benchmark: bool = False
+) -> Generator[int, None, None]:
     mem_limit = 2 << 30
     if size_hint:
         memo = bitarray(min(1024, size_hint << 1))

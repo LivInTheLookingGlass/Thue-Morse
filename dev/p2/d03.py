@@ -16,7 +16,11 @@ from ..pn.d02 import closest_root
 
 
 @boost
-def p2_d03(_: int = 2, size_hint: Optional[int] = None) -> Generator[int, None, None]:
+def p2_d03(
+    _: int = 2,
+    size_hint: Optional[int] = None,
+    benchmark: bool = False
+) -> Generator[int, None, None]:
     func = partial(closest_root, roots=np.array([1, -1]))
     yield from map(lambda x: func((-1)**bit_count(x)), count())
 

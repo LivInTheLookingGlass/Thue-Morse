@@ -18,7 +18,11 @@ def compute(bc: int) -> int:
 
 
 @boost
-def p2_d02(_: int = 2, size_hint: Optional[int] = None) -> Generator[int, None, None]:
+def p2_d02(
+    _: int = 2,
+    size_hint: Optional[int] = None,
+    benchmark: bool = False
+) -> Generator[int, None, None]:
     yield from map(lambda x: compute(bit_count(x)), count())
 
 

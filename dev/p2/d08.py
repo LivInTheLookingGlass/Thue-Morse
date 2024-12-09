@@ -12,7 +12,11 @@ from ..compat.fluidpythran import boost
 
 
 @boost
-def p2_d08(_: int = 2, size_hint: Optional[int] = None) -> Generator[int, None, None]:
+def p2_d08(
+    _: int = 2,
+    size_hint: Optional[int] = None,
+    benchmark: bool = False
+) -> Generator[int, None, None]:
     seq: bitarray = bitarray((0, 1))
     yield from seq
     while True:

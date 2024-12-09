@@ -47,7 +47,11 @@ def pin(x: int, n: int):
 
 
 @boost
-def pn_d01(n: int = 2, size_hint: Optional[int] = None) -> Generator[int, None, None]:
+def pn_d01(
+    n: int = 2,
+    size_hint: Optional[int] = None,
+    benchmark: bool = False
+) -> Generator[int, None, None]:
     yield from map(partial(get_p(n), n=n), count())
 
 

@@ -33,7 +33,11 @@ def A193231(i: int) -> int:
 
 
 @boost
-def p2_d16(_: int = 2, size_hint: Optional[int] = None) -> Generator[int, None, None]:
+def p2_d16(
+    _: int = 2,
+    size_hint: Optional[int] = None,
+    benchmark: bool = False
+) -> Generator[int, None, None]:
     yield from map(A193231, count())
 
 

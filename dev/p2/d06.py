@@ -11,7 +11,11 @@ from ..compat.fluidpythran import boost
 
 
 @boost
-def p2_d06(_: int = 2, size_hint: Optional[int] = None) -> Generator[int, None, None]:
+def p2_d06(
+    _: int = 2,
+    size_hint: Optional[int] = None,
+    benchmark: bool = False
+) -> Generator[int, None, None]:
     value = 1
     for n in count():
         # Note: assumes that (-1).bit_length() gives 1

@@ -7,7 +7,12 @@ parent_name = '.'.join(__name__.split('.')[:-1])
 
 
 class GenProto(Protocol):
-    def __call__(self, n: int = 2, size_hint: Optional[int] = None) -> Generator[int, None, None]:
+    def __call__(
+        self,
+        n: int = 2,
+        size_hint: Optional[int] = None,
+        benchmark: bool = False
+    ) -> Generator[int, None, None]:
         ...
 
 

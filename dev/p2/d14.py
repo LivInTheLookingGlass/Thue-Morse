@@ -13,7 +13,11 @@ from .d12 import evil
 
 
 @boost
-def p2_d14(_: int = 2, size_hint: Optional[int] = None) -> Generator[int, None, None]:
+def p2_d14(
+    _: int = 2,
+    size_hint: Optional[int] = None,
+    benchmark: bool = False
+) -> Generator[int, None, None]:
     yield from map(lambda x: 1 - x & 1, chain.from_iterable(zip(odious(), evil())))
 
 

@@ -20,7 +20,11 @@ def T(x: int, n: int) -> int:
 
 
 @boost
-def pn_d03(n: int = 2, size_hint: Optional[int] = None) -> Generator[int, None, None]:
+def pn_d03(
+    n: int = 2,
+    size_hint: Optional[int] = None,
+    benchmark: bool = False
+) -> Generator[int, None, None]:
     yield from map(partial(T, n=n), count())
 
 

@@ -12,7 +12,11 @@ from ..compat.int import bit_count
 
 
 @boost
-def p2_d01(_: int = 2, size_hint: Optional[int] = None) -> Generator[int, None, None]:
+def p2_d01(
+    _: int = 2,
+    size_hint: Optional[int] = None,
+    benchmark: bool = False
+) -> Generator[int, None, None]:
     yield from map(lambda x: bit_count(x) & 1, count())
 
 

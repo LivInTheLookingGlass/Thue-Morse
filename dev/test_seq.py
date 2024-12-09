@@ -82,7 +82,7 @@ def test_benchmark(benchmark, c: str, n: int):
     iterator = get_iters(cs)[0]
 
     def to_check():
-        it = iterator(2, n)
+        it = iterator(2, n, True)
         result = []
         try:
             for i in islice(it, n):

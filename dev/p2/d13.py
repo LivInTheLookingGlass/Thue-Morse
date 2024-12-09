@@ -18,7 +18,11 @@ def A1510481(n: int, bc: int) -> int:
 
 
 @boost
-def p2_d13(_: int = 2, size_hint: Optional[int] = None) -> Generator[int, None, None]:
+def p2_d13(
+    _: int = 2,
+    size_hint: Optional[int] = None,
+    benchmark: bool = False
+) -> Generator[int, None, None]:
     i = -1
     j = jbc = 0
     k = kbc = 1

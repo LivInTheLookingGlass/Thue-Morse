@@ -16,7 +16,11 @@ def closest_root(target: complex, roots: 'np.typing.NDArray[np.complex64]') -> i
 
 
 @boost
-def pn_d02(n: int = 2, size_hint: Optional[int] = None) -> Generator[int, None, None]:
+def pn_d02(
+    n: int = 2,
+    size_hint: Optional[int] = None,
+    benchmark: bool = False
+) -> Generator[int, None, None]:
     p = get_p(n)
     roots = np.exp(1j * np.linspace(0, 2 * np.pi, abs(n), endpoint=False, dtype=np.complex64))  # vectorized
     primitive_root = roots[1]

@@ -3,11 +3,14 @@ from typing import Iterable, Iterator, Tuple, TypeVar
 
 from pytest import mark
 
+from .compat.fluidpythran import boost
 from .pn.d01 import pn_d01
 
 T = TypeVar("T")
+test_len = 1 << 8
 
 
+@boost
 def groupwise(iterable: Iterable[T], size: int) -> Iterator[Tuple[T, ...]]:
     """Iterate over something in buckets of a given size."""
     iters = tee(iterable, size)
@@ -17,6 +20,7 @@ def groupwise(iterable: Iterable[T], size: int) -> Iterator[Tuple[T, ...]]:
     return zip(*iters)
 
 
+@boost
 def is_sorta_square_free(iterator, b: int, n: int) -> bool:
     len_to_check = n // 2
     for k in range(b, len_to_check + 1, b):
@@ -32,6 +36,7 @@ def is_sorta_square_free(iterator, b: int, n: int) -> bool:
     return True
 
 
+@boost
 def is_cube_free(iterator, b: int, n: int) -> bool:
     len_to_check = n // 3
     for k in range(2, len_to_check + 1):
@@ -55,6 +60,7 @@ def is_cube_free(iterator, b: int, n: int) -> bool:
     return True
 
 
+@boost
 def is_overlap_free(iterator, b: int, n: int) -> bool:
     len_to_check = (n - 1) // 2
     for k in range(2, len_to_check + 1):
@@ -72,24 +78,27 @@ def is_overlap_free(iterator, b: int, n: int) -> bool:
 
 
 @mark.parametrize("b", range(2, 1025))
+@boost
 def test_sorta_square_free(b: int):
     n = b
-    while n < (1 << 8):
+    while n < test_len:
         n *= b
-    assert is_sorta_square_free(lambda: pn_d01(b), b, n)
+    assert is_sorta_square_free(lambda: pn_d01(b, n), b, n)
 
 
 @mark.parametrize("b", range(2, 1025))
+@boost
 def test_overlap_free(b: int):
     n = b
-    while n < (1 << 8):
+    while n < test_len:
         n *= b
-    assert is_overlap_free(lambda: pn_d01(b), b, n)
+    assert is_overlap_free(lambda: pn_d01(b, n), b, n)
 
 
 @mark.parametrize("b", range(2, 1025))
+@boost
 def test_cube_free(b: int):
     n = b
-    while n < (1 << 8):
+    while n < test_len:
         n *= b
-    assert is_cube_free(lambda: pn_d01(b), b, n)
+    assert is_cube_free(lambda: pn_d01(b, n), b, n)

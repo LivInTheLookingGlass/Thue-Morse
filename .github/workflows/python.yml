@@ -275,17 +275,23 @@ jobs:
       run: |
         ulimit -S -v $(( (4 + max_mem + swap_size) * 1024 * 1024)); ulimit -H -v; ulimit -S -v
         case ${{matrix.def}} in
-          2_0*|2_1[012346]|n_0[1234567])
+          2_0[23456789]|2_1[012346]|n_0[1457])
+            test_len=32
+            ;;
+          2_05|n_0[236])
             test_len=30
             ;;
-          n_0[89])
-            test_len=25
+          n_08)
+            test_len=27
             ;;
-          2_1[89])
-            test_len=6
+          n_09)
+            test_len=25
             ;;
           2_1[57]|n_09)
             test_len=18
+            ;;
+          2_1[89])
+            test_len=6
             ;;
           *)
             echo "Unknown definition; limit not set"

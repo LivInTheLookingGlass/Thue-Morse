@@ -1,6 +1,7 @@
 from collections import defaultdict
+from enum import Enum, auto
 from itertools import product
-from math import log10, log2
+from math import log2, log10
 from typing import Callable, Dict, List, Optional, Tuple, cast
 
 from matplotlib import colormaps as cm
@@ -8,30 +9,66 @@ from matplotlib import pyplot as plt
 from numpy import linspace
 
 
+class ComplexityEnum(Enum):
+    CONSTANT        = auto()
+    SIMPLE_LOG      = auto()
+    LOG_SQUARE      = auto()
+    LOG2_LOGLOG     = auto()
+    LINEAR          = auto()
+    LIN_LOG         = auto()
+    LIN_LOG_LOGLOG  = auto()
+    LIN_LOG2        = auto()
+    LIN_LOG2_LOGLOG = auto()
+    LIN_TO_LOG3_LOG = auto()
+    LIN2            = auto()
+    LIN2_LOG        = auto()
+    LIN2_LOG_LOGLOG = auto()
+    UNKNOWN         = auto()
+
+
+CE = ComplexityEnum
+enum_map: Dict[ComplexityEnum, str] = {
+    CE.CONSTANT        : r'1',
+    CE.SIMPLE_LOG      : r'\log(n)',
+    CE.LOG_SQUARE      : r'\log(n)^2',
+    CE.LOG2_LOGLOG     : r'\log(n)^2 \cdot \log(\log(n))',
+    CE.LINEAR          : r'n',
+    CE.LIN_LOG         : r'n \cdot \log(n)',
+    CE.LIN_LOG_LOGLOG  : r'n \cdot \log(n) \cdot \log(\log(n))',
+    CE.LIN_LOG2        : r'n \cdot \log(n)^2',
+    CE.LIN_LOG2_LOGLOG : r'n \cdot \log(n)^2 \cdot \log(\log(n))',
+    CE.LIN_TO_LOG3_LOG : r'n^{\log_2(3)} \cdot \log(n)',
+    CE.LIN2            : r'n^2',
+    CE.LIN2_LOG        : r'n^2 \cdot \log(n)',
+    CE.LIN2_LOG_LOGLOG : r'n^2 \cdot \log(n) \cdot \log(\log(n))',
+}
+
+get_comp_name = enum_map.get
+
 time_map: Dict[str, float] = {
-    r'1':                                     1,
-    r'\log(n)':                               2,
-    r'n':                                     100,
-    r'n \cdot \log(n)':                       200,
-    r'\log(n)^2 \cdot \log(\log(n))':         4 * (1 + log10(2)),
-    r'n \cdot \log(n)^2 \cdot \log(\log(n))': 100 * 4 * (1 + log10(2)),
-    r'\log(n)^2':                             2 * 2,
-    r'n \cdot \log(n)^2':                     400,
-    r'n \cdot \log(n) \cdot \log(\log(n))':   100 * 2 * (1 + log10(2)),
-    r'n^2 \cdot \log(n) \cdot \log(\log(n))': 100 * 100 * 2 * (1 + log10(2)),
-    r'n^2':                                   100 * 100,
-    r'n^2 \cdot \log(n)':                     100 * 100 * 2,
-    r'n^{\log_2(3)} \cdot \log(n)':           100**log2(3) * 2,
+    enum_map[CE.CONSTANT]:        1,
+    enum_map[CE.SIMPLE_LOG]:      2,
+    enum_map[CE.LOG_SQUARE]:      2 * 2,
+    enum_map[CE.LOG2_LOGLOG]:     4 * (1 + log10(2)),
+    enum_map[CE.LINEAR]:          100,
+    enum_map[CE.LIN_LOG]:         200,
+    enum_map[CE.LIN_LOG_LOGLOG]:  200 * (1 + log10(2)),
+    enum_map[CE.LIN_LOG2]:        400,
+    enum_map[CE.LIN_LOG2_LOGLOG]: 400 * (1 + log10(2)),
+    enum_map[CE.LIN_TO_LOG3_LOG]: 100**log2(3) * 2,
+    enum_map[CE.LIN2]:            100 * 100,
+    enum_map[CE.LIN2_LOG]:        100 * 100 * 2,
+    enum_map[CE.LIN2_LOG_LOGLOG]: 100 * 100 * 2 * (1 + log10(2)),
 }
 
 space_map: Dict[str, float] = {
-    r'1':                 1,
-    r'n':                 100,
-    r'\log(n)':           2,
-    r'n \cdot \log(n)':   200,
-    r'n^2':               100 * 100,
-    r'n^2 \cdot \log(n)': 100 * 100 * 2,
-    r'n \cdot \log(n)^2': 100 * 4
+    enum_map[CE.CONSTANT]:   1,
+    enum_map[CE.SIMPLE_LOG]: 2,
+    enum_map[CE.LINEAR]:     100,
+    enum_map[CE.LIN_LOG]:    200,
+    enum_map[CE.LIN2]:       100 * 100,
+    enum_map[CE.LIN2_LOG]:   100 * 100 * 2,
+    enum_map[CE.LIN_LOG2]:   100 * 4,
 }
 
 reverse_time_map = {v: k for k, v in time_map.items()}
@@ -46,41 +83,41 @@ get_space_complexity = reverse_space_map.get
 # fixed+single, fixed+total, flex+single, flex+total
 complexities: List[Tuple[
     str,
-    Tuple[Optional[str], Optional[str], Optional[str], Optional[str]],
-    Tuple[Optional[str], Optional[str], Optional[str], Optional[str]]]] = [
+    Tuple[ComplexityEnum, ComplexityEnum, ComplexityEnum, ComplexityEnum],
+    Tuple[ComplexityEnum, ComplexityEnum, ComplexityEnum, ComplexityEnum]]] = [
     ('$T_{2,1}$',
-     (r'\log(n)',                     r'n \cdot \log(n)',             r'\log(n)^2 \cdot \log(\log(n))',       r'n \cdot \log(n)^2 \cdot \log(\log(n))'),
-     (r'1',                           r'n',                           r'\log(n)',                             r'n \cdot \log(n)')),
+     (CE.SIMPLE_LOG,      CE.LIN_LOG,         CE.LOG2_LOGLOG,    CE.LIN_LOG2_LOGLOG),
+     (CE.CONSTANT,        CE.LINEAR,          CE.SIMPLE_LOG,     CE.LIN_LOG)),
     ('$T_{2,4}$',
-     (r'\log(n)',                     r'n \cdot \log(n)',             r'\log(n)^2',                           r'n \cdot \log(n)^2 \cdot \log(\log(n))'),
-     (r'1',                           r'n',                           r'\log(n)',                             r'n \cdot \log(n)')),
+     (CE.SIMPLE_LOG,      CE.LIN_LOG,         CE.LOG_SQUARE,     CE.LIN2_LOG_LOGLOG),
+     (CE.CONSTANT,        CE.LINEAR,          CE.SIMPLE_LOG,     CE.LIN_LOG)),
     ('$T_{2,5r}$',
-     (r'n',                           r'n^2',                         r'n \cdot \log(n) \cdot \log(\log(n))', r'n^2 \cdot \log(n) \cdot \log(\log(n))'),
-     (r'\log(n)',                     r'n \cdot \log(n)',             r'\log(n)^2',                           r'n \cdot \log(n)^2')),
+     (CE.LINEAR,          CE.LIN2,            CE.LIN_LOG_LOGLOG, CE.LIN2_LOG_LOGLOG),
+     (CE.SIMPLE_LOG,      CE.LIN_LOG,         CE.LOG_SQUARE,     CE.LIN_LOG2)),
     ('$T_{2,5d}$',
-     (r'n',                           r'n^2',                         r'n \cdot \log(n) \cdot \log(\log(n))', r'n^2 \cdot \log(n) \cdot \log(\log(n))'),
-     (r'n',                           r'n^2',                         r'n \cdot \log(n)',                     r'n^2 \cdot \log(n)')),
+     (CE.LINEAR,          CE.LIN2,            CE.LIN_LOG_LOGLOG, CE.LIN2_LOG_LOGLOG),
+     (CE.LINEAR,          CE.LIN2,            CE.LIN_LOG,        CE.LIN2_LOG)),
     ('$T_{2,6}$',
-     (r'n \cdot \log(n)',             r'n \cdot \log(n)',             r'n \cdot \log(n)^2',                   r'n \cdot \log(n)^2'),
-     (r'1',                           r'n',                           r'\log(n)',                             r'n \cdot \log(n)')),
+     (CE.LIN_LOG,         CE.LIN_LOG,         CE.LIN_LOG2,       CE.LIN_LOG2),
+     (CE.CONSTANT,        CE.LINEAR,          CE.SIMPLE_LOG,     CE.LIN_LOG)),
     ('$T_{2,15s}$',
-     (r'n',                           r'n^2',                         r'n',                                   r'n^2'),
-     (r'n',                           r'n^2',                         r'n \cdot \log(n)',                     r'n^2 \cdot \log(n)')),
+     (CE.LINEAR,          CE.LIN2,            CE.LINEAR,         CE.LIN2),
+     (CE.LINEAR,          CE.LIN2,            CE.LIN_LOG,        CE.LIN2_LOG)),
     ('$T_{2,15p}$',
-     (r'n',                           r'n^2',                         r'n \cdot \log(n) \cdot \log(\log(n))', r'n^2 \cdot \log(n) \cdot \log(\log(n))'),
-     (r'1',                           r'n',                           r'\log(n)',                             r'n \cdot \log(n)')),
+     (CE.LINEAR,          CE.LIN2,            CE.LIN_LOG_LOGLOG, CE.LIN_LOG_LOGLOG),
+     (CE.CONSTANT,        CE.LINEAR,          CE.SIMPLE_LOG,     CE.LIN_LOG)),
     ('$T_{2,17}$',
-     (r'n^{\log_2(3)} \cdot \log(n)', r'n^{\log_2(3)} \cdot \log(n)', None,                                   None),
-     (r'n',                           r'n',                           r'n \cdot \log(n)',                     r'n \cdot \log(n)')),
+     (CE.LIN_TO_LOG3_LOG, CE.LIN_TO_LOG3_LOG, CE.UNKNOWN,        CE.UNKNOWN),
+     (CE.LINEAR,          CE.LINEAR,          CE.LIN_LOG,        CE.LIN_LOG)),
     ('$T_{n,1}$',
-     (r'\log(n)',                     r'n \cdot \log(n)',             r'\log(n)^2 \cdot \log(\log(n))',       r'n \cdot \log(n)^2 \cdot \log(\log(n))'),
-     (r'1',                           r'n',                           r'\log(n)',                             r'\n \cdot \log(n)')),
+     (CE.SIMPLE_LOG,      CE.LIN_LOG,         CE.LOG2_LOGLOG,    CE.LIN_LOG2_LOGLOG),
+     (CE.CONSTANT,        CE.LINEAR,          CE.SIMPLE_LOG,     CE.LIN_LOG)),
     ('$T_{n,3}$',
-     (r'\log(n)',                     r'n \cdot \log(n)',             r'n \cdot \log(n)',                     r'n \cdot \log(n)^2'),
-     (r'1',                           r'n',                           r'\log(n)',                             r'n \cdot \log(n)')),
+     (CE.SIMPLE_LOG,      CE.LIN_LOG,         CE.LIN_LOG,        CE.LIN_LOG2),
+     (CE.CONSTANT,        CE.LINEAR,          CE.SIMPLE_LOG,     CE.LIN_LOG)),
     ('$T_{n,9}$',
-     (r'\log(n)',                     r'\log(n)',                     None,                                   None),
-     (r'n',                           r'n',                           r'n \cdot \log(n)',                     r'n \cdot \log(n)')),
+     (CE.SIMPLE_LOG,      CE.SIMPLE_LOG,      CE.UNKNOWN,        CE.UNKNOWN),
+     (CE.LINEAR,          CE.LINEAR,          CE.LIN_LOG,        CE.LIN_LOG)),
 ]
 
 
@@ -89,8 +126,8 @@ for is_arb, is_total in product(range(2), range(2)):
     index = is_arb * 2 + is_total
 
     for name, times, spaces in complexities:
-        time_value = get_time_value(times[index])
-        space_value = get_space_value(spaces[index])
+        time_value = get_time_value(enum_map[times[index]])
+        space_value = get_space_value(enum_map[spaces[index]])
         if time_value is not None and space_value is not None:
             groups[(time_value, space_value)].append(name)
         # else:
@@ -142,4 +179,8 @@ for is_arb, is_total in product(range(2), range(2)):
 
     plt.grid(True, which="both", linestyle='--', linewidth=0.25)
     plt.legend(loc='upper left', bbox_to_anchor=(1, 1), title="Complexity Groups", fontsize=8)
-    plt.savefig(f'src/figures/complexity/complexity_comparison_{is_total}_{is_arb}.svg', format='svg', bbox_inches='tight')
+    plt.savefig(
+        f'src/figures/complexity/complexity_comparison_{is_total}_{is_arb}.svg',
+        format='svg',
+        bbox_inches='tight'
+    )

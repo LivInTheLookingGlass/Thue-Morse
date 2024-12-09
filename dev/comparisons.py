@@ -34,12 +34,19 @@ pn_defs = sorted(int(p.name[1:-3]) for p in Path(__file__).parent.glob('pn/d*.py
 pn_defs.remove(1)
 all_defs = [('2', d) for d in p2_defs] + [('n', d) for d in pn_defs]
 always_spin_off = [  # rough order of slowest to fastest
-    ('2', 13),
     ('2', 15),
     ('n', 9),
-    ('2', 8),
-    ('n', 4),
+    ('2', 17),
     ('n', 2),
+    ('n', 5),
+    ('2', 5),
+    ('n', 6),
+    ('n', 7),
+    ('2', 3),
+]
+truncated_defs = [  # these don't have enough precision in python to give full sequence
+    ('2', 18),
+    ('2', 19),
 ]
 
 
@@ -93,7 +100,7 @@ def begin(shelf: Shelf) -> None:
     task_list: List[ANY_JOB_TYPE] = list(chain.from_iterable(
         [(Operation.DUMP, (kind, def_, 2, stop)), (Operation.COMPARE, (('n', 1, 2, stop, kind, def_)))]
         for kind, def_ in all_defs
-        if (kind, def_) not in always_spin_off
+        if ((kind, def_) not in always_spin_off and (kind, def_) not in truncated_defs)
     ))
     task_list.insert(1, (Operation.AWAIT, (Operation.DUMP, ('n', 1, 2, stop))))
     for idx, (kind, def_) in enumerate(always_spin_off, start=1):
@@ -107,7 +114,7 @@ def begin(shelf: Shelf) -> None:
         new_list.extend(chain.from_iterable(
             [(Operation.DUMP, ('n', def_, base, stop)), (Operation.COMPARE, (('n', 1, base, stop, 'n', def_)))]
             for def_ in pn_defs
-            if ('n', def_) not in always_spin_off
+            if (('n', def_) not in always_spin_off and ('n', def_) not in truncated_defs)
         ))
         new_list.insert(1, (Operation.AWAIT, (Operation.DUMP, ('n', 1, base, stop))))
         for idx, (kind, def_) in enumerate(always_spin_off, start=1):

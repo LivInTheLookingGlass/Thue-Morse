@@ -1,5 +1,5 @@
 from itertools import islice
-from typing import Generator, Sequence, TypeVar, Union, overload
+from typing import Generator, Optional, Sequence, TypeVar, Union, overload
 
 import numpy as np
 
@@ -42,7 +42,7 @@ def rotate(t, n: int):
 
 
 @boost
-def p2_d10(_: int = 2) -> Generator[int, None, None]:
+def p2_d10(_: int = 2, size_hint: Optional[int] = None) -> Generator[int, None, None]:
     seq: bitarray = bitarray((0, 1))
     prev_len = 0
     while True:

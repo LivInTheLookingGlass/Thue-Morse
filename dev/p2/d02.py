@@ -1,5 +1,5 @@
 from itertools import count
-from typing import Generator, Union
+from typing import Generator, Optional, Union
 
 try:
     from z3 import If, Int, IntSort, RecAddDefinition, RecFunction, ToInt
@@ -18,7 +18,7 @@ def compute(bc: int) -> int:
 
 
 @boost
-def p2_d02(_: int = 2) -> Generator[int, None, None]:
+def p2_d02(_: int = 2, size_hint: Optional[int] = None) -> Generator[int, None, None]:
     yield from map(lambda x: compute(bit_count(x)), count())
 
 

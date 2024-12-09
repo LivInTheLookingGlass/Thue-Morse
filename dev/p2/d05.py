@@ -1,5 +1,5 @@
 from itertools import count
-from typing import Generator, Union
+from typing import Generator, Optional, Union
 
 try:
     from z3 import If, Int, IntSort, RecAddDefinition, RecFunction
@@ -30,12 +30,15 @@ def b(n: int, memo: bitarray) -> int:
 
 
 @boost
-def p2_d05(_: int = 2) -> Generator[int, None, None]:
-    mem_limit = 1 << 20
-    memo = bitarray(1024)
+def p2_d05(_: int = 2, size_hint: Optional[int] = None) -> Generator[int, None, None]:
+    mem_limit = 2 << 30
+    if size_hint:
+        memo = bitarray(min(1024, size_hint << 1))
+    else:
+        memo = bitarray(1024)
     memo[:4] = bitarray((1, 0, 0, 1))
     for i in count(1):
-        if i < mem_limit:
+        if len(memo) < mem_limit:
             memo.extend((0, 0))
         yield (1 - b((i << 1) - 1, memo)) >> 1
 

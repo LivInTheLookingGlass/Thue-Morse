@@ -8,10 +8,11 @@ from math import ceil, floor, log, log2
 from pathlib import Path
 from struct import pack, unpack
 from sys import stdin, stdout
-from typing import IO, Callable, Generator, Literal, Optional, Tuple, Union, overload
+from typing import IO, Generator, Literal, Optional, Tuple, Union, overload
 
 import numpy as np
 
+from . import GenProto
 from .compat.fluidpythran import boost
 from .compat.itertools import batched
 
@@ -61,7 +62,7 @@ def human_readable_bytes(byte_size):
 @boost
 def run(
     num: int,
-    func: Optional[Callable[[int], Generator[int, None, None]]],
+    func: Optional[GenProto],
     kind: str = '2',
     from_file: bool = False
 ) -> None:
@@ -161,7 +162,7 @@ def process_file_input(args: Namespace, gen_mode: bool = False):
 @boost
 def process_file_output(
     args: Namespace,
-    func: Callable[[int], Generator[int, None, None]],
+    func: GenProto,
     kind: str,
     kind_str: str,
     num: int
@@ -181,7 +182,7 @@ def process_file_output(
 
     with get_file_obj(args.file, 'wb') as f:
         f.write(pack(struct_format, kind == '2', num - 1, args.p - 2, args.n - 1))
-        for group in batched(zip(range(args.n), func(args.p)), batch_size):
+        for group in batched(zip(range(args.n), func(args.p, args.n)), batch_size):
             batch = [y for _, y in group]
 
             if not args.quiet:

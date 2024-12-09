@@ -1,6 +1,6 @@
 from functools import reduce
 from operator import mul
-from typing import Generator
+from typing import Generator, Optional
 
 try:
     from symengine import expand, symbols
@@ -12,7 +12,7 @@ from ..compat.fluidpythran import boost
 
 
 @boost
-def p2_d17(_: int = 2) -> Generator[int, None, None]:
+def p2_d17(_: int = 2, size_hint: Optional[int] = None) -> Generator[int, None, None]:
     start = 3
     n = 1 << start
     nr1 = 0

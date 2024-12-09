@@ -1,6 +1,6 @@
 from functools import partial
 from itertools import count
-from typing import Generator, Union
+from typing import Generator, Optional, Union
 
 try:
     from z3 import If, Int, IntSort, RecAddDefinition, RecFunction
@@ -20,7 +20,7 @@ def T(x: int, n: int) -> int:
 
 
 @boost
-def pn_d03(n: int = 2) -> Generator[int, None, None]:
+def pn_d03(n: int = 2, size_hint: Optional[int] = None) -> Generator[int, None, None]:
     yield from map(partial(T, n=n), count())
 
 

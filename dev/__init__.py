@@ -1,9 +1,14 @@
 from importlib import import_module
 from traceback import print_exc
 from types import ModuleType
-from typing import Any, Callable, Dict, Generator, Sequence
+from typing import Any, Callable, Dict, Generator, Optional, Protocol, Sequence
 
 parent_name = '.'.join(__name__.split('.')[:-1])
+
+
+class GenProto(Protocol):
+    def __call__(self, n: int = 2, size_hint: Optional[int] = None) -> Generator[int, None, None]:
+        ...
 
 
 def get_modules(p2: bool = True, pn: bool = False, s: int = 2) -> Dict[str, ModuleType]:
@@ -18,7 +23,7 @@ def get_modules(p2: bool = True, pn: bool = False, s: int = 2) -> Dict[str, Modu
     return iters
 
 
-def get_iters(*names: str) -> Sequence[Callable[[int], Generator[int, None, None]]]:
+def get_iters(*names: str) -> Sequence[GenProto]:
     return [
         getattr(
             import_module(f'{parent_name}.{key}', __name__),

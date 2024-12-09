@@ -1,5 +1,5 @@
 from itertools import count
-from typing import Generator, Union
+from typing import Generator, Optional, Union
 
 try:
     from z3 import If, Int, IntSort, RecAddDefinition, RecFunction
@@ -11,7 +11,7 @@ from ..compat.fluidpythran import boost
 
 
 @boost
-def p2_d06(_: int = 2) -> Generator[int, None, None]:
+def p2_d06(_: int = 2, size_hint: Optional[int] = None) -> Generator[int, None, None]:
     value = 1
     for n in count():
         # Note: assumes that (-1).bit_length() gives 1

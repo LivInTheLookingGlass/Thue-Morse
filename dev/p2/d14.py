@@ -1,5 +1,5 @@
 from itertools import chain
-from typing import Generator, Union
+from typing import Generator, Optional, Union
 
 try:
     from z3 import If, Int, IntSort, RecAddDefinition, RecFunction
@@ -13,7 +13,7 @@ from .d12 import evil
 
 
 @boost
-def p2_d14(_: int = 2) -> Generator[int, None, None]:
+def p2_d14(_: int = 2, size_hint: Optional[int] = None) -> Generator[int, None, None]:
     yield from map(lambda x: 1 - x & 1, chain.from_iterable(zip(odious(), evil())))
 
 

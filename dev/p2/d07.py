@@ -1,5 +1,5 @@
 from itertools import count
-from typing import Generator
+from typing import Generator, Optional
 
 from ..args import run
 from ..compat.fluidpythran import boost
@@ -7,7 +7,7 @@ from ..compat.int import bit_count
 
 
 @boost
-def p2_d07(_: int = 2) -> Generator[int, None, None]:
+def p2_d07(_: int = 2, size_hint: Optional[int] = None) -> Generator[int, None, None]:
     yield 0
     for i in count():
         for x in reversed(range(1 << i, 1 << (i + 1))):

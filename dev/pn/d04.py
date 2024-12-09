@@ -1,5 +1,5 @@
 from itertools import count
-from typing import Generator, Union
+from typing import Generator, Optional, Union
 
 try:
     from z3 import If, Int, IntSort, RecAddDefinition, RecFunction
@@ -40,7 +40,7 @@ def xor_wrapper(x: int, n: int, value: int) -> int:
 
 
 @boost
-def pn_d04(n: int = 2) -> Generator[int, None, None]:
+def pn_d04(n: int = 2, size_hint: Optional[int] = None) -> Generator[int, None, None]:
     yield from (0, 1)
     value = 1
     for x in count(2):

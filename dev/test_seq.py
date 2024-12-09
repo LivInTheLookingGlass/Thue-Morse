@@ -82,7 +82,7 @@ def test_benchmark(benchmark, c: str, n: int):
     iterator = get_iters(cs)[0]
 
     def to_check():
-        it = iterator(2)
+        it = iterator(2, n)
         result = []
         try:
             for i in islice(it, n):
@@ -220,7 +220,7 @@ def test_compare_2_1_to_(c: str, n: int = test_len):
     cs = 'p{}.d{}'.format(*c.split('_'))
     iters = get_iters("p2.d01", cs)
     assert len(iters) == 2
-    iterators = [iterator(2) for iterator in iters]
+    iterators = [iterator(2, n) for iterator in iters]
     try:
         for idx, tup in enumerate(zip(*iterators)):
             if len(set(tup)) != 1:

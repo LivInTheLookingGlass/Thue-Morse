@@ -31,7 +31,7 @@ jobs:
         python -O -m pip install -r requirements.txt
 
     - name: Run Linters
-      run: python -O -m pytest --isort --flake8 --mypy --mypy-ignore-missing-imports -k "not (test_compare or z3 or benchmark)"
+      run: python -O -m pytest --isort --flake8 --mypy --mypy-ignore-missing-imports -k "not (test_compare or z3 or benchmark or free)"
 
   benchmark:
     runs-on: ubuntu-latest
@@ -50,6 +50,45 @@ jobs:
 
     - name: Run Benchmarks
       run: python -O -m pytest -k "benchmark" --benchmark-enable --benchmark-sort=fullname --benchmark-group-by="param:c" --benchmark-cprofile=ncalls_recursion --benchmark-cprofile=ncalls --benchmark-cprofile=tottime --benchmark-cprofile=tottime_per --benchmark-cprofile=cumtime --benchmark-cprofile=cumtime_per --benchmark-verbose --benchmark-min-rounds=1
+
+  sequence-properties:
+    runs-on: ubuntu-latest
+    env:
+      swap_size: 13  # in GiB
+      max_mem: 15
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Use Python 3.12
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.12
+        cache: 'pip'
+        cache-dependency-path: requirements.txt
+
+    - name: Fetch test dependencies
+      run: |
+        sudo apt-get install -y build-essential cmake libgmp-dev
+        python -O -m pip install -r requirements.txt
+
+    - name: Create and enable swapfile
+      run: |
+        sudo fallocate -l ${{env.swap_size}}G /swapfile
+        sudo chmod 600 /swapfile
+        sudo mkswap /swapfile
+        sudo swapon /swapfile
+        sudo swapon --show
+
+    - name: Run Z3 Tests
+      run: |
+        ulimit -S -v $(( (4 + max_mem + swap_size) * 1024 * 1024)); ulimit -H -v; ulimit -S -v
+        python -O -m pytest -k "free" -n auto
+
+    - name: Upload tar artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: prover-artifact
+        path: prover.tar.gz
 
   satisfiable:
     runs-on: ubuntu-latest
@@ -191,7 +230,7 @@ jobs:
         monitor_memory &
         monitor_pid=$!
 
-        python -O -m pytest -k "not benchmark and ${{matrix.def}}" --timeout=21555
+        python -O -m pytest -k "(benchmark or z3 or free) and ${{matrix.def}}" --timeout=21555
 
         kill $monitor_pid
 
@@ -331,6 +370,6 @@ jobs:
         monitor_memory &
         monitor_pid=$!
 
-        python -O -m pytest -k "not benchmark and ${{matrix.def}}- and ($base_regex)"
+        python -O -m pytest -k "(benchmark or z3 or free) and ${{matrix.def}}- and ($base_regex)"
 
         kill $monitor_pid

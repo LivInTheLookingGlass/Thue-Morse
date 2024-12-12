@@ -234,6 +234,8 @@ jobs:
         - 2_17
         - 2_18
         - 2_19
+        - 2_20
+        - 2_21
         - n_01
         - n_02
         - n_03
@@ -278,23 +280,26 @@ jobs:
           2_0[26789]|2_1[01246])
             test_len=34
             ;;
-          2_0[34]|2_1[35]|n_0[57])
+          2_0[34]|2_1[35]|n_0[567])
             test_len=32
             ;;
-          2_05|n_0[23])
+          2_05|n_0[1234])
             test_len=30
             ;;
           n_08)
             test_len=27
             ;;
-          n_09)
-            test_len=25
-            ;;
-          2_1[57]|n_09)
+          2_17|2_21)
             test_len=18
             ;;
-          2_1[89])
+          2_15|n_09)
+            test_len=17
+            ;;
+          2_19|2_20)
             test_len=6
+            ;;
+          2_18)
+            test_len=5
             ;;
           *)
             echo "Unknown definition; limit not set"
@@ -385,26 +390,26 @@ jobs:
       run: |
         ulimit -S -v $(( (4 + max_mem + swap_size) * 1024 * 1024)); ulimit -H -v; ulimit -S -v
         case ${{matrix.def}}-${{matrix.bases}} in
-          [67]-*)
-            test_len=30
+          2-209|2-225|2-241*)
+            test_len=28
             ;;
-          2-*)
+          [267]-*)
             test_len=29
             ;;
           [3458]-*)
             test_len=27
             ;;
           9-003*)
-            test_len=17
-            ;;
-          9-017*)
             test_len=16
             ;;
+          9-017*)
+            test_len=15
+            ;;
           9-033*)
-            test_len=14
+            test_len=13
             ;;
           9-049*)
-            test_len=13
+            test_len=12
             ;;
           9-049*)
             test_len=12

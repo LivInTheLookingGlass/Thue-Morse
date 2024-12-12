@@ -47,6 +47,7 @@ always_spin_off = [  # rough order of slowest to fastest
 truncated_defs = [  # these don't have enough precision in python to give full sequence
     ('2', 18),
     ('2', 19),
+    ('2', 20),
 ]
 
 

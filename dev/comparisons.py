@@ -104,13 +104,16 @@ def begin(shelf: Shelf) -> None:
         if ((kind, def_) not in always_spin_off and (kind, def_) not in truncated_defs)
     ))
     task_list.insert(1, (Operation.AWAIT, (Operation.DUMP, ('n', 1, 2, stop))))
+    new_list: List[ANY_JOB_TYPE] = []
     for idx, (kind, def_) in enumerate(always_spin_off, start=1):
         task_list.insert(idx * 2 + 1, (Operation.SPINOFF, (Operation.DUMP, (kind, def_, 2, stop))))
-        task_list.append((Operation.AWAIT, (Operation.DUMP, (kind, def_, 2, stop))))
-        task_list.append((Operation.COMPARE, ('n', 1, 2, stop, kind, def_)))
+        new_list.append((Operation.COMPARE, ('n', 1, 2, stop, kind, def_)))
+        new_list.append((Operation.AWAIT, (Operation.DUMP, (kind, def_, 2, stop))))
+    task_list.extend(reversed(new_list))
     task_list.append((Operation.CLEAN, (2, )))
     for base in range(3, base_stop):
-        new_list: List[ANY_JOB_TYPE] = []
+        new_list = []
+        new_new_list: List[ANY_JOB_TYPE] = []
         new_list.append((Operation.SPINOFF, (Operation.DUMP, ('n', 1, base, stop))))
         new_list.extend(chain.from_iterable(
             [(Operation.DUMP, ('n', def_, base, stop)), (Operation.COMPARE, (('n', 1, base, stop, 'n', def_)))]
@@ -122,8 +125,9 @@ def begin(shelf: Shelf) -> None:
             if kind == '2':
                 continue
             new_list.insert(idx * 2 + 1, (Operation.SPINOFF, (Operation.DUMP, (kind, def_, base, stop))))
-            new_list.append((Operation.AWAIT, (Operation.DUMP, (kind, def_, base, stop))))
-            new_list.append((Operation.COMPARE, ('n', 1, base, stop, kind, def_)))
+            new_new_list.append((Operation.COMPARE, ('n', 1, base, stop, kind, def_)))
+            new_new_list.append((Operation.AWAIT, (Operation.DUMP, (kind, def_, base, stop))))
+        new_list.extend(reversed(new_new_list))
         new_list.append((Operation.CLEAN, (base, )))
         task_list.extend(new_list)
     shelf['pending'] = task_list

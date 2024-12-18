@@ -22,7 +22,7 @@ def p2_d21(
         player = np.argmin(players)
         players[player] += value
         remaining_prob -= value
-        yield player
+        yield int(player)
 
 
 if __name__ == '__main__':

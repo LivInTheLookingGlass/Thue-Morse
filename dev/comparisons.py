@@ -98,35 +98,38 @@ def begin(shelf: Shelf) -> None:
     stop: int = shelf['stop']
     base_stop: int = shelf['base_stop']
     shelf['next_operation'] = (Operation.SPINOFF, (Operation.DUMP, ('n', 1, 2, stop)))
-    task_list: List[ANY_JOB_TYPE] = list(chain.from_iterable(
+    task_list: List[ANY_JOB_TYPE] = []
+    new_list: List[ANY_JOB_TYPE] = []
+    for kind, def_ in always_spin_off:
+        task_list.append((Operation.SPINOFF, (Operation.DUMP, (kind, def_, 2, stop))))
+        new_list.append((Operation.COMPARE, ('n', 1, 2, stop, kind, def_)))
+        new_list.append((Operation.AWAIT, (Operation.DUMP, (kind, def_, 2, stop))))
+    insert_spot = len(task_list) + 1
+    task_list.extend(chain.from_iterable(
         [(Operation.DUMP, (kind, def_, 2, stop)), (Operation.COMPARE, (('n', 1, 2, stop, kind, def_)))]
         for kind, def_ in all_defs
         if ((kind, def_) not in always_spin_off and (kind, def_) not in truncated_defs)
     ))
-    task_list.insert(1, (Operation.AWAIT, (Operation.DUMP, ('n', 1, 2, stop))))
-    new_list: List[ANY_JOB_TYPE] = []
-    for idx, (kind, def_) in enumerate(always_spin_off, start=1):
-        task_list.insert(idx * 2 + 1, (Operation.SPINOFF, (Operation.DUMP, (kind, def_, 2, stop))))
-        new_list.append((Operation.COMPARE, ('n', 1, 2, stop, kind, def_)))
-        new_list.append((Operation.AWAIT, (Operation.DUMP, (kind, def_, 2, stop))))
+    task_list.insert(insert_spot, (Operation.AWAIT, (Operation.DUMP, ('n', 1, 2, stop))))
     task_list.extend(reversed(new_list))
     task_list.append((Operation.CLEAN, (2, )))
     for base in range(3, base_stop):
         new_list = []
         new_new_list: List[ANY_JOB_TYPE] = []
         new_list.append((Operation.SPINOFF, (Operation.DUMP, ('n', 1, base, stop))))
-        new_list.extend(chain.from_iterable(
-            [(Operation.DUMP, ('n', def_, base, stop)), (Operation.COMPARE, (('n', 1, base, stop, 'n', def_)))]
-            for def_ in pn_defs
-            if (('n', def_) not in always_spin_off and ('n', def_) not in truncated_defs)
-        ))
-        new_list.insert(1, (Operation.AWAIT, (Operation.DUMP, ('n', 1, base, stop))))
         for idx, (kind, def_) in enumerate(always_spin_off, start=1):
             if kind == '2':
                 continue
             new_list.insert(idx * 2 + 1, (Operation.SPINOFF, (Operation.DUMP, (kind, def_, base, stop))))
             new_new_list.append((Operation.COMPARE, ('n', 1, base, stop, kind, def_)))
             new_new_list.append((Operation.AWAIT, (Operation.DUMP, (kind, def_, base, stop))))
+        insert_spot = len(new_list) + 1
+        new_list.extend(chain.from_iterable(
+            [(Operation.DUMP, ('n', def_, base, stop)), (Operation.COMPARE, (('n', 1, base, stop, 'n', def_)))]
+            for def_ in pn_defs
+            if (('n', def_) not in always_spin_off and ('n', def_) not in truncated_defs)
+        ))
+        new_list.insert(insert_spot, (Operation.AWAIT, (Operation.DUMP, ('n', 1, base, stop))))
         new_list.extend(reversed(new_new_list))
         new_list.append((Operation.CLEAN, (base, )))
         task_list.extend(new_list)

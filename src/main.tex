@@ -237,7 +237,7 @@ T_{2,\arabic{stddefctr}}(n) &= t(\ceil{\log_2(n + 1)})_n
     \end{aligned}
 \end{equation}
 
-So for example, calculating $T_{2,4}(3)$ would look like:
+So for example, calculating $T_{2,\arabic{stddefctr}}(3)$ would look like:
 
 \begin{equation}
     \begin{aligned}
@@ -558,7 +558,7 @@ $\tuple{1,1,1,1,1}$ & $0$ \\ \hline
 \caption{Enumerated 5-cell neighborhood configurations and their corresponding rule bits.}
 \end{table}
 
-The initial configuration is specified by $\{\{1\},0\}$, meaning the sequence starts with a single $1$ surrounded on either side by a field of $0$s. The value $2^{k-1}$ specifies the number of iterations to take, and as $k\to\infty$, this process generates an increasingly large sequence approaching the \TMS. The function will output the initial state of the center cell, followed by its state at each iteration. Finally, the Flatten function ensures that the sequence is flattened into a one-dimensional list. Each element $x$ in the list is then passed through $1 - x$.
+The initial configuration is specified by $\{\{1\},0\}$, meaning the sequence starts with a single $1$ surrounded on either side by a field of $0$s. The value $2^{k-1}$ specifies the number of iterations to take. The function will output the initial state of the center cell, followed by its state at each iteration. Finally, the Flatten function ensures that the sequence is flattened into a one-dimensional list. Each element $x$ in the list is then passed through $1 - x$. As $k\to\infty$, this process generates an increasingly large sequence approaching the \TMS.
 
 \stepcounter{stddefctr}
 \subsection{Definition \arabic{stddefctr} of \TotalOriginals\xspace --- Equitable Galois Duels}
@@ -569,12 +569,12 @@ Consider the following system of equations, where $q$ is an arbitrarily low prob
 
 \begin{equation}
 \begin{aligned}
-   a_{n+1} &= \begin{cases}
+    a_{n+1} &= \begin{cases}
             -a_n &\text{if } f_n(q) \ge 0 \\
             a_n  &\text{otherwise}
        \end{cases} \\
-    f_n(q) &= a_n \cdot \left( \sum_{j=0}^n T_{2,21}(j) \cdot q^j \right) \\
-       T_{2,21}(n) &= \dfrac{1 - (-1)^{a_n}}{2}
+     f_n(q) &= a_n \cdot \left( \sum_{j=0}^n T_{2,21}(j) \cdot q^j \right) \\
+T_{2,21}(n) &= \dfrac{1 - (-1)^{a_n}}{2}
 \end{aligned}
 \end{equation}
 
@@ -1348,7 +1348,7 @@ This method generalizes to $T_n$ by iterating over a sliding window of size $n$,
 
 \subsection{Overlap Free}
 
-Extensions of the \TMS that comply with $T_{n,8}$ are overlap-free \cite{tompkins_2007}.
+Extensions of the \TMS that comply with $T_{n,8}$ are overlap-free \cite{tompkins_2007}. \note{Is that true? I thought they used invertible matrices in this paper, and I don't think the general solution in $T_{n,8}$ are invertible. Needs followup.}
 
 \note{Given a word $X : |X| > 1, X \in T_n$, $(X \concat X \concat X_0) \not\in T_n$. For $T_2$, this is shown in \cite{pannipitiya_2024}. Note additionally that this apparently is equivalent to 7/3-power-free \cite{rampersad_2003}. Overlap Free implies Cube Free}
 

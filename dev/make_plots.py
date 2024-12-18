@@ -194,17 +194,25 @@ for is_arb, is_total in product(range(2), range(2)):
         #     raise ValueError()
 
     num_entries = sum(len(names) for names in groups.values())
-    colors = cm['plasma'](linspace(0, 1, num_entries))
+    if num_entries <= 10:
+        map_name = 'tab10'
+    elif num_entries <= 20:
+        map_name = 'tab20'
+    else:
+        map_name = 'hsv'
+    colors = cm[map_name](linspace(0, 1, num_entries))
+    markers = ['o', '^', 's', 'p', 'P', '*', 'X', 'D', 'v', 'h', '<', '>', 'H']
 
     plt.figure(figsize=(8, 6))
 
     for idx, ((time_value, space_value), names) in enumerate(groups.items()):
         color = colors[idx]
-        plt.scatter(time_value, space_value, color=color)
+        marker = markers[idx % len(markers)]
+        plt.scatter(time_value, space_value, marker=marker, color=color)
         tc = get_time_complexity(time_value)
         sc = get_space_complexity(space_value)
         group_label = ', '.join(names) + f": ($O({tc})$, $O({sc})$)"
-        plt.plot([], [], 'o', color=color, label=group_label)
+        plt.plot([], [], marker, color=color, label=group_label)
 
     plt.xscale('log')
     plt.yscale('log')
@@ -215,8 +223,8 @@ for is_arb, is_total in product(range(2), range(2)):
     time_labels = ['$' + cast(str, get_time_complexity(tick)) + '$' for tick in time_ticks]
     space_labels = ['$' + cast(str, get_space_complexity(tick)) + '$' for tick in space_ticks]
 
-    plt.xlim(min(time_ticks) * 0.9, max(time_ticks) * 1.1)
-    plt.ylim(min(space_ticks) * 0.9, max(space_ticks) * 1.1)
+    plt.xlim(min(time_ticks) * 0.88, max(time_ticks) * 1.18)
+    plt.ylim(min(space_ticks) * 0.88, max(space_ticks) * 1.18)
 
     plt.xticks(time_ticks, time_labels, rotation=45, ha='right')
     plt.yticks(space_ticks, space_labels)

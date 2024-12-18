@@ -93,7 +93,7 @@ complexities: List[Tuple[
      (CE.CONST,           CE.LINEAR,          CE.LOG,            CE.LIN_LOG)),
     ('$T_{2,3}$',
      (CE.LOG,             CE.LIN_LOG,         CE.UNKNOWN,        CE.UNKNOWN),
-     (CE.CONST,           CE.LINEAR,          CE.CONST,          CE.LIN_LOG)),
+     (CE.CONST,           CE.LINEAR,          CE.LOG,            CE.LIN_LOG)),
     ('$T_{2,4}$',
      (CE.LOG,             CE.LIN_LOG,         CE.LOG_SQUARE,     CE.LIN2_LOG_LOGLOG),
      (CE.CONST,           CE.LINEAR,          CE.LOG,            CE.LIN_LOG)),
@@ -153,7 +153,7 @@ complexities: List[Tuple[
      (CE.UNKNOWN,         CE.UNKNOWN,         CE.UNKNOWN,        CE.UNKNOWN)),
     ('$T_{2,21}$',
      (CE.LINEAR,          CE.LINEAR,          CE.LINEAR,         CE.LINEAR),
-     (CE.CONST,           CE.CONST,           CE.CONST,          CE.CONST)),
+     (CE.CONST,           CE.CONST,           CE.LOG,            CE.LOG)),
     ('$T_{n,1}$',
      (CE.LOG,             CE.LIN_LOG,         CE.LOG2_LOGLOG,    CE.LIN_LOG2_LOGLOG),
      (CE.CONST,           CE.LINEAR,          CE.LOG,            CE.LIN_LOG)),
@@ -164,8 +164,8 @@ complexities: List[Tuple[
      (CE.LOG,             CE.LIN_LOG,         CE.LIN_LOG,        CE.LIN_LOG2),
      (CE.CONST,           CE.LINEAR,          CE.LOG,            CE.LIN_LOG)),
     ('$T_{n,4}$',
-     (CE.UNKNOWN,         CE.UNKNOWN,         CE.UNKNOWN,        CE.UNKNOWN),
-     (CE.UNKNOWN,         CE.UNKNOWN,         CE.UNKNOWN,        CE.UNKNOWN)),
+     (CE.LOG,             CE.LIN_LOG,         CE.UNKNOWN,        CE.UNKNOWN),
+     (CE.CONST,           CE.LINEAR,          CE.LOG,            CE.LIN_LOG)),
     ('$T_{n,5}$',
      (CE.UNKNOWN,         CE.UNKNOWN,         CE.UNKNOWN,        CE.UNKNOWN),
      (CE.UNKNOWN,         CE.UNKNOWN,         CE.UNKNOWN,        CE.UNKNOWN)),
@@ -196,7 +196,7 @@ for is_arb, is_total in product(range(2), range(2)):
         # else:
         #     raise ValueError()
 
-    num_entries = sum(len(names) for names in groups.values())
+    num_entries = len(groups)
     if num_entries <= 10:
         map_name = 'tab10'
     elif num_entries <= 20:

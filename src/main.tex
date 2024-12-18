@@ -1662,6 +1662,8 @@ In the notation of some other papers, they are $t_{2,3}$ and $t_{3,4}$, respecti
 
 \section{Appendix 3 --- Complexity of Orig. Definitions}
 
+\note{Need to clarify: space complexity for 'in total` assumes you are storing all $n$ numbers. This may not be the case. If you are merely iterating over them, remove that factor.}
+
 \setcounter{stddefctr}{1}
 \setcounter{extdefctr}{1}
 
@@ -1795,7 +1797,7 @@ This algorithm is dominated by the time it takes to calculate $p()$, as raising 
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
         \hline
-        \textbf{Per Element} & $O(1)$ & $O(1)$ \\
+        \textbf{Per Element} & $O(1)$ & $O(\log(n))$ \\
         \hline
         \textbf{In Total} & $O(n)$ & $O(n \cdot \log(n))$ \\
         \hline
@@ -2590,9 +2592,9 @@ The other is to take advantage of the relation $\binom{n}{k} = \binom{n}{k-1} \c
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
         \hline
-        \textbf{Per Element} & $O(1)$ & $O(1)$ \\
+        \textbf{Per Element} & $O(1)$ & $O(\log(n))$ \\
         \hline
-        \textbf{In Total} & $O(1)$ & $O(1)$ \\
+        \textbf{In Total} & $O(1)$ & $O(\log(n))$ \\
         \hline
     \end{tabular}
     \edef\tempLabel{tab:space_p2_d\arabic{stddefctr}}
@@ -2756,9 +2758,9 @@ This is one of the more space-efficient implementations. Each element takes at m
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
         \hline
-        \textbf{Per Element} &  &  \\
+        \textbf{Per Element} & $O(\log(n))$ &  \\
         \hline
-        \textbf{In Total} &  &  \\
+        \textbf{In Total} & $O(n \cdot \log(n))$ &  \\
         \hline
     \end{tabular}
      \edef\tempLabel{tab:time_pn_d\arabic{extdefctr}}
@@ -2775,9 +2777,9 @@ This is one of the more space-efficient implementations. Each element takes at m
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
         \hline
-        \textbf{Per Element} &  &  \\
+        \textbf{Per Element} & $O(1)$ & $O(\log(n))$ \\
         \hline
-        \textbf{In Total} &  &  \\
+        \textbf{In Total} & $O(n)$ & $O(n \cdot \log(n))$ \\
         \hline
     \end{tabular}
      \edef\tempLabel{tab:space_pn_d\arabic{extdefctr}}
@@ -3001,10 +3003,11 @@ This is one of the more space-efficient implementations. Each element takes at m
 \section{Task Tracker}
 \renewcommand{\arraystretch}{1.15}
 
-\begin{table}[htb]
+\begin{table}[hb]
 \label{tab:comparison-b2n}
 \centering
-\caption{Comparison Matrix of the Standard Definitions to Their Extensions}
+\caption{Comparison Matrix of the Standard Definitions to Their Extensions} \vspace{-10pt}
+\note{4 Done, 5 Remaining} \vspace{3pt} \\
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
 \hline
 1  & 3  & 4  & 6  & 8  & 9  & 10 & 11 & 17 \\ \hline
@@ -3013,11 +3016,11 @@ This is one of the more space-efficient implementations. Each element takes at m
 \end{tabular}
 \end{table}
 
-\begin{table}[htb]
+\begin{table}[hbp]
 \label{tab:comparison-bn}
 \centering
-\caption{Comparison Matrix of the Extended Definitions}
-\note{X = done, S = started, O = target} \vspace{3pt} \\
+\caption{Comparison Matrix of the Extended Definitions} \vspace{-10pt}
+\note{X = done, S = started, O = target \\ 2 Done, 6 Remaining} \vspace{3pt} \\
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
 \cline{1-1}
 \rc \\ \cline{1-2}
@@ -3033,13 +3036,13 @@ This is one of the more space-efficient implementations. Each element takes at m
 \end{table}
 \setcounter{rowcount}{1}
 
-\begin{table}[htb]
+\begin{table}[hbp]
 \label{tab:comparison-b2}
 \centering
-\caption{Comparison Matrix of the Standard Definitions}
-\note{X = done, S = started, O = target} \vspace{-28pt}\\
+\caption{Comparison Matrix of the Standard Definitions} \vspace{-10pt}
+\note{X = done, S = started, O = target \\ 4 Done, 2 Started, 14 Remaining} \vspace{-35pt}\\
 \scriptsize
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
 \cline{1-1}
 \rc \\ \cline{1-2}
 \Xm  & \rc \\ \cline{1-3}
@@ -3060,17 +3063,18 @@ This is one of the more space-efficient implementations. Each element takes at m
      &     &     &     &     &     &     &     &     &      &      &      &      &      &      &      & \rc \\ \cline{1-18}
      &     &     &     &     &     &     &     &     &      &      &      &      &      &      &      &     & \rc \\ \cline{1-19}
      &     &     &     &     &     &     &     &     &      &      &      &      &      &      &      &     &     & \rc \\ \cline{1-20}
-     &     &     &     &     &     &     &     &     &      &      &      &      &      &      &      &     &     &     & \rc \\ \hline
+     &     &     &     &     &     &     &     &     &      &      &      &      &      &      &      &     &     &     & \rc \\ \cline{1-21}
+     &     &     &     &     &     &     &     &     &      &      &      &      &      &      &      &     &     &     &     & \rc \\ \hline
 \end{tabular}
 \normalsize
 \end{table}
 \setcounter{rowcount}{1}
 
-\begin{table}[htb]
+\begin{table}[hbp]
 \label{tab:property-tasks}
 \centering
-\caption{List of Possibly Preserved Properties}
-\note{X = Preserved, N = Not Preserved, L = Likely Modifier} \vspace{5pt} \\
+\caption{List of Possibly Preserved Properties} \vspace{-10pt}
+\note{X = Preserved, N = Not Preserved, L = Likely Modifier \\ 4 Done, 4 Started, 8 Remaining} \vspace{5pt} \\
 \begin{tabular}{|r|l|c|}
 \hline
 \rc & Equitable Distribution ($v(x) = 1$)   & \Lm~~\Xm \\ \hline
@@ -3093,11 +3097,11 @@ This is one of the more space-efficient implementations. Each element takes at m
 \end{table}
 \setcounter{rowcount}{1}
 
-\begin{table}[htb]
+\begin{table}[hbp]
 \label{tab:complexity-analyzed}
 \centering
-\caption{Analyze Complexity}
-\note{X = Done, S = started, N = Not Possible, L = Likely Modifier} \vspace{5pt} \\
+\caption{Analyze Complexity} \vspace{-10pt}
+\note{X = Done, S = started, N = Not Possible, L = Likely Modifier \\ 40 Done, 13 Started, 28 Remaining} \vspace{5pt} \\
 \begin{tabular}{|r|c|c|c|c|c|}
 \hline
 \multirow{2}{*}{\!\!\textbf{Def.}\!\!} & \multirow{2}{*}{\!\!\textbf{Extended?}\!\!} & \multicolumn{2}{c|}{\textbf{Standard}} & \multicolumn{2}{c|}{\textbf{Extended}} \\
@@ -3106,7 +3110,7 @@ This is one of the more space-efficient implementations. Each element takes at m
 \rc & \Xm      & \Xm & \Xm & \Xm & \Xm \\ \hline
 \rc & \Lm~~\Nm & \Xm & \Xm & \Xm & \Xm \\ \hline
 \rc & \Xm      & \Sm & \Xm & \Xm & \Xm \\ \hline
-\rc & \Xm      & \Xm & \Xm &     &     \\ \hline
+\rc & \Xm      & \Xm & \Xm & \Sm & \Xm \\ \hline
 \rc &          & \Sm & \Xm &     &     \\ \hline
 \rc & \Xm      & \Sm & \Sm &     &     \\ \hline
 \rc &          & \Xm & \Xm &     &     \\ \hline

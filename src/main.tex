@@ -929,7 +929,7 @@ This is very similar to the definition found in equation \ref{eq:p2_d4}, except 
 
 \note{Substitute n for 2, then simplify, plus a bit}
 
-\subsubsection{Proof of Equivalence with Original Definition 6} ...
+\subsubsection{Proof of Equivalence with Original Definition 6} \par\noindent\par
 
 \stepcounter{extdefctr}
 \subsection{Extended Definition \arabic{extdefctr} of \TotalExtensions\xspace --- Increment and Extend}
@@ -964,7 +964,7 @@ T_{n,\arabic{extdefctr}}(x, s) &= T_{n,\arabic{extdefctr}}\left(x - s^{\floor{\l
     \end{aligned}
 \end{equation}
 
-\subsubsection{Proof of Equivalence with Original Definition 8} ...
+\subsubsection{Proof of Equivalence with Original Definition 8} \par\noindent\par
 
 \stepcounter{extdefctr}
 \subsection{Extended Definition \arabic{extdefctr} of \TotalExtensions\xspace --- Substitute and Flatten}
@@ -989,7 +989,7 @@ r(\mathbf{x}, i) &= \begin{aligned}[c]
     \end{aligned}
 \end{equation}
 
-\subsubsection{Proof of Equivalence with Original Definition 9} ...
+\subsubsection{Proof of Equivalence with Original Definition 9} \par\noindent\par
 
 \stepcounter{extdefctr}
 \subsection{Extended Definition \arabic{extdefctr} of \TotalExtensions\xspace --- Recursive Rotation}
@@ -1009,7 +1009,7 @@ r(\mathbf{x}, i) &= \begin{aligned}[c]
     \end{aligned}
 \end{equation}
 
-\subsubsection{Proof of Equivalence with Original Definition 10} ...
+\subsubsection{Proof of Equivalence with Original Definition 10} \par\noindent\par
 
 \stepcounter{extdefctr}
 \subsection{Extended Definition \arabic{extdefctr} of \TotalExtensions\xspace --- Latin Square Constructions}
@@ -1488,7 +1488,7 @@ These claims are found in \cite{OEIS-TMS-inv}.
 \begin{conjecture}
     \begin{equation}
     \begin{aligned}
-        \text{If } A(n) &= (a(0),a(2),...,a(2^n-1)), \\
+        \text{If } A(n) &= (a(0),a(2),\dots,a(2^n-1)), \\
         \text{ then } A(n+1) &= (A(n),1-A(n)), \\
         \text{where } T_2 &= 1 - [x^n]A(x)
     \end{aligned}
@@ -1524,7 +1524,7 @@ These claims are found in \cite{OEIS-TMS-pos-neg}.
         (-1)^{T_2(n)} = \dfrac{B_n(\!-\!\text{A038712}(1) \!\cdot\! 0!, \dots, \!-\!\text{A038712}(n) \!\cdot\! (n\!\!-\!\!1)!)}{n!}
     \end{equation}
     Where \begin{itemize}
-        \item $B_n(x_1, ..., x_n)$ is the $n$-th complete Bell polynomial
+        \item $B_n(x_1, \dots, x_n)$ is the $n$-th complete Bell polynomial
         \item A038712 \cite{OEIS-A038712} is $a(n) = 2^{\text{A007814}(n)+1}-1$
         \item A007814 \cite{OEIS-A007814} is the exponent of highest power of 2 dividing $n$
     \end{itemize}
@@ -1658,7 +1658,7 @@ In the notation of some other papers, they are $t_{2,3}$ and $t_{3,4}$, respecti
     \vspace{-25pt}
 \end{figure}
 
-\note{These figures are temporary and will be replaced with something prettier when things are finalized}
+\note{These figures are temporary and will be replaced with something prettier when things are finalized. Complexity figures assume that the base is constant and therefore factored out.}
 
 \section{Appendix 3 --- Complexity of Orig. Definitions}
 
@@ -1768,7 +1768,7 @@ This algorithm is dominated by the time it takes to calculate $p()$, as raising 
 \edef\tempLabel{ca:p2_d\arabic{stddefctr}}
  \expandafter\label\expandafter\tempLabel
 
-\subsubsection{Time Complexity} ...
+\subsubsection{Time Complexity} \par\noindent\par
 
 \begin{table}[H]
     \centering
@@ -1777,16 +1777,16 @@ This algorithm is dominated by the time it takes to calculate $p()$, as raising 
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
         \hline
-        \textbf{Per Element} &  &  \\
+        \textbf{Per Element} & $O(\log(n))$ &  \\
         \hline
-        \textbf{In Total} &  &  \\
+        \textbf{In Total} & $O(n \cdot \log(n))$ &  \\
         \hline
     \end{tabular}
     \edef\tempLabel{tab:time_p2_d\arabic{stddefctr}}
      \expandafter\label\expandafter\tempLabel
 \end{table}
 
-\subsubsection{Space Complexity} ...
+\subsubsection{Space Complexity} \par\noindent\par
 
 \begin{table}[H]
     \centering
@@ -1795,9 +1795,9 @@ This algorithm is dominated by the time it takes to calculate $p()$, as raising 
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
         \hline
-        \textbf{Per Element} &  &  \\
+        \textbf{Per Element} & $O(1)$ & $O(1)$ \\
         \hline
-        \textbf{In Total} &  &  \\
+        \textbf{In Total} & $O(n)$ & $O(n \cdot \log(n))$ \\
         \hline
     \end{tabular}
     \edef\tempLabel{tab:space_p2_d\arabic{stddefctr}}
@@ -1997,7 +1997,9 @@ In a recursive approach, you will end up descending $O(\log(n))$ stack frames, e
 \edef\tempLabel{ca:p2_d\arabic{stddefctr}}
  \expandafter\label\expandafter\tempLabel
 
-\subsubsection{Time Complexity} ...
+\subsubsection{Time Complexity} At each step, we copy the previous sequence, invert it, and extend it. This means that at each step we are doubling the length of the sequence ($(O(2^k)$). Since we only double when we've reached the next power of two, this cancels out, leading to $O(2^{\log_2(n)}) = O(n)$. Because this method cannot produce an individual entry, fixed size and per-element analyses are identical.
+
+We assume that languages with arbitrary sized integers will still provide an equivalent to booleans or single bit/byte numbers. If they do not, add a factor of $\log(n)$
 
 \begin{table}[H]
     \centering
@@ -2006,16 +2008,16 @@ In a recursive approach, you will end up descending $O(\log(n))$ stack frames, e
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
         \hline
-        \textbf{Per Element} &  &  \\
+        \textbf{Per Element} & $O(n)$ & $O(n)$ \\
         \hline
-        \textbf{In Total} &  &  \\
+        \textbf{In Total} & $O(n)$ & $O(n)$ \\
         \hline
     \end{tabular}
     \edef\tempLabel{tab:time_p2_d\arabic{stddefctr}}
      \expandafter\label\expandafter\tempLabel
 \end{table}
 
-\subsubsection{Space Complexity} ...
+\subsubsection{Space Complexity} \par\noindent\par
 
 \begin{table}[H]
     \centering
@@ -2024,9 +2026,9 @@ In a recursive approach, you will end up descending $O(\log(n))$ stack frames, e
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
         \hline
-        \textbf{Per Element} &  &  \\
+        \textbf{Per Element} & $O(n)$ & $O(n)$ \\
         \hline
-        \textbf{In Total} &  &  \\
+        \textbf{In Total} & $O(n)$ & $O(n)$ \\
         \hline
     \end{tabular}
     \edef\tempLabel{tab:space_p2_d\arabic{stddefctr}}
@@ -2038,7 +2040,7 @@ In a recursive approach, you will end up descending $O(\log(n))$ stack frames, e
 \edef\tempLabel{ca:p2_d\arabic{stddefctr}}
  \expandafter\label\expandafter\tempLabel
 
-\subsubsection{Time Complexity} ...
+\subsubsection{Time Complexity} The time and space complexity of this method are as above.
 
 \begin{table}[H]
     \centering
@@ -2047,16 +2049,16 @@ In a recursive approach, you will end up descending $O(\log(n))$ stack frames, e
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
         \hline
-        \textbf{Per Element} &  &  \\
+        \textbf{Per Element} & $O(n)$ & $O(n)$ \\
         \hline
-        \textbf{In Total} &  &  \\
+        \textbf{In Total} & $O(n)$ & $O(n)$ \\
         \hline
     \end{tabular}
     \edef\tempLabel{tab:time_p2_d\arabic{stddefctr}}
      \expandafter\label\expandafter\tempLabel
 \end{table}
 
-\subsubsection{Space Complexity} ...
+\subsubsection{Space Complexity} \par\noindent\par
 
 \begin{table}[H]
     \centering
@@ -2065,9 +2067,9 @@ In a recursive approach, you will end up descending $O(\log(n))$ stack frames, e
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
         \hline
-        \textbf{Per Element} &  &  \\
+        \textbf{Per Element} & $O(n)$ & $O(n)$ \\
         \hline
-        \textbf{In Total} &  &  \\
+        \textbf{In Total} & $O(n)$ & $O(n)$ \\
         \hline
     \end{tabular}
     \edef\tempLabel{tab:space_p2_d\arabic{stddefctr}}
@@ -2079,7 +2081,7 @@ In a recursive approach, you will end up descending $O(\log(n))$ stack frames, e
 \edef\tempLabel{ca:p2_d\arabic{stddefctr}}
  \expandafter\label\expandafter\tempLabel
 
-\subsubsection{Time Complexity} ...
+\subsubsection{Time Complexity} The time and space complexity of this method are as above.
 
 \begin{table}[H]
     \centering
@@ -2088,16 +2090,16 @@ In a recursive approach, you will end up descending $O(\log(n))$ stack frames, e
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
         \hline
-        \textbf{Per Element} &  &  \\
+        \textbf{Per Element} & $O(n)$ & $O(n)$ \\
         \hline
-        \textbf{In Total} &  &  \\
+        \textbf{In Total} & $O(n)$ & $O(n)$ \\
         \hline
     \end{tabular}
     \edef\tempLabel{tab:time_p2_d\arabic{stddefctr}}
      \expandafter\label\expandafter\tempLabel
 \end{table}
 
-\subsubsection{Space Complexity} ...
+\subsubsection{Space Complexity} \par\noindent\par
 
 \begin{table}[H]
     \centering
@@ -2106,9 +2108,9 @@ In a recursive approach, you will end up descending $O(\log(n))$ stack frames, e
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
         \hline
-        \textbf{Per Element} &  &  \\
+        \textbf{Per Element} & $O(n)$ & $O(n)$ \\
         \hline
-        \textbf{In Total} &  &  \\
+        \textbf{In Total} & $O(n)$ & $O(n)$ \\
         \hline
     \end{tabular}
     \edef\tempLabel{tab:space_p2_d\arabic{stddefctr}}
@@ -2120,7 +2122,7 @@ In a recursive approach, you will end up descending $O(\log(n))$ stack frames, e
 \edef\tempLabel{ca:p2_d\arabic{stddefctr}}
  \expandafter\label\expandafter\tempLabel
 
-\subsubsection{Time Complexity} ...
+\subsubsection{Time Complexity} \note{The problem I'm running into is I don't know the time complexity of generating odious numbers}
 
 \begin{table}[H]
     \centering
@@ -2138,7 +2140,7 @@ In a recursive approach, you will end up descending $O(\log(n))$ stack frames, e
      \expandafter\label\expandafter\tempLabel
 \end{table}
 
-\subsubsection{Space Complexity} ...
+\subsubsection{Space Complexity} \par\noindent\par
 
 \begin{table}[H]
     \centering
@@ -2147,9 +2149,9 @@ In a recursive approach, you will end up descending $O(\log(n))$ stack frames, e
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
         \hline
-        \textbf{Per Element} &  &  \\
+        \textbf{Per Element} & $O(1)$ & $O(\log(n))$ \\
         \hline
-        \textbf{In Total} &  &  \\
+        \textbf{In Total} & $O(n)$ & $O(n \cdot \log(n))$ \\
         \hline
     \end{tabular}
     \edef\tempLabel{tab:space_p2_d\arabic{stddefctr}}
@@ -2161,7 +2163,7 @@ In a recursive approach, you will end up descending $O(\log(n))$ stack frames, e
 \edef\tempLabel{ca:p2_d\arabic{stddefctr}}
  \expandafter\label\expandafter\tempLabel
 
-\subsubsection{Time Complexity} ...
+\subsubsection{Time Complexity} \note{The problem I'm running into is I don't know the time complexity of generating odious numbers}
 
 \begin{table}[H]
     \centering
@@ -2179,7 +2181,7 @@ In a recursive approach, you will end up descending $O(\log(n))$ stack frames, e
      \expandafter\label\expandafter\tempLabel
 \end{table}
 
-\subsubsection{Space Complexity} ...
+\subsubsection{Space Complexity} \par\noindent\par
 
 \begin{table}[H]
     \centering
@@ -2188,9 +2190,9 @@ In a recursive approach, you will end up descending $O(\log(n))$ stack frames, e
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
         \hline
-        \textbf{Per Element} &  &  \\
+        \textbf{Per Element} & $O(1)$ & $O(\log(n))$ \\
         \hline
-        \textbf{In Total} &  &  \\
+        \textbf{In Total} & $O(n)$ & $O(n \cdot \log(n))$ \\
         \hline
     \end{tabular}
     \edef\tempLabel{tab:space_p2_d\arabic{stddefctr}}
@@ -2202,7 +2204,7 @@ In a recursive approach, you will end up descending $O(\log(n))$ stack frames, e
 \edef\tempLabel{ca:p2_d\arabic{stddefctr}}
  \expandafter\label\expandafter\tempLabel
 
-\subsubsection{Time Complexity} ...
+\subsubsection{Time Complexity} Fortunately, this algorithm can be implemented entirely using bitwise operations. This helps the efficiency metrics quite a lot, as with fixed words this is $O(1)$ and arbitrarily sized integers it is $O(\log(n))$ time.
 
 \begin{table}[H]
     \centering
@@ -2211,16 +2213,16 @@ In a recursive approach, you will end up descending $O(\log(n))$ stack frames, e
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
         \hline
-        \textbf{Per Element} &  &  \\
+        \textbf{Per Element} & $O(1)$ & $O(\log(n))$ \\
         \hline
-        \textbf{In Total} &  &  \\
+        \textbf{In Total} & $O(n)$ & $O(n\cdot\log(n))$ \\
         \hline
     \end{tabular}
     \edef\tempLabel{tab:time_p2_d\arabic{stddefctr}}
      \expandafter\label\expandafter\tempLabel
 \end{table}
 
-\subsubsection{Space Complexity} ...
+\subsubsection{Space Complexity} \par\noindent\par
 
 \begin{table}[H]
     \centering
@@ -2229,9 +2231,9 @@ In a recursive approach, you will end up descending $O(\log(n))$ stack frames, e
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
         \hline
-        \textbf{Per Element} &  &  \\
+        \textbf{Per Element} & $O(1)$ & $O(\log(n))$ \\
         \hline
-        \textbf{In Total} &  &  \\
+        \textbf{In Total} & $O(n)$ & $O(n \cdot \log(n))$ \\
         \hline
     \end{tabular}
     \edef\tempLabel{tab:space_p2_d\arabic{stddefctr}}
@@ -2243,7 +2245,7 @@ In a recursive approach, you will end up descending $O(\log(n))$ stack frames, e
 \edef\tempLabel{ca:p2_d\arabic{stddefctr}}
  \expandafter\label\expandafter\tempLabel
 
-\subsubsection{Time Complexity} ...
+\subsubsection{Time Complexity} \par\noindent\par
 
 \begin{table}[H]
     \centering
@@ -2261,7 +2263,7 @@ In a recursive approach, you will end up descending $O(\log(n))$ stack frames, e
      \expandafter\label\expandafter\tempLabel
 \end{table}
 
-\subsubsection{Space Complexity} ...
+\subsubsection{Space Complexity} \par\noindent\par
 
 \begin{table}[H]
     \centering
@@ -2340,7 +2342,7 @@ The other is to take advantage of the relation $\binom{n}{k} = \binom{n}{k-1} \c
 \edef\tempLabel{ca:p2_d\arabic{stddefctr}}
  \expandafter\label\expandafter\tempLabel
 
-\subsubsection{Time Complexity} ...
+\subsubsection{Time Complexity} \par\noindent\par
 
 \begin{table}[H]
     \centering
@@ -2358,7 +2360,7 @@ The other is to take advantage of the relation $\binom{n}{k} = \binom{n}{k-1} \c
      \expandafter\label\expandafter\tempLabel
 \end{table}
 
-\subsubsection{Space Complexity} ...
+\subsubsection{Space Complexity} \par\noindent\par
 
 \begin{table}[H]
     \centering
@@ -2403,7 +2405,7 @@ The other is to take advantage of the relation $\binom{n}{k} = \binom{n}{k-1} \c
 \end{table}
 \renewcommand{\arraystretch}{1}
 
-\subsubsection{Space Complexity} ...
+\subsubsection{Space Complexity} \par\noindent\par
 
 \begin{table}[H]
     \centering
@@ -2427,7 +2429,7 @@ The other is to take advantage of the relation $\binom{n}{k} = \binom{n}{k-1} \c
 \edef\tempLabel{ca:p2_d\arabic{stddefctr}}
  \expandafter\label\expandafter\tempLabel
 
-\subsubsection{Time Complexity} ...
+\subsubsection{Time Complexity} \par\noindent\par
 
 \renewcommand{\arraystretch}{1.25}
 \begin{table}[H]
@@ -2447,7 +2449,7 @@ The other is to take advantage of the relation $\binom{n}{k} = \binom{n}{k-1} \c
 \end{table}
 \renewcommand{\arraystretch}{1}
 
-\subsubsection{Space Complexity} ...
+\subsubsection{Space Complexity} \par\noindent\par
 
 \begin{table}[H]
     \centering
@@ -2471,7 +2473,7 @@ The other is to take advantage of the relation $\binom{n}{k} = \binom{n}{k-1} \c
 \edef\tempLabel{ca:p2_d\arabic{stddefctr}}
  \expandafter\label\expandafter\tempLabel
 
-\subsubsection{Time Complexity} ...
+\subsubsection{Time Complexity} \par\noindent\par
 
 \renewcommand{\arraystretch}{1.25}
 \begin{table}[H]
@@ -2491,7 +2493,7 @@ The other is to take advantage of the relation $\binom{n}{k} = \binom{n}{k-1} \c
 \end{table}
 \renewcommand{\arraystretch}{1}
 
-\subsubsection{Space Complexity} ...
+\subsubsection{Space Complexity} \par\noindent\par
 
 \begin{table}[H]
     \centering
@@ -2515,7 +2517,7 @@ The other is to take advantage of the relation $\binom{n}{k} = \binom{n}{k-1} \c
 \edef\tempLabel{ca:p2_d\arabic{stddefctr}}
  \expandafter\label\expandafter\tempLabel
 
-\subsubsection{Time Complexity} ...
+\subsubsection{Time Complexity} \par\noindent\par
 
 \renewcommand{\arraystretch}{1.25}
 \begin{table}[H]
@@ -2535,7 +2537,7 @@ The other is to take advantage of the relation $\binom{n}{k} = \binom{n}{k-1} \c
 \end{table}
 \renewcommand{\arraystretch}{1}
 
-\subsubsection{Space Complexity} ...
+\subsubsection{Space Complexity} \par\noindent\par
 
 \begin{table}[H]
     \centering
@@ -2559,7 +2561,7 @@ The other is to take advantage of the relation $\binom{n}{k} = \binom{n}{k-1} \c
 \edef\tempLabel{ca:p2_d\arabic{stddefctr}}
  \expandafter\label\expandafter\tempLabel
 
-\subsubsection{Time Complexity} ...
+\subsubsection{Time Complexity} Like several of the other definitions, this one cannot generate individual elements, and most generate the entire sequence up to that point.
 
 \renewcommand{\arraystretch}{1.25}
 \begin{table}[H]
@@ -2569,9 +2571,9 @@ The other is to take advantage of the relation $\binom{n}{k} = \binom{n}{k-1} \c
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
         \hline
-        \textbf{Per Element} &  &  \\
+        \textbf{Per Element} & $O(n)$ & $O(n \cdot \log(n))$ \\
         \hline
-        \textbf{In Total} &  &  \\
+        \textbf{In Total} & $O(n)$ & $O(n \cdot \log(n))$ \\
         \hline
     \end{tabular}
     \edef\tempLabel{tab:time_p2_d\arabic{stddefctr}}
@@ -2579,7 +2581,7 @@ The other is to take advantage of the relation $\binom{n}{k} = \binom{n}{k-1} \c
 \end{table}
 \renewcommand{\arraystretch}{1}
 
-\subsubsection{Space Complexity} ...
+\subsubsection{Space Complexity} \par\noindent\par
 
 \begin{table}[H]
     \centering
@@ -2588,9 +2590,9 @@ The other is to take advantage of the relation $\binom{n}{k} = \binom{n}{k-1} \c
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
         \hline
-        \textbf{Per Element} &  &  \\
+        \textbf{Per Element} & $O(1)$ & $O(1)$ \\
         \hline
-        \textbf{In Total} &  &  \\
+        \textbf{In Total} & $O(1)$ & $O(1)$ \\
         \hline
     \end{tabular}
     \edef\tempLabel{tab:space_p2_d\arabic{stddefctr}}
@@ -2656,7 +2658,7 @@ This is one of the more space-efficient implementation. Each element takes at mo
 \edef\tempLabel{ca:pn_d\arabic{extdefctr}}
  \expandafter\label\expandafter\tempLabel
 
-\subsubsection{Time Complexity} ...
+\subsubsection{Time Complexity} \par\noindent\par
 
 \begin{table}[H]
     \centering
@@ -2665,16 +2667,16 @@ This is one of the more space-efficient implementation. Each element takes at mo
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
         \hline
-        \textbf{Per Element} &  &  \\
+        \textbf{Per Element} & $O(b)$ &  \\
         \hline
-        \textbf{In Total} &  &  \\
+        \textbf{In Total} & $O(bn)$ &  \\
         \hline
     \end{tabular}
      \edef\tempLabel{tab:time_pn_d\arabic{extdefctr}}
      \expandafter\label\expandafter\tempLabel
 \end{table}
 
-\subsubsection{Space Complexity} ...
+\subsubsection{Space Complexity} \par\noindent\par
 
 \begin{table}[H]
     \centering
@@ -2683,9 +2685,9 @@ This is one of the more space-efficient implementation. Each element takes at mo
         \hline
         & \textbf{Fixed Size} & \textbf{Arbitrary Size} \\
         \hline
-        \textbf{Per Element} &  &  \\
+        \textbf{Per Element} & $O(b)$ & $O(b \cdot \log(n))$ \\
         \hline
-        \textbf{In Total} &  &  \\
+        \textbf{In Total} & $O(bn)$ & $O(bn \cdot \log(n))$ \\
         \hline
     \end{tabular}
      \edef\tempLabel{tab:space_pn_d\arabic{extdefctr}}
@@ -2744,7 +2746,7 @@ This is one of the more space-efficient implementations. Each element takes at m
 \edef\tempLabel{ca:pn_d\arabic{extdefctr}}
  \expandafter\label\expandafter\tempLabel
 
-\subsubsection{Time Complexity} ...
+\subsubsection{Time Complexity} \par\noindent\par
 
 \renewcommand{\arraystretch}{1.25}
 \begin{table}[H]
@@ -2764,7 +2766,7 @@ This is one of the more space-efficient implementations. Each element takes at m
 \end{table}
 \renewcommand{\arraystretch}{1}
 
-\subsubsection{Space Complexity} ...
+\subsubsection{Space Complexity} \par\noindent\par
 
 \begin{table}[H]
     \centering
@@ -2787,7 +2789,7 @@ This is one of the more space-efficient implementations. Each element takes at m
 \edef\tempLabel{ca:pn_d\arabic{extdefctr}}
  \expandafter\label\expandafter\tempLabel
 
-\subsubsection{Time Complexity} ...
+\subsubsection{Time Complexity} \par\noindent\par
 
 \begin{table}[H]
     \centering
@@ -2805,7 +2807,7 @@ This is one of the more space-efficient implementations. Each element takes at m
      \expandafter\label\expandafter\tempLabel
 \end{table}
 
-\subsubsection{Space Complexity} ...
+\subsubsection{Space Complexity} \par\noindent\par
 
 \begin{table}[H]
     \centering
@@ -2828,7 +2830,7 @@ This is one of the more space-efficient implementations. Each element takes at m
 \edef\tempLabel{ca:pn_d\arabic{extdefctr}}
  \expandafter\label\expandafter\tempLabel
 
-\subsubsection{Time Complexity} ...
+\subsubsection{Time Complexity} \par\noindent\par
 
 \begin{table}[H]
     \centering
@@ -2846,7 +2848,7 @@ This is one of the more space-efficient implementations. Each element takes at m
      \expandafter\label\expandafter\tempLabel
 \end{table}
 
-\subsubsection{Space Complexity} ...
+\subsubsection{Space Complexity} \par\noindent\par
 
 \begin{table}[H]
     \centering
@@ -2869,7 +2871,7 @@ This is one of the more space-efficient implementations. Each element takes at m
 \edef\tempLabel{ca:pn_d\arabic{extdefctr}}
  \expandafter\label\expandafter\tempLabel
 
-\subsubsection{Time Complexity} ...
+\subsubsection{Time Complexity} \par\noindent\par
 
 \begin{table}[H]
     \centering
@@ -2887,7 +2889,7 @@ This is one of the more space-efficient implementations. Each element takes at m
      \expandafter\label\expandafter\tempLabel
 \end{table}
 
-\subsubsection{Space Complexity} ...
+\subsubsection{Space Complexity} \par\noindent\par
 
 \begin{table}[H]
     \centering
@@ -2910,7 +2912,7 @@ This is one of the more space-efficient implementations. Each element takes at m
 \edef\tempLabel{ca:pn_d\arabic{extdefctr}}
  \expandafter\label\expandafter\tempLabel
 
-\subsubsection{Time Complexity} ...
+\subsubsection{Time Complexity} \par\noindent\par
 
 \renewcommand{\arraystretch}{1.25}
 \begin{table}[H]
@@ -2930,7 +2932,7 @@ This is one of the more space-efficient implementations. Each element takes at m
 \end{table}
 \renewcommand{\arraystretch}{1}
 
-\subsubsection{Space Complexity} ...
+\subsubsection{Space Complexity} \par\noindent\par
 
 \begin{table}[H]
     \centering
@@ -3102,18 +3104,18 @@ This is one of the more space-efficient implementations. Each element takes at m
 \cline{3-6}
  &  & \!\!Time\!\! & \!\!Space\!\! & \!\!Time\!\! & \!\!Space\!\! \\ \hline
 \rc & \Xm      & \Xm & \Xm & \Xm & \Xm \\ \hline
-\rc & \Lm~~\Nm & \Xm & \Xm &     &     \\ \hline
-\rc & \Xm      &     &     & \Xm & \Xm \\ \hline
+\rc & \Lm~~\Nm & \Xm & \Xm & \Xm & \Xm \\ \hline
+\rc & \Xm      & \Sm & \Xm & \Xm & \Xm \\ \hline
 \rc & \Xm      & \Xm & \Xm &     &     \\ \hline
 \rc &          & \Sm & \Xm &     &     \\ \hline
 \rc & \Xm      & \Sm & \Sm &     &     \\ \hline
 \rc &          & \Xm & \Xm &     &     \\ \hline
-\rc & \Xm      &     &     &     &     \\ \hline
-\rc & \Xm      &     &     & \Sm & \Sm \\ \hline
-\rc & \Xm      &     &     \\ \cline{1-4}
-\rc &          &     &     \\ \cline{1-4}
-\rc &          &     &     \\ \cline{1-4}
-\rc &          &     &     \\ \cline{1-4}
+\rc & \Xm      & \Xm & \Xm &     &     \\ \hline
+\rc & \Xm      & \Xm & \Xm & \Sm & \Sm \\ \hline
+\rc & \Xm      & \Xm & \Xm \\ \cline{1-4}
+\rc &          & \Sm & \Xm \\ \cline{1-4}
+\rc &          & \Sm & \Xm \\ \cline{1-4}
+\rc &          & \Xm & \Xm \\ \cline{1-4}
 \rc &          &     &     \\ \cline{1-4}
 \rc & \Lm~~\Nm & \Xm & \Xm \\ \cline{1-4}
 \rc &          &     &     \\ \cline{1-4}
@@ -3121,7 +3123,7 @@ This is one of the more space-efficient implementations. Each element takes at m
 \rc &          &     &     \\ \cline{1-4}
 \rc &          &     &     \\ \cline{1-4}
 \rc &          &     &     \\ \cline{1-4}
-\rc & \Nm      &     &     \\ \cline{1-4}
+\rc & \Nm      & \Xm & \Xm \\ \cline{1-4}
 \end{tabular}
 \end{table}
 \setcounter{rowcount}{1}

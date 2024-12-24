@@ -2,6 +2,7 @@ from itertools import count
 from operator import mul
 from typing import Generator, Optional
 
+from gmpy2 import mpq as Fraction
 import numpy as np
 
 from ..args import run
@@ -14,15 +15,18 @@ def p2_d21(
     size_hint: Optional[int] = None,
     benchmark: bool = False
 ) -> Generator[int, None, None]:
-    p = 10
-    remaining_prob = 1.0
-    players = np.array([0.0, 0.0], np.float64)
+    q = 1 - Fraction(1, 1 << 128)
+    remaining_prob = Fraction(1)
+    f = 0
     for x in count():
-        value = remaining_prob / (1 << p)
-        player = np.argmin(players)
-        players[player] += value
-        remaining_prob -= value
-        yield int(player)
+        value = remaining_prob * q
+        if f >= 0:
+            yield 0
+            f -= value
+        else:
+            yield 1
+            f += value
+        remaining_prob *= q
 
 
 if __name__ == '__main__':

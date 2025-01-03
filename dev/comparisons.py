@@ -79,11 +79,12 @@ def get_fname(kind: str, def_: int, base: int, stop: int) -> str:
 
 
 @boost
-def main(stop: int = (1 << 16), base_stop: int = 257) -> None:
+def main(stop: int = (1 << 16), base_stop: int = 257, forked: bool = False) -> None:
     Path('work').mkdir(exist_ok=True)
     with shelf_open('work/comparisons.pickle') as shelf:
         stop = shelf.get('stop', stop)
         shelf['stop'] = stop
+        shelf['forked'] = forked
         base_stop = shelf.get('base_stop', base_stop)
         shelf['base_stop'] = base_stop
         if shelf.get('next_operation') is None:
@@ -100,7 +101,8 @@ def begin(shelf: Shelf) -> None:
     shelf['next_operation'] = (Operation.SPINOFF, (Operation.DUMP, ('n', 1, 2, stop)))
     task_list: List[ANY_JOB_TYPE] = []
     new_list: List[ANY_JOB_TYPE] = []
-    for kind, def_ in always_spin_off:
+    aso = always_spin_off if not shelf['forked'] else [d for d in reversed(all_defs) if d not in truncated_defs]
+    for kind, def_ in aso:
         task_list.append((Operation.SPINOFF, (Operation.DUMP, (kind, def_, 2, stop))))
         new_list.append((Operation.COMPARE, ('n', 1, 2, stop, kind, def_)))
         new_list.append((Operation.AWAIT, (Operation.DUMP, (kind, def_, 2, stop))))
@@ -108,7 +110,7 @@ def begin(shelf: Shelf) -> None:
     task_list.extend(chain.from_iterable(
         [(Operation.DUMP, (kind, def_, 2, stop)), (Operation.COMPARE, (('n', 1, 2, stop, kind, def_)))]
         for kind, def_ in all_defs
-        if ((kind, def_) not in always_spin_off and (kind, def_) not in truncated_defs)
+        if ((kind, def_) not in aso and (kind, def_) not in truncated_defs)
     ))
     task_list.insert(insert_spot, (Operation.AWAIT, (Operation.DUMP, ('n', 1, 2, stop))))
     task_list.extend(reversed(new_list))
@@ -117,7 +119,7 @@ def begin(shelf: Shelf) -> None:
         new_list = []
         new_new_list: List[ANY_JOB_TYPE] = []
         new_list.append((Operation.SPINOFF, (Operation.DUMP, ('n', 1, base, stop))))
-        for idx, (kind, def_) in enumerate(always_spin_off, start=1):
+        for idx, (kind, def_) in enumerate(aso, start=1):
             if kind == '2':
                 continue
             new_list.insert(idx * 2 + 1, (Operation.SPINOFF, (Operation.DUMP, (kind, def_, base, stop))))
@@ -127,7 +129,7 @@ def begin(shelf: Shelf) -> None:
         new_list.extend(chain.from_iterable(
             [(Operation.DUMP, ('n', def_, base, stop)), (Operation.COMPARE, (('n', 1, base, stop, 'n', def_)))]
             for def_ in pn_defs
-            if (('n', def_) not in always_spin_off and ('n', def_) not in truncated_defs)
+            if (('n', def_) not in aso and ('n', def_) not in truncated_defs)
         ))
         new_list.insert(insert_spot, (Operation.AWAIT, (Operation.DUMP, ('n', 1, base, stop))))
         new_list.extend(reversed(new_new_list))
@@ -198,9 +200,10 @@ def handle_compare(kind1: str, def1: int, base: int, stop: int, kind2: str, def2
                 process_file_input(Namespace(file=fname1), True),
                 process_file_input(Namespace(file=fname2), True))
             ):
-                print(f'{idx} of {stop}... ({idx/stop:.1%})')
+                print(f'{idx:,} of {stop:,}... ({idx/stop:.1%})', end='\r')
                 if v1 != v2:
                     raise ValueError(f"Mismatch at T({idx})! {v1} ≠ {v2}")
+            break
         except (FileNotFoundError, StructError, ValueError) as e:
             error_str = f"Error: {e.args}"
             logger.error(error_str)
@@ -277,6 +280,9 @@ if __name__ == '__main__':
     parser = ArgumentParser()
     parser.add_argument('n', type=int, help='The number of values to test', default=(1 << 15), nargs='?')
     parser.add_argument('p', type=int, help='The maximum number of players to test against', default=256, nargs='?')
-    args = parser.parse_args()
+    parser.add_argument('-f', '--fork-all', action='store_true', help='If given, this flag will force the runner to spin off all tasks possible, rather than running some serially', dest='forked')
+    parser.add_argument('--exclude', type=str, help='exclude the given definitions or definition ranges. Format as 2_01 or n_01-07', action='append')
+    parser.add_argument('--include', type=str, help='only run the given definitions or definition ranges. Format as 2_01 or n_01-07', action='append')
 
-    main(args.n, args.p + 1)
+    args = parser.parse_args()
+    main(args.n, args.p + 1, args.forked)

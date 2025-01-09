@@ -10,4 +10,5 @@ pytest-timeout
 pytest-xdist
 symengine
 sympy
+tqdm
 z3-solver

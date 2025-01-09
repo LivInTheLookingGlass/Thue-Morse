@@ -12,6 +12,8 @@ from typing import IO, Generator, Literal, Optional, Tuple, Union, overload
 
 import numpy as np
 
+from tqdm import tqdm
+
 from . import GenProto
 from .compat.fluidpythran import boost
 from .compat.itertools import batched
@@ -182,16 +184,16 @@ def process_file_output(
 
     with get_file_obj(args.file, 'wb') as f:
         f.write(pack(struct_format, kind == '2', num - 1, args.p - 2, args.n - 1))
-        for group in batched(zip(range(args.n), func(args.p, args.n)), batch_size):
+        for group in tqdm(
+            batched(zip(range(args.n), func(args.p, args.n)), batch_size),
+            total=args.n // batch_size,
+            disable=not args.quiet
+        ):
             batch = [y for _, y in group]
 
             if not args.quiet:
                 for x in batch:
                     print(x, "", end='')
-            else:
-                thus_far = group[-1][0] + 1
-                stdout.write(f"{thus_far:,} of {args.n:,} ({thus_far / args.n:.1%})...\r")
-            stdout.flush()
 
             if len(batch) != batch_size:
                 batch += [0] * (batch_size - len(batch))

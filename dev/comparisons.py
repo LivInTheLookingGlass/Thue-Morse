@@ -9,9 +9,11 @@ from pathlib import Path
 from shelve import Shelf
 from shelve import open as shelf_open
 from struct import error as StructError
-from sys import stdout
+import sys
 from time import sleep
 from typing import Dict, List, Literal, Tuple, Union
+
+from tqdm import tqdm
 
 from . import get_iters
 from .args import process_file_input, process_file_output
@@ -196,11 +198,10 @@ def handle_compare(kind1: str, def1: int, base: int, stop: int, kind2: str, def2
     fname2 = get_fname(kind2, def2, base, stop)
     for attempt in [1, 2]:
         try:
-            for idx, (v1, v2) in enumerate(zip(
+            for idx, (v1, v2) in tqdm(enumerate(zip(
                 process_file_input(Namespace(file=fname1), True),
                 process_file_input(Namespace(file=fname2), True))
-            ):
-                print(f'{idx:,} of {stop:,}... ({idx/stop:.1%})', end='\r')
+            ), total=stop):
                 if v1 != v2:
                     raise ValueError(f"Mismatch at T({idx})! {v1} ≠ {v2}")
             break
@@ -217,7 +218,6 @@ def handle_compare(kind1: str, def1: int, base: int, stop: int, kind2: str, def2
 
 @boost
 def spinoff_worker(output: str, job: Tuple[Operation, Tuple]) -> None:
-    import sys
     try:
         shared_mem = SharedMemory(name=output)
 
@@ -261,7 +261,7 @@ def handle_await(shelf: Shelf, job: Tuple[Literal[Operation.SPINOFF], SPINOFF_AW
     output, p = tasks[job]
     while p.is_alive():
         print(output.buf.tobytes().strip(b'\x00').decode(), end='\r')
-        stdout.flush()
+        sys.stdout.flush()
         sleep(0.1)
     p.join()
     if p.exitcode:

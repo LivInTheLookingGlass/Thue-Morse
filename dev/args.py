@@ -187,7 +187,8 @@ def process_file_output(
         for group in tqdm(
             batched(zip(range(args.n), func(args.p, args.n)), batch_size),
             total=args.n // batch_size,
-            disable=not args.quiet
+            disable=not args.quiet,
+            file=stdout
         ):
             batch = [y for _, y in group]
 

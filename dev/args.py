@@ -188,7 +188,8 @@ def process_file_output(
             batched(zip(range(args.n), func(args.p, args.n)), batch_size),
             total=args.n // batch_size,
             disable=not args.quiet,
-            file=stdout
+            file=stdout,
+            dynamic_ncols=True
         ):
             batch = [y for _, y in group]
 

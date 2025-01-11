@@ -201,7 +201,7 @@ def handle_compare(kind1: str, def1: int, base: int, stop: int, kind2: str, def2
             for idx, (v1, v2) in tqdm(enumerate(zip(
                 process_file_input(Namespace(file=fname1), True),
                 process_file_input(Namespace(file=fname2), True))
-            ), total=stop, file=sys.stdout):
+            ), total=stop, file=sys.stdout, dynamic_ncols=True):
                 if v1 != v2:
                     raise ValueError(f"Mismatch at T({idx})! {v1} ≠ {v2}")
             break
